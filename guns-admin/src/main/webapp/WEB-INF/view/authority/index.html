@@ -1,0 +1,32 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>权限分配</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+
+                            <div class="col-sm-3">
+                                <#NameCon id="condition" name="综合条件" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="查询" icon="fa-search" clickFun="authorityAllot.query()"/>
+                            </div>
+                        </div>
+
+                        <#table id="AuthorityTable"/>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="${ctxPath}/static/modular/authority/authority.js"></script>
+
+@}

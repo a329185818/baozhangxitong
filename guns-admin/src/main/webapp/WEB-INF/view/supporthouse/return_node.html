@@ -1,0 +1,95 @@
+@layout("/common/_container.html"){
+<style type="text/css">
+    #NodeTable{
+        width: 100%
+    }
+    #NodeTable thead{
+        background: #ebf0f6;
+    }
+    #NodeTable thead th{
+        padding: 10px 0;
+        text-align:center;
+    }
+    #NodeTable tbody td{
+        padding: 8px 0;
+        text-align:center;
+        word-break:break-all;
+        white-space : normal;
+    }
+    table,table tr th, table tr td {
+        border:1px solid #bababa;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <table id="NodeTable" data-mobile-responsive="true" data-click-to-select="true">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>办理节点</th>
+                                <th>办理人</th>
+                                <th>选择</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @for(node in nodeList){
+                                <tr>
+                                    <td>${node.OPFLOWPHASENUM!}</td>
+                                    <td>${node.OPFLOWPHASENAME!}</td>
+                                    <td>${node.SENDTOUSERNAME!}</td>
+                                    <td name="checkReturnTd"><input type="radio" name="checkReturn" value="${node.OPFLOWPHASENUM!}" /></td>
+                                </tr>
+                                @}
+                            </tbody>
+                        </table>
+                        <div id="returnButtonDiv" style="float: right;margin-top: 8px;">
+                            <button type="button" class="btn btn-info" onclick="toUp('/support/to_up')" style="float: right;margin-right: 8px;">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /**
+     * 退回
+     */
+    function toUp (url) {
+        var data = $("#handle_opinions" , parent.document).serializeJSON();
+        var checkNum=$('input:radio[name="checkReturn"]:checked').val();
+        if(checkNum==null){
+            Feng.info("请选择退回的节点！");
+            return "";
+        }
+        data = {
+            json:JSON.stringify(data),
+            iOptypenum:"${iOptypenum!}",
+            iRecyear:"${iRecyear!}",
+            iRecnum:"${iRecnum!}",
+            checkNum:checkNum
+        };
+        $.ajax({
+            url:url,
+            type:'POST',
+            //contentType: 'application/json; charset=UTF-8',
+            async:false,
+            //dataType:'json',
+            data:data,
+            success: function (response) {
+                if(response == 'ERROR'){
+                    Feng.info("保存失败！");
+                }else{
+                    parent.parent.layer.closeAll();
+                    Feng.success("退回成功!");
+                }
+            }
+        })
+
+    }
+</script>
+@}

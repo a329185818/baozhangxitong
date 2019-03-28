@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.support.dao.InformationMapper">
+
+    <resultMap id="infoProjectMap" type="java.util.HashMap">
+
+    </resultMap>
+
+    <select id="infoList" statementType="CALLABLE" parameterType="java.util.Map">
+        call up_RmsQryAll(
+            #{scondtext, mode=IN, jdbcType=VARCHAR},
+            #{iStart, mode=IN, jdbcType=INTEGER},
+            #{iUserNum, mode=IN, jdbcType=INTEGER},
+            #{iEnd, mode=IN, jdbcType=INTEGER},
+            #{itype, mode=IN, jdbcType=INTEGER},
+            #{iIsSelfExec, mode=IN, jdbcType=INTEGER},
+
+            #{iCount, mode=OUT, jdbcType=INTEGER},
+            #{RCQry, mode=OUT, jdbcType=CURSOR, resultMap=infoProjectMap}
+        )
+    </select>
+    <!--根据申请人身份证号查找申请人信息-->
+    <select id="findProject" parameterType="String" resultType="com.stylefeng.guns.modular.support.model.RecOwner">
+        select OWNERNAME,OWNERCERTNUM,OWNERNAME_PEIOU,OWNERCERTNUM_PEIOU FROM RWRECOWNER where OWNERCERTNUM = #{idNum} and  1>=rownum
+    </select>
+
+</mapper>

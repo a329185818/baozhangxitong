@@ -1,0 +1,196 @@
+@layout("/common/_container.html"){
+<style type="text/css">
+    #NodeTable{
+        width: 100%
+    }
+    #NodeTable thead{
+        background: #ebf0f6;
+    }
+    #NodeTable thead th{
+        padding: 10px 0;
+        text-align:center;
+    }
+    #NodeTable tbody td{
+        padding: 8px 0;
+        text-align:center;
+        word-break:break-all;
+        white-space : normal;
+    }
+    table,table tr th, table tr td {
+        border:1px solid #bababa;
+    }
+
+    .m-t-30{
+        margin-top:30px;
+    }
+</style>
+
+<div class="panel blank-panel">
+    <div class="panel-heading">
+        <div class="panel-options">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#tab-1">基本信息</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-2">楼盘表</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="tab-content">
+
+            <div id="tab-1" class="tab-pane active">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form action="#" method="post" class="form-horizontal" id="projectInfoForm">
+
+                            <input type="hidden" name="id" id="id" value='${project.id!}'>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">建设单位</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="constructionUnit" name="constructionUnit" type="text" value="${project.constructionUnit!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">承建单位</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="contractor" name="contractor" type="text" value="${project.contractor!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">项目名称</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="name" name="name" type="text" value="${project.name!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">项目地址</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="address" name="address" type="text" value="${project.address!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">开工时间</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control layer-date" id="startTime" name="startTime" type="text" value="${project.startTime,'yyyy-MM-dd'}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">竣工时间</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control layer-date" id="endTime" name="endTime" type="text" value="${project.endTime,'yyyy-MM-dd'}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">建设套数</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="houseNumber" name="houseNumber" type="text" value="${project.houseNumber!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">总建筑面积</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="area" name="area" type="text" value="${project.area!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">规划许可证号</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="planningPermit" name="planningPermit" type="text" value="${project.planningPermit!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">施工许可证号</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="constructionPermit" name="constructionPermit" type="text" value="${project.constructionPermit!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">容积率</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="plotRatio" name="plotRatio" type="text" value="${project.plotRatio!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">建设规模</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" id="constructionScale" name="constructionScale">${project.constructionScale!}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row btn-group-m-t">
+                                <div class="col-sm-10" style="text-align: center">
+                                    @if(num == '1'){
+                                        <#button btnCss="info" name="保存" id="ensure" icon="fa-check" clickFun="projecManage.save()"/>
+                                    @}
+                                    <#button btnCss="danger" name="关闭" icon="fa-eraser" clickFun="projecManage.close()"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-2" class="tab-pane">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div class="hidden-xs" role="group" style="text-align: center;">
+                                    <#button btnCss="danger" name="关闭页面" icon="fa-eraser" clickFun="projecManage.close()"/>
+                                </div>
+                                <#table id="managerTable"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    laydate.render({
+        elem: '#startTime'
+    });
+    laydate.render({
+        elem: '#endTime'
+    });
+    var num = '${num!}';
+    var buildId = '${project.buildReceive!}';
+    //判断是否为查看，查看则所有输入框不能编辑
+    if(num == '0'){
+        $("input").attr("disabled","disabled");
+        $("#constructionScale").attr("disabled","disabled");
+    }else if(num == '1'){
+        $("input").removeAttr("disabled","disabled");
+        $("#constructionScale").removeAttr("disabled","disabled");
+    }
+</script>
+<script src="${ctxPath}/static/modular/supporthouse/build.js"></script>
+<script src="${ctxPath}/static/modular/project/project.js"></script>
+@}

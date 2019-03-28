@@ -1,0 +1,200 @@
+@layout("/common/_container.html"){
+<script>
+    var buildId = window.parent.build.buildId;//栋id
+    var floorCount = window.parent.build.floorCount;//总层数
+    var unitCount = window.parent.build.unitCount;//总单元
+    var buildNum = window.parent.build.buildNum;//栋号
+    var house = ${houseList};
+    var holder = ${holderList};
+</script>
+<style>
+    .info-title{
+        font-size: 16px;padding:5px 0 5px 5px; background: #0e9aef;color:#fff;margin:5px 0;
+    }
+    #houseTable{
+        width: 100%;
+    }
+    #houseTable th,#houseTable td{
+        border: 1px solid #0e9aef;
+        text-align: center;
+        height: 30px;
+        color:#0000ff;
+    }
+    #houseTable th{
+        background: #a8e4ff;
+    }
+    #houseTable th:first-child,#houseTable td:first-child{
+        background: #a8e4ff;
+        width:35px;
+    }
+    ul{
+        list-style:none;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    ul li{
+        float:left; /* 向左漂移，将竖排变为横排 */
+        border-right: 1px solid #0e9aef;
+        height: 100%;
+    }
+</style>
+<div class="row">
+
+    <div id="buildForm">
+        <div class="info-title">幢 信 息</div>
+        <div class="col-sm-4 form-group">
+            <label class="col-sm-6 text-right control-label" style="padding-top: 6px;width: 90px">幢唯一号</label>
+            <div class="col-sm-6">
+                <input class="form-control"  style="width: 250px;" id="buildId" name="buildId" type="text" value="" readonly>
+            </div>
+        </div>
+        <div class="col-sm-4 form-group">
+            <label class="col-sm-6 text-right control-label" style="padding-top: 6px;width: 90px">总单元数</label>
+            <div class="col-sm-6">
+                <input class="form-control"  id="unitCount" name="unitCount" type="text" value="" readonly>
+            </div>
+        </div>
+        <div class="col-sm-4 form-group">
+            <label class="col-sm-6 text-right control-label" style="padding-top: 6px;width: 90px">总 层 数</label>
+            <div class="col-sm-6">
+                <input class="form-control" id="floorCount" name="floorCount" type="text" value="" readonly>
+            </div>
+        </div>
+        <!--
+        <div class="col-sm-2 form-group" style="padding:0">
+            <label class="col-sm-4 text-right control-label" style="padding-top: 6px;width: 60px">单元</label>
+            <div class="col-sm-7">
+                <input class="form-control" id="unit" name="unit" type="text" value="">
+            </div>
+        </div>
+        <div class="col-sm-2 form-group" style="padding:0">
+            <label class="col-sm-4 text-right control-label" style="padding-top: 6px;width: 60px">楼层</label>
+            <div class="col-sm-7">
+                <input class="form-control" id="floor" name="house_count" type="text" value="">
+            </div>
+        </div>
+        <div class="col-sm-2 form-group" style="padding:0">
+            <label class="col-sm-4 text-right control-label" style="padding-top: 6px;width: 60px">房数</label>
+            <div class="col-sm-7">
+                <input class="form-control" id="house_count" name="house_count" type="text" value="">
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="buildInfo.addRoomToFloor()">添加房屋</button>
+        <button type="button" class="btn btn-primary" onclick="buildInfo.createAllHouse()">生成房屋</button>
+        <button type="button" class="btn btn-primary" onclick="buildInfo.editHouse()">编辑选中</button>
+        -->
+        <div style="text-align: center;">
+            <button type="button" class="btn btn-primary" onclick="buildInfo.showOtherDate('roomNum','1')">房&emsp;&emsp;号</button>
+            <button type="button" class="btn btn-primary" onclick="buildInfo.showOtherDate('usage','1')">用&emsp;&emsp;途</button>
+            <button type="button" class="btn btn-primary" onclick="buildInfo.showOtherDate('architStructcode','1')">结&emsp;&emsp;构</button>
+            <button type="button" class="btn btn-primary" onclick="buildInfo.showOtherDate('houseType','1')">户&emsp;&emsp;型</button>
+            <button type="button" class="btn btn-primary" onclick="buildInfo.showOtherDate('architArea','1')">建筑面积</button>
+            <button type="button" class="btn btn-primary" onclick="buildInfo.showOtherDate('roomArea','1')">套内面积</button>
+            <button type="button" class="btn btn-primary" onclick="buildInfo.showOtherDate('apportArea','1')">分摊面积</button>
+            <button type="button" class="btn btn-primary" onclick="buildInfo.showOtherDate('bargainTotalprice','1')">申报价格</button>
+        </div>
+    </div>
+
+    <div style="clear: both"></div>
+
+    <div  class="info-title">房 信 息</div>
+    <div class="col-sm-2">
+        <div class="col-sm-6">
+            <label style="background: #00ff00;width: 20px;height: 20px;"></label>
+        </div>
+        <div class="col-sm-6">
+            <p>空置</p>
+        </div>
+        <div class="col-sm-6">
+            <label style="background: white;width: 20px;height: 20px;"></label>
+        </div>
+        <div class="col-sm-6">
+            <p>已配房</p>
+        </div>
+    </div>
+    <div class="col-sm-10">
+        <form id="houseForm" action="/build/create_house" method="post">
+            <table id="houseTable">
+                <thead></thead>
+                <tbody id="houseTableTbody"></tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="editHouseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 700px;">
+            <div class="modal-body">
+                <div class="col-sm-12">
+                    <#label id="roomNum" name="房&emsp;&emsp;&emsp;名" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="obligee" name="权&emsp;利&emsp;人" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="bargainTotalprice" name="购买价格" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="usage" name="房屋用途" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="layout" name="规划用途" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="architStructcode" name="建筑结构" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="houseType" name="房屋户型" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="architArea" name="建筑面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="roomArea" name="套内面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="apportArea" name="分摊面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="houseProp" name="房屋性质" placeholder=""/>
+                </div>
+                <div class="col-sm-12">
+                    <#label id="sitnumGather" name="房屋坐落" placeholder=""/>
+                </div>
+                <div id="holderDiv" style="display: none;">
+                    <div class="col-sm-6">
+                        <#label id="holderName" name="屋主姓名" placeholder=""/>
+                    </div>
+                    <div class="col-sm-6">
+                        <#label id="holderCard" name="身份证号" placeholder=""/>
+                    </div>
+                    <div class="col-sm-6">
+                        <#label id="holderSpouseName" name="配偶姓名" placeholder=""/>
+                    </div>
+                    <div class="col-sm-6">
+                        <#label id="holderSpouseCard" name="配偶证件" placeholder=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-top: 10px;">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    var buildingStructureListJson = '${buildingStructureListJson!}';
+    buildingStructureListJson = JSON.parse(buildingStructureListJson);
+    var houseTypeListJson = '${houseTypeListJson}';
+    houseTypeListJson = JSON.parse(houseTypeListJson);
+    var houseuSageListJson = '${houseuSageListJson}';
+    houseuSageListJson = JSON.parse(houseuSageListJson);
+</script>
+
+<script src="${ctxPath}/static/modular/supporthouse/build_detail.js"></script>
+<script src="${ctxPath}/static/modular/supporthouse/build_detail_use.js"></script>
+@}

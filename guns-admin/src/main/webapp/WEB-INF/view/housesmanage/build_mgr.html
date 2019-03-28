@@ -1,0 +1,139 @@
+@layout("/common/_container.html"){
+<style>
+    .ztree * {
+        padding: 0;
+        margin: 0;
+        font-size: 16px;
+        font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+    }
+    .ztree li a.curSelectedNode{
+        height: 20px;
+    }
+    .dept-tree{
+        height: 600px;
+        overflow: auto
+    }
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background-color: #F5F5F5;
+    }
+</style>
+<style type="text/css">
+    div#rMenu {position:absolute; visibility:hidden; top:0; background-color: #555;text-align: left;padding: 2px;}
+    div#rMenu a{
+        cursor: pointer;
+        list-style: none outside none;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>楼盘管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-lg-2 col-sm-3" style="width:22%">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">楼盘表结构</div>
+                                    <div class="panel-body dept-tree">
+                                        <ul id="buildTree" class="ztree"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-10 col-sm-9" style="width:78%">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-3">
+                                        <#NameCon id="condition" name="项目名称" placeholder=""/>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-3">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12">
+                                                <#button name="搜索" icon="fa-search" clickFun="build.search()"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hidden-xs" id="managerTableToolbar" role="group">
+                                    <#button name="新建项目" icon="fa-plus" id="createProjectBtn"  clickFun="build.showEditProject()"/>
+                                    <#button name="删除选中的栋" icon="fa-plus" id="createProjectBtn"  clickFun="build.deleteBuild()"/>
+                                </div>
+                                <#table id="managerTable"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--新建项目页-->
+<div class="modal fade" id="createPorjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">新建项目</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="projectId" id="projectId">
+                <#NameCon id="projectName" name="项目名称" placeholder=""/>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle"
+                                type="button">项目地区
+                        </button>
+                    </div>
+                    <select id="region" class="form-control" name="region">
+                        @for(node in regionList){
+                        <option value="${node.code!}">${node.value!}</option>
+                        @}
+                    </select>
+                </div>
+                <#NameCon id="sitnumgather" name="项目坐落" placeholder=""/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="build.createProject()">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--新建栋页-->
+<div class="modal fade" id="createRidgepoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="ridgepoleLabel">新建栋</h4>
+            </div>
+            <div class="modal-body">
+                <#NameCon id="buildNum" name="栋&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号" placeholder=""/>
+                <#NameCon id="unitCount" name="总单元数" placeholder=""/>
+                <#NameCon id="floorCount" name="总&nbsp;&nbsp;层&nbsp;&nbsp;数" placeholder=""/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="build.createRidgepole()">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--右击菜单-->
+<div id="rMenu" style="background-color: #fff">
+    <a href="#" class="list-group-item" onclick="build.showEditRidgepole();">创建栋</a>
+    <a href="#" class="list-group-item" onclick="build.updateProject();">更新项目信息</a>
+    <a href="#" class="list-group-item" onclick="build.deleteProject();">删除项目</a>
+</div>
+<script src="${ctxPath}/static/modular/supporthouse/build.js"></script>
+<script>
+    var buildId = '';
+    var num = 1;
+</script>
+@}

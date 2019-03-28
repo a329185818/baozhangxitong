@@ -1,0 +1,268 @@
+@layout("/common/_container.html"){
+<style type="text/css">
+    #NodeTable{
+        width: 100%
+    }
+    #NodeTable thead{
+        background: #ebf0f6;
+    }
+    #NodeTable thead th{
+        padding: 10px 0;
+        text-align:center;
+    }
+    #NodeTable tbody td{
+        padding: 8px 0;
+        text-align:center;
+        word-break:break-all;
+        white-space : normal;
+    }
+    table,table tr th, table tr td {
+        border:1px solid #bababa;
+    }
+
+    .m-t-30{
+        margin-top:30px;
+    }
+</style>
+
+<div class="panel blank-panel">
+    <div class="panel-heading">
+        <div class="panel-options">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#tab-1">基本信息</a>
+
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-2">办理意见</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form action="#" method="post" class="form-horizontal" id="projectInfoForm">
+
+                            <input type="hidden" name="OWNERNUM" id="OWNERNUM" value="${project.OWNERNUM!}">
+                            <input type="hidden" name="OpTypeNum" id="OpTypeNum" value='${project.OPTYPENUM!}'>
+                            <input type="hidden" name="RecYear" id="RecYear" value='${project.RECYEAR!}'>
+                            <input type="hidden" name="RecNum" id="RecNum" value='${project.RECNUM!}'>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">建设单位</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="OWNERNAME" name="OWNERNAME" type="text" value="${project.OWNERNAME!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">承建单位</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="chengjiandw" name="chengjiandw" type="text" value="${project.CHENGJIANDW!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">项目名称</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="PROJNAME" name="PROJNAME" type="text" value="${project.PROJNAME!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">项目地址</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="PROJSIT" name="PROJSIT" type="text" value="${project.PROJSIT!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">开工时间</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control layer-date" id="STARTDATE" name="STARTDATE" type="text" value="${project.STARTDATE,"yyyy-MM-dd"}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">竣工时间</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control layer-date" id="ENDDATE" name="ENDDATE" type="text" value="${project.ENDDATE,"yyyy-MM-dd"}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">建设套数</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="CELLCOUNT" name="CELLCOUNT" type="text" value="${project.CELLCOUNT!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">总建筑面积</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="ARCHITAREA" name="ARCHITAREA" type="text" value="${project.ARCHITAREA!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">规划许可证号</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="GUIHUACERTNUM" name="GUIHUACERTNUM" type="text" value="${project.GUIHUACERTNUM!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">施工许可证号</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="SHIGONGCERTNUM" name="SHIGONGCERTNUM" type="text" value="${project.SHIGONGCERTNUM!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">容积率</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="RONGJILV" name="RONGJILV" type="text" value="${project.RONGJILV!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">建设规模</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" id="JIANZHUGUIMO" name="JIANZHUGUIMO">${project.JIANZHUGUIMO!}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row btn-group-m-t">
+                                <div class="col-sm-10" style="text-align: center">
+                                    <#button btnCss="info" name="保存" id="ensure" icon="fa-check" clickFun="ProjectInfoDlg.saveRecOwner()"/>
+                                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ProjectInfoDlg.close()"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-2" class="tab-pane">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div class="row row-lg">
+                                    <div class="col-sm-12">
+                                        <table id="NodeTable" data-mobile-responsive="true" data-click-to-select="true">
+                                            <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>办理节点</th>
+                                                <th>提交日期</th>
+                                                <th>办理人</th>
+                                                <th>办理日期</th>
+                                                <th>意见</th>
+                                                <th>退件原因</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @for(node in nodeList){
+                                            <tr>
+                                                <td>${node.RECWORKPHASENUM!}</td>
+                                                <td>${node.OPFLOWPHASENAME!}</td>
+                                                <td>${node.PHASESTARTTIME!}</td>
+                                                <td>${node.USERNAME!}</td>
+                                                <td>${node.WORKTIME!}</td>
+                                                <td>${node.WORKOPINION!}</td>
+                                                <td>${node.RETURNREASON!}</td>
+                                            </tr>
+                                            @}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <form action="#" method="post" class="form-horizontal" id="handle_opinions">
+                                    <div class="row m-t-30">
+                                        <div class="col-sm-12 form-group">
+                                            <label class="col-sm-2 control-label">系统检查结果</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" id="" name="" type="text" value="${project.OWNERNAME!}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label class="col-sm-2 control-label">办理意见</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" id="" name="" type="text" value="${project.OWNERNAME!}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label class="col-sm-2 control-label">证载信息</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" id="" name="" type="text" value="${project.OWNERNAME!}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label class="col-sm-2 control-label">退件类型</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="" name="" type="text" value="${project.OWNERNAME!}">
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label class="col-sm-2 control-label">退件原因</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" id="" name="" type="text" value="${project.OWNERNAME!}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label class="col-sm-2 control-label">备注</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" id="" name="" type="text" value="${project.OWNERNAME!}"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row btn-group-m-t">
+                                        <div class="col-sm-10" style="text-align: center">
+                                            <#button btnCss="info" name="保存" id="opinions_ensure" icon="fa-check" clickFun="ProjectInfoDlg.saveRecOpinions()"/>
+                                            <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ProjectInfoDlg.close()"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    laydate.render({
+        elem: '#STARTDATE'
+    });
+    laydate.render({
+        elem: '#ENDDATE'
+    });
+
+    var readonly = Feng.getQueryString("readonly");
+    if(readonly == 'true'){
+        $("#projectInfoForm input").attr("readonly","readonly");
+        $("#ensure").attr("disabled","disabled")
+    }
+</script>
+<script src="${ctxPath}/static/modular/supporthouse/project_info.js"></script>
+@}

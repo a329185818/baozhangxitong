@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.support.dao.AuthorityMapper">
+
+    <resultMap id="authorityProjectMap" type="java.util.HashMap">
+
+    </resultMap>
+
+    <resultMap id="authorityMap" type="com.stylefeng.guns.modular.support.model.Authority">
+        <result column="user_id"           property="userId" />
+        <result column="authority_type"    property="authorityType" />
+        <result column="project_id"        property="projectId" />
+    </resultMap>
+
+    <select id="getAuthority" parameterType="String" resultMap="authorityMap">
+        SELECT * FROM AUTHORITY_USER
+        WHERE user_id = #{userId}
+        <if test="authorityType != null and authorityType != ''">
+            AND  authority_type = #{authorityType}
+        </if>
+    </select>
+
+    <insert id="addAuthority" parameterType="com.stylefeng.guns.modular.support.model.Authority">
+        INSERT INTO AUTHORITY_USER
+        (user_id,project_id,authority_type)
+        VALUES
+        (#{userId},#{projectId},#{authorityType})
+    </insert>
+
+    <delete id="deleteAuthority" parameterType="String">
+        DELETE FROM AUTHORITY_USER
+        WHERE user_id = #{userId}
+        AND authority_type = #{authorityType}
+    </delete>
+
+    <insert id="addUserAuthority" parameterType="java.util.HashMap">
+        insert into tbbcopuserpower
+        (USERNUM,OPTYPENUM,OPPARTNUM,OPUSERROLE,OPUSERPOWER)
+        values
+        (#{USERNUM},#{OPTYPENUM},#{OPPARTNUM},#{OPUSERROLE},#{OPUSERPOWER})
+    </insert>
+
+    <delete id="deleteUserAuthority" parameterType="String">
+        DELETE FROM tbbcopuserpower
+        WHERE USERNUM = #{userId}
+    </delete>
+</mapper>

@@ -1,0 +1,871 @@
+@layout("/common/_container.html"){
+<style>
+    .info-title{
+        font-size: 16px;padding:5px 0 5px 5px; background: #0e9aef;color:#fff;margin:5px 0;
+    }
+    #houseTable{
+        width: 100%;
+    }
+    #houseTable th,#houseTable td{
+        border: 1px solid #0e9aef;
+        text-align: center;
+        height: 30px;
+        color:#0000ff;
+    }
+    #houseTable th{
+        background: #a8e4ff;
+    }
+    #houseTable th:first-child,#houseTable td:first-child{
+        background: #a8e4ff;
+        width:35px;
+    }
+    .floor_selected{
+        background-color: #ffc600;
+    }
+    ul{
+        list-style:none;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    ul li{
+        float:left; /* 向左漂移，将竖排变为横排 */
+        border-right: 1px solid #0e9aef;
+        height: 100%;
+    }
+</style>
+<style type="text/css">
+    .dataTable{
+        width: 100%
+    }
+    .dataTable thead{
+        background: #ebf0f6;
+    }
+    .dataTable thead th{
+        padding: 10px 0;
+        text-align:center;
+    }
+    .dataTable tbody td{
+        padding: 8px 0;
+        text-align:center;
+        word-break:break-all;
+        white-space : normal;
+    }
+    table,table tr th, table tr td {
+        border:1px solid #bababa;
+    }
+
+    .m-t-30{
+        margin-top:30px;
+    }
+    .d-title{
+        width: 100%;height: 30px;padding-left: 30px;background: #eee;line-height:30px;font-weight: bold;margin-bottom:20px;
+    }
+    .tableTrClass{
+        text-align: center;
+        height: 40px;
+        font-size: 20px;
+    }
+    table{
+        border-spacing:0;
+        cellpadding:0;
+        cellspacing:0;
+    }
+    .tableInputClass{
+        border: 0px;
+        outline:none;
+        width:100%;
+        height: 100%;
+        margin-left: 5px;
+    }
+
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+</style>
+
+<div class="panel blank-panel">
+    <div class="panel-heading">
+        <div class="panel-options">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#tab-1">申请人</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-2">共同申请人</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-3">申请理由</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-4">分配房屋</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-5">材料</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-6">办理意见</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form action="#" method="post" class="form-horizontal" id="projectInfoForm">
+
+                            <input type="hidden" name="OpTypeNum" id="OpTypeNum" value='${apply.OPTYPENUM!}'>
+                            <input type="hidden" name="RecYear" id="RecYear" value='${apply.RECYEAR!}'>
+                            <input type="hidden" name="RecNum" id="RecNum" value='${apply.RECNUM!}'>
+
+                            <div class="row">
+
+                                <table style="width: 100%;">
+                                    <tr class="tableTrClass">
+                                        <td colspan="13">申请人基本情况</td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">姓名</td>
+                                        <td colspan="3"><input type="text" name="applicantName" class="tableInputClass" value='${apply.applicantName!}'/></td>
+                                        <td colspan="2">性别</td>
+                                        <td colspan="1">
+                                            <select class="form-control" name="applicantSex" >
+                                                @if(apply.applicantSex == 1){
+                                                <option value="1" selected>男</option>
+                                                <option value="2">女</option>
+                                                @}else{
+                                                <option value="1" >男</option>
+                                                <option value="2" selected>女</option>
+                                                @}
+                                            </select>
+                                        </td>
+                                        <td colspan="1">婚否</td>
+                                        <td colspan="1">
+                                            <select class="form-control" name="applicantMarry">
+                                                @if(apply.applicantMarry == 0){
+                                                <option value="1" selected>未婚</option>
+                                                <option value="2">已婚</option>
+                                                @}else{
+                                                <option value="1">未婚</option>
+                                                <option value="2" selected>已婚</option>
+                                                @}
+
+                                            </select>
+                                        </td>
+
+                                        <td colspan="2" rowspan="4">
+                                            <input id="avatarSlect" type="file" style="position: absolute;float: left; z-index: 10; opacity: 0;width: 100px; height: 100px;margin-left: 40px;" accept="image/png, image/jpeg, image/gif, image/jpg">
+                                            @if(apply.MY_PHOTO == null){
+                                            <img id="avatarPreview" src="${ctxPath}/static/img/sample.png" title="点击更换图片" style="z-index: 9; float: left; width: 100px; height: 100px;margin-left: 40px;">
+                                            @}else{
+                                            <img id="avatarPreview" src=" /support/getPhoto?OpTypeNum=${apply.OPTYPENUM!}&RecYear=${apply.RECYEAR!}&RecNum=${apply.RECNUM!}" title="点击更换图片" style="z-index: 9; float: left; width: 100px; height: 100px;margin-left: 40px;">
+                                            @}
+                                        </td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">年龄</td>
+                                        <td colspan="3"><input type="number" name="applicantAge" class="tableInputClass" value='${apply.applicantAge!}'/></td>
+                                        <td colspan="2">联系电话</td>
+                                        <td colspan="3"><input type="number" name="applicantPhone" class="tableInputClass" value='${apply.applicantPhone!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">身份证号</td>
+                                        <td colspan="8"><input type="text" name="applicantCard" class="tableInputClass" value='${apply.applicantCard!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">工作单位</td>
+                                        <td colspan="8"><input type="text" name="applicantWork" class="tableInputClass" value='${apply.applicantWork!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">现住址</td>
+                                        <td colspan="4"><input type="text" name="applicantAdress" class="tableInputClass" value='${apply.applicantAdress!}'/></td>
+                                        <td colspan="3">个人年收入情况</td>
+                                        <td colspan="3"><input type="text" name="applicantIncome" class="tableInputClass" value='${apply.applicantIncome!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">户口迁入三亚市时间</td>
+                                        <td colspan="4"><input type="text" class="tableInputClass layer-date" name="applicantResidenceTime" value='${apply.applicantResidenceTime!}'/></td>
+                                        <td colspan="3">户口所在地</td>
+                                        <td colspan="3"><input type="text" name="applicantResidence" class="tableInputClass" value='${apply.applicantResidence!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">现居住房屋性质</td>
+                                        <td colspan="10">
+                                            @if(apply.applicantNature == '1'){
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="1" checked>自有产权
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="2" >租住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="3">租住公房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="4">借住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="5">借住公房
+                                            @}else if(apply.applicantNature == '2'){
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="1">自有产权
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="2" checked>租住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="3">租住公房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="4">借住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="5">借住公房
+                                            @}else if(apply.applicantNature == '3'){
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="1">自有产权
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="2" >租住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="3" checked>租住公房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="4">借住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="5">借住公房
+                                            @}else if(apply.applicantNature == '4'){
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="1">自有产权
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="2" >租住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="3">租住公房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="4" checked>借住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="5">借住公房
+                                            @}else if(apply.applicantNature == '5'){
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="1">自有产权
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="2" >租住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="3">租住公房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="4">借住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="5" checked>借住公房
+                                            @}else{
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="1">自有产权
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="2">租住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="3">租住公房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="4">借住私房
+                                            <input type="radio" name="applicantNature" style="margin-left:10px;" value="5">借住公房
+                                            @}
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="row btn-group-m-t" id="saveFamilySurvey">
+                                    <div class="col-sm-10" style="text-align: center">
+                                        <#button btnCss="info" name="保存"  icon="fa-check" clickFun="saveFamilySurveyFunction('1')"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-2" class="tab-pane">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form action="#" method="post" class="form-horizontal" id="jointApplicantForm">
+
+                            <input type="hidden" name="OPTYPENUM[]" value='${apply.OPTYPENUM!}'>
+                            <input type="hidden" name="RECYEAR[]" value='${apply.RECYEAR!}'>
+                            <input type="hidden" name="RECNUM[]" value='${apply.RECNUM!}'>
+
+                            <div class="row">
+                                <button class="btn btn-primary " type="button" style="font-size: 15px;margin: 8px;" onclick="addJointTable('${apply.OPTYPENUM!}','${apply.RECYEAR!}','${apply.RECNUM!}','jointTable','1')">+</button>
+                                <label>添加共同申请人</label>
+                                <table style="width: 100%;" id="jointTable">
+                                    <tbody id="jointTbodyId1">
+                                    <tr class="tableTrClass">
+                                        <td colspan="13">配偶基本情况</td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">姓名</td>
+                                        <td colspan="3"><input type="text" name="jointApplicantName[]" class="tableInputClass" value='${spouse.jointApplicantName!}'/></td>
+                                        <td colspan="2">性别</td>
+                                        <td colspan="1">
+                                            <select class="form-control" name="jointApplicantSex[]" >
+                                                @if(spouse.jointApplicantSex == 1){
+                                                <option value="1" selected>男</option>
+                                                <option value="2">女</option>
+                                                @}else{
+                                                <option value="1" >男</option>
+                                                <option value="2" selected>女</option>
+                                                @}
+                                            </select>
+                                        </td>
+                                        <td colspan="1">婚否</td>
+                                        <td colspan="1">
+                                            <select class="form-control" name="jointApplicantMarry[]">
+                                                @if(spouse.jointApplicantMarry == 0){
+                                                <option value="1" selected>未婚</option>
+                                                <option value="2">已婚</option>
+                                                @}else{
+                                                <option value="1">未婚</option>
+                                                <option value="2" selected>已婚</option>
+                                                @}
+                                            </select>
+                                        </td>
+                                        <td colspan="2" rowspan="4">
+                                            <input id="spouseInput" type="file" style="position: absolute;float: left; z-index: 10; opacity: 0;width: 100px; height: 100px;margin-left: 40px;" accept="image/png, image/jpeg, image/gif, image/jpg">
+                                            @if(spouse.MY_PHOTO == null){
+                                            <img id="spouseImg" src="${ctxPath}/static/img/sample.png" title="点击更换图片" style="z-index: 9; float: left; width: 100px; height: 100px;margin-left: 40px;">
+                                            @}else{
+                                            <img id="spouseImg" src=" /support/getPhoto?OpTypeNum=${apply.OPTYPENUM!}&RecYear=${apply.RECYEAR!}&RecNum=${apply.RECNUM!}&judge=2&FamilyID=${spouse.jointApplicantId!}" title="点击更换图片" style="z-index: 9; float: left; width: 100px; height: 100px;margin-left: 40px;">
+                                            @}
+                                        </td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">年龄</td>
+                                        <td colspan="3"><input type="number" name="jointApplicantAge[]" class="tableInputClass" value='${spouse.jointApplicantAge!}'/></td>
+                                        <td colspan="2">联系电话</td>
+                                        <td colspan="3"><input type="number" name="jointApplicantPhone[]" class="tableInputClass" value='${spouse.jointApplicantPhone!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">身份证号</td>
+                                        <td colspan="8"><input type="text" name="jointApplicantCard[]" class="tableInputClass" value='${spouse.jointApplicantCard!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">工作单位</td>
+                                        <td colspan="8"><input type="text" name="jointApplicantWork[]" class="tableInputClass" value='${spouse.jointApplicantWork!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">与申请人关系</td>
+                                        <td colspan="3">
+                                            <select class="form-control" name="jointApplicantRelation[]" >
+                                                @for(node in familyType){
+                                                @if(spouse.jointApplicantRelation == node.code){
+                                                <option value="${node.code!}" selected>${node.value!}</option>
+                                                @}else{
+                                                <option value="${node.code!}">${node.value!}</option>
+                                                @}
+                                                @}
+                                            </select>
+                                        </td>
+                                        <td colspan="3">本人收入情况</td>
+                                        <td colspan="4"><input type="text" name="jointApplicantIncome[]" class="tableInputClass" value='${spouse.jointApplicantIncome!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">户口迁入三亚时间</td>
+                                        <td colspan="3"><input style="width:120px;" type="text" class="tableInputClass layer-date" name="jointApplicantResidenceTime[]" /></td>
+                                        <td colspan="3">户口所在地</td>
+                                        <td colspan="4"><input type="text" name="jointApplicantResidence[]" class="tableInputClass" value='${jointApplicant.jointApplicantResidence!}'/></td>
+                                    </tr>
+                                    </tbody>
+
+                                    <!-- 添加共同申请人基本信息 -->
+                                    @for(jointApplicant in jointApplicantList){
+                                    <tbody id="jointTbodyId${jointApplicant.jointApplicantId!}">
+                                    <input type="hidden" name="OPTYPENUM[]" value='${apply.OPTYPENUM!}'>
+                                    <input type="hidden" name="RECYEAR[]" value='${apply.RECYEAR!}'>
+                                    <input type="hidden" name="RECNUM[]" value='${apply.RECNUM!}'>
+                                    <tr class="tableTrClass">
+                                        <td colspan="13">共同申请人基本情况
+                                            <button class="btn btn-danger" type="button" style="font-size: 15px;margin: 0px;float: right;" onclick="deleteJointApplicant('jointTbodyId${jointApplicant.jointApplicantId!}')">-</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">姓名</td>
+                                        <td colspan="3"><input type="text" name="jointApplicantName[]" class="tableInputClass" value='${jointApplicant.jointApplicantName!}'/></td>
+                                        <td colspan="2">性别</td>
+                                        <td colspan="1">
+                                            <select class="form-control" name="jointApplicantSex[]" >
+                                                @if(jointApplicant.jointApplicantSex == 1){
+                                                <option value="1" selected>男</option>
+                                                <option value="2">女</option>
+                                                @}else{
+                                                <option value="1" >男</option>
+                                                <option value="2" selected>女</option>
+                                                @}
+                                            </select>
+                                        </td>
+                                        <td colspan="1">婚否</td>
+                                        <td colspan="1">
+                                            <select class="form-control" name="jointApplicantMarry[]">
+                                                @if(jointApplicant.jointApplicantMarry == 0){
+                                                <option value="1" selected>未婚</option>
+                                                <option value="2">已婚</option>
+                                                @}else{
+                                                <option value="1">未婚</option>
+                                                <option value="2" selected>已婚</option>
+                                                @}
+                                            </select>
+                                        <td colspan="2" rowspan="4">
+                                        <input id="${jointApplicant.jointApplicantId!}Input" data-num="${jointApplicant.jointApplicantId!}" type="file" style="position: absolute;float: left; z-index: 10; opacity: 0;width: 100px; height: 100px;margin-left: 40px;" accept="image/png, image/jpeg, image/gif, image/jpg">
+                                        @if(jointApplicant.MY_PHOTO == null){
+                                        <img id="${jointApplicant.jointApplicantId!}Img" src="${ctxPath}/static/img/sample.png" title="点击更换图片" style="z-index: 9; float: left; width: 100px; height: 100px;margin-left: 40px;">
+                                        @}else{
+                                        <img id="${jointApplicant.jointApplicantId!}Img" src=" /support/getPhoto?OpTypeNum=${apply.OPTYPENUM!}&RecYear=${apply.RECYEAR!}&RecNum=${apply.RECNUM!}&judge=2&FamilyID=${jointApplicant.jointApplicantId!}" title="点击更换图片" style="z-index: 9; float: left; width: 100px; height: 100px;margin-left: 40px;">
+                                        @}
+                                        </td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">年龄</td>
+                                        <td colspan="3"><input type="number" name="jointApplicantAge[]" class="tableInputClass" value='${jointApplicant.jointApplicantAge!}'/></td>
+                                        <td colspan="2">联系电话</td>
+                                        <td colspan="3"><input type="number" name="jointApplicantPhone[]" class="tableInputClass" value='${jointApplicant.jointApplicantPhone!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">身份证号</td>
+                                        <td colspan="8"><input type="text" name="jointApplicantCard[]" class="tableInputClass" value='${jointApplicant.jointApplicantCard!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">职业或工作单位</td>
+                                        <td colspan="8"><input type="text" name="jointApplicantWork[]" class="tableInputClass" value='${jointApplicant.jointApplicantWork!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">户口所在地</td>
+                                        <td colspan="3"><input type="text" name="jointApplicantResidence[]" class="tableInputClass" value='${jointApplicant.jointApplicantResidence!}'/></td>
+                                        <td colspan="3">现住址</td>
+                                        <td colspan="4"><input type="text" name="jointApplicantAddress[]" class="tableInputClass" value='${jointApplicant.jointApplicantAddress!}'/></td>
+                                    </tr>
+                                    <tr class="tableTrClass">
+                                        <td colspan="3">与申请人关系</td>
+                                        <td colspan="3">
+                                            <select class="form-control" name="jointApplicantRelation[]" >
+                                                @for(node in familyType){
+                                                @if(jointApplicant.jointApplicantRelation == node.code){
+                                                <option value="${node.code!}" selected>${node.value!}</option>
+                                                @}else{
+                                                <option value="${node.code!}">${node.value!}</option>
+                                                @}
+                                                @}
+                                            </select>
+                                        </td>
+                                        <td colspan="3">本人收入情况</td>
+                                        <td colspan="4"><input type="text" name="jointApplicantIncome[]" class="tableInputClass" value='${jointApplicant.jointApplicantIncome!}'/></td>
+                                    </tr>
+                                    </tbody>
+                                    @}
+                                </table>
+                                <div class="row btn-group-m-t"  id="saveJointApplicant">
+                                    <div class="col-sm-10" style="text-align: center">
+                                        <#button btnCss="info" name="保存" icon="fa-check" clickFun="saveJointApplicantFunction('jointApplicantForm','1')"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-3" class="tab-pane">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form action="#" method="post" class="form-horizontal" id="commonReasonsForm">
+                            <input type="hidden" name="OpTypeNum" value='${apply.OPTYPENUM!}'>
+                            <input type="hidden" name="RecYear" value='${apply.RECYEAR!}'>
+                            <input type="hidden" name="RecNum" value='${apply.RECNUM!}'>
+                            <div class="row">
+                                <table style="width: 100%;">
+                                    <tr class="tableTrClass">
+                                        <td colspan="8">申请理由（申请人详细说明家庭上年度年收入、住房情况）</td>
+                                    </tr>
+                                    <tr class="tableTrClass" style="height: 290px;">
+                                        <td colspan="8" style="height: 390px;"><textarea class="tableInputClass" name="reason" >${apply.applicantReason.reason!}</textarea></td>
+                                    </tr>
+                                    <tr class="tableTrClass" style="height: 150px;">
+                                        <td colspan="8">
+                                            <h1>承诺书</h1>
+                                            <div style="text-align: left;">
+                                                <p>&emsp;&emsp;本人承诺所提供的家庭成员基本情况及住房、收入等情况真实有效，并严格遵守保障性住房的有关规定。如隐瞒、虚报、</p>
+                                                <p>谎报有关情况，主管部门有权终止其享受保障性住房资格，并承担相应的法律责任。</p>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p>申请人：<input type="text" class="tableInputClass" name="promise_applicant" style="width: 60%;" value='${apply.applicantReason.promise_applicant!}'/></p>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p>配偶：<input type="text" class="tableInputClass" name="promise_spouse" style="width: 60%;" value='${apply.applicantReason.promise_spouse!}'/></p>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p>时间：<input type="text" class="tableInputClass layer-date" id="promise_time" name="promise_time" value='${apply.applicantReason.promise_time!}'/></p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="row btn-group-m-t">
+                                    <div class="col-sm-10" style="text-align: center">
+                                        <#button btnCss="info" name="保存" id="saveApplicantReason" icon="fa-check" clickFun="saveApplicantReasonFunction()"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-4" class="tab-pane">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div class="row row-lg">
+                                    <div class="col-sm-3">
+                                        <#NameCon id="projectName" name="项目名称" placeholder=""/>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <#NameCon id="buildName" name="栋名称" placeholder=""/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12">
+                                                <#button name="搜索" icon="fa-search" clickFun="ProjectInfoDlg.buildSearch()"/>
+                                                @if(apply.house != null){
+                                                <button type="button" class="btn btn-success" onclick="ProjectInfoDlg.searchHouse()" id="">
+                                                    <i></i>&nbsp;已分配房屋信息
+                                                </button>
+                                                @}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" id="buildDiv">
+
+                                    </div>
+                                    <div style="clear: both"></div>
+                                    <div id="buildForm">
+                                        <div class="info-title">幢 信 息</div>
+                                        <div class="col-sm-4 form-group">
+                                            <label class="col-sm-6 text-right control-label" style="padding-top: 6px;width: 90px">幢唯一号</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control"  style="width: 250px;" id="buildId" name="buildId" type="text" value="" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label class="col-sm-6 text-right control-label" style="padding-top: 6px;width: 90px">总单元数</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control"  id="unitCount" name="unitCount" type="text" value="" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label class="col-sm-6 text-right control-label" style="padding-top: 6px;width: 90px">总 层 数</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control" id="floorCount" name="floorCount" type="text" value="" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="clear: both"></div>
+                                    <div  class="info-title">房 信 息
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="col-sm-6">
+                                            <label style="background: #00ff00;width: 20px;height: 20px;"></label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p>空置</p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label style="background: white;width: 20px;height: 20px;"></label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p>已配房</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <form id="houseForm" action="/build/create_house" method="post">
+                                            <table id="houseTable">
+                                                <thead></thead>
+                                                <tbody id="houseTableTbody"></tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-5" class="tab-pane">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div class="row row-lg">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-primary " style="font-size: 15px;" onclick="ProjectInfoDlg.addUploadTable('${apply.OPTYPENUM!}','${apply.RECYEAR!}','${apply.RECNUM!}','uploadTbody');">+</button>
+                                        <form action="#" method="post" class="form-horizontal" id="uploadTbodyForm">
+                                            <table class="dataTable" data-mobile-responsive="true" data-click-to-select="true">
+                                                <thead>
+                                                <tr>
+                                                    <th><input type="checkbox"></th>
+                                                    <th>材料名称</th>
+                                                    <th>类别</th>
+                                                    <th>份数</th>
+                                                    <th>页数</th>
+                                                    <th>页码</th>
+                                                    <th>附件上传</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="uploadTbody">
+                                                @for(arch in archList){
+                                                <tr>
+                                                    <input type="hidden" name="optypenum[]" value='${apply.OPTYPENUM!}'>
+                                                    <input type="hidden" name="recyear[]" value='${apply.RECYEAR!}'>
+                                                    <input type="hidden" name="recnum[]" value='${apply.RECNUM!}'>
+                                                    <input type="hidden" name="recmatnum[]" value="${arch.RECMATNUM!}">
+                                                    <td>
+                                                        @if(arch.ISRECEIVE == null){
+                                                        <input type="checkbox" value="${arch.RECMATNUM!}">
+                                                        @}else if(arch.ISRECEIVE == 1){
+                                                        <input type="checkbox" checked="checked" value="${arch.RECMATNUM!}">
+                                                        @}
+                                                    </td>
+                                                    <td><input class="tableInputClass" type="text" name="matname[]" value="${arch.MATNAME!}"></td>
+                                                    <td>
+                                                        <select class="form-control" name="mattypecode[]">
+                                                            @for(node in materialList){
+                                                            @if(arch.MATTYPECODE == node.code){
+                                                            <option value="${node.code!}" selected>${node.value!}</option>
+                                                            @}else{
+                                                            <option value="${node.code!}">${node.value!}</option>
+                                                            @}
+                                                            @}
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        @if(arch.MATCOUNT == null){
+                                                        <input class="tableInputClass" type="text" value="1" name="matcount[]">
+                                                        @}else {
+                                                        <input class="tableInputClass" type="text" value="${arch.MATCOUNT!}" name="matcount[]">
+                                                        @}
+
+                                                    </td>
+                                                    <td>
+                                                        @if(arch.MATPAGE == null){
+                                                        <input class="tableInputClass" type="text" value="1" name="matpage[]">
+                                                        @}else {
+                                                        <input class="tableInputClass" type="text" value="${arch.MATPAGE!}" name="matpage[]">
+                                                        @}
+                                                    </td>
+                                                    <td><input class="tableInputClass" type="text" name="matkindcode[]" value="${arch.MATCERTNUM!}"></td>
+                                                    <td>
+                                                        <input type="button" name="uploadButton" onclick="ProjectInfoDlg.openUploadPage('${apply.OPTYPENUM!}','${apply.RECYEAR!}','${apply.RECNUM!}','${arch.RECMATNUM!}')" value="上传">
+                                                        <input type="button" onclick="ProjectInfoDlg.openImagePage('${apply.OPTYPENUM!}','${apply.RECYEAR!}','${apply.RECNUM!}','${arch.RECMATNUM!}')" value="查看">
+                                                    </td>
+                                                </tr>
+                                                @}
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row btn-group-m-t" id="arch_save" >
+                                    <div class="col-sm-10" style="text-align: center">
+                                        <#button btnCss="info" name="保存" icon="fa-check" clickFun="ProjectInfoDlg.saveRecOpinions()"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-6" class="tab-pane">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div class="row row-lg">
+                                    <div class="col-sm-12">
+                                        <table class="dataTable" data-mobile-responsive="true" data-click-to-select="true">
+                                            <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>办理节点</th>
+                                                <th>提交日期</th>
+                                                <th>办理人</th>
+                                                <th>办理日期</th>
+                                                <th>意见</th>
+                                                <th>退件原因</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @for(node in nodeList){
+                                            <tr>
+                                                <td>${node.RECWORKPHASENUM!}</td>
+                                                <td>${node.OPFLOWPHASENAME!}</td>
+                                                <td>${node.PHASESTARTTIME!}</td>
+                                                <td>${node.USERNAME!}</td>
+                                                <td>${node.WORKTIME!}</td>
+                                                <td>${node.WORKOPINION!}</td>
+                                                <td>${node.RETURNREASON!}</td>
+                                            </tr>
+                                            @}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <form action="#" method="post" class="form-horizontal" id="handle_opinions">
+
+                                    <div class="row m-t-30">
+                                        <input type="hidden" name="optypenum" value="${apply.OPTYPENUM!}">
+                                        <input type="hidden" name="recyear" value="${apply.RECYEAR!}">
+                                        <input type="hidden" name="recnum" value="${apply.RECNUM!}">
+                                        <div class="col-sm-12 form-group">
+                                            <label class="col-sm-2 control-label">办理意见</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" name="workOpinion" type="text"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label class="col-sm-2 control-label">退件类型</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" name="returnType" type="text">
+                                                    @for(node in refundList){
+                                                    <option value="${node.code!}">${node.value!}</option>
+                                                    @}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label class="col-sm-2 control-label">退件原因</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" name="returnReason" type="text"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="applicationButtonDiv">
+                <#button btnCss="info" name="至下阶段" id="to_next" icon="fa-check" clickFun="ProjectInfoDlg.toNext('/support/to_next')"/>
+                <#button btnCss="info" name="至转交箱" id="to_nextZJX" icon="fa-check" clickFun="ProjectInfoDlg.toNext('/support/to_transfer_box')"/>
+                <#button btnCss="danger" name="退回" id="to_up" icon="fa-reply" clickFun="ProjectInfoDlg.returnNode()"/>
+                @if(lastNode == '录入、初审'){
+                <#button btnCss="danger" name="退件" id="refund" icon="fa-reply" clickFun="ProjectInfoDlg.refund()"/>
+                @}
+                <div style="margin-top: 10px;">
+                    <#button btnCss="danger" name="关闭" id="cancel" icon="fa-eraser" clickFun="ProjectInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框 -->
+<div class="modal fade" id="editHouseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <input type="hidden" id="checkHouseId">
+                <div class="col-sm-12">
+                    <#label id="roomNum" name="房&emsp;&emsp;&emsp;名" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="obligee" name="权&emsp;利&emsp;人" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="bargainTotalprice" name="购买价格" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="usage" name="房屋用途" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="layout" name="规划用途" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="architStructcode" name="建筑结构" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="houseType" name="房屋户型" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="architArea" name="建筑面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="roomArea" name="套内面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="apportArea" name="分摊面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="houseProp" name="房屋性质" placeholder=""/>
+                </div>
+                <div class="col-sm-12">
+                    <#label id="sitnumGather" name="房屋坐落" placeholder=""/>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="margin-top: 8px;">
+                <#button btnCss="info" name="选择此房" id="chooseHouse" icon="fa-check" clickFun="ProjectInfoDlg.checkHouse('${apply.OPTYPENUM!}','${apply.RECYEAR!}','${apply.RECNUM!}','1')"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    var readonly = Feng.getQueryString("readonly");
+    var materialListJson = '${materialListJson}';
+    materialListJson = JSON.parse(materialListJson);
+    var familyType = '${familyTypeJson}';
+    familyType = JSON.parse(familyType);
+    if(readonly == 'true'){
+        $("#projectInfoForm input").attr("readonly","readonly");
+        $("#ensure").attr("disabled","disabled");
+        $("#tab-2").find("input").attr("readonly","readonly");
+        $("#tab-2").find("button").attr("disabled","disabled");
+    }
+</script>
+<script src="${ctxPath}/static/modular/supporthouse/build_detail.js"></script>
+<script src="${ctxPath}/static/modular/supporthouse/project_info.js"></script>
+<script src="${ctxPath}/static/modular/supporthouse/fixed_price.js"></script>
+<script>
+    ProjectInfoDlg.commonParam.iOptypenum = "${apply.OPTYPENUM!}";
+    ProjectInfoDlg.commonParam.iRecyear = "${apply.RECYEAR!}";
+    ProjectInfoDlg.commonParam.iRecnum = "${apply.RECNUM!}";
+    ProjectInfoDlg.commonParam.iRecmatnum = "${RECMATNUM}";
+
+    //房屋列表
+    var houseJson = '${houseJson!}';
+    if(houseJson != ''){
+        houseJson = JSON.parse(houseJson);
+    }
+    //建筑结构
+    var buildingStructureListJson = '${buildingStructureListJson!}';
+    buildingStructureListJson = JSON.parse(buildingStructureListJson);
+    //户型
+    var houseTypeListJson = '${houseTypeListJson!}';
+    houseTypeListJson = JSON.parse(houseTypeListJson);
+    //用途
+    var houseuSageListJson = '${houseuSageListJson!}';
+    houseuSageListJson = JSON.parse(houseuSageListJson);
+
+    var judgeInfo = '${judgeInfo!}';
+
+    var jointApplicantListSize = "${jointApplicantListSize!}";
+    var ctxPath = "${ctxPath}";
+    /*window.FileReader本地预览*/
+    $(function () {
+        $("#avatarSlect").change(function () {
+            var obj=$("#avatarSlect")[0].files[0];
+            var fr=new FileReader();
+            fr.onload=function () {
+                $("#avatarPreview").attr('src',this.result);
+                console.log(this.result);
+                $("#avatar").val(this.result);
+            };
+            fr.readAsDataURL(obj);
+        })
+        //配偶
+        $("#spouseInput").change(function () {
+            var obj=$("#spouseInput")[0].files[0];
+            var fr=new FileReader();
+            fr.onload=function () {
+                $("#spouseImg").attr('src',this.result);
+            };
+            fr.readAsDataURL(obj);
+        });
+        //共同申请人
+        for(var i = 0;i<jointApplicantListSize+1;i++){
+            $("#"+(i+1)+"Input").change(function () {
+                var num = $(this).data("num");
+                var obj=$("#"+num+"Input")[0].files[0];
+                var fr=new FileReader();
+                fr.onload=function () {
+                    $("#"+num+"Img").attr('src',this.result);
+                };
+                fr.readAsDataURL(obj);
+            });
+        }
+
+    });
+
+</script>
+@}

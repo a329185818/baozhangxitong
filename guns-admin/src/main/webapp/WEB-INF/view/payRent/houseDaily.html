@@ -1,0 +1,144 @@
+@layout("/common/_container.html"){
+<style type="text/css">
+    .dataTable{
+        width: 100%
+    }
+    .dataTable thead{
+        background: #ebf0f6;
+    }
+    .dataTable thead th{
+        padding: 10px 0;
+        text-align:center;
+    }
+    .dataTable tbody td{
+        padding: 8px 0;
+        text-align:center;
+        word-break:break-all;
+        white-space : normal;
+    }
+    table,table tr th, table tr td {
+        border:1px solid #bababa;
+    }
+
+    .m-t-30{
+        margin-top:30px;
+    }
+    .d-title{
+        width: 100%;height: 30px;padding-left: 30px;background: #eee;line-height:30px;font-weight: bold;margin-bottom:20px;
+    }
+</style>
+
+<div class="panel blank-panel">
+    <div class="panel-body">
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+
+                        <form action="#" method="post" class="form-horizontal" id="projectInfoForm">
+                            <div class="row">
+                                <div class="d-title">
+                                    房屋详情
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">房名</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.roomNum!}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">权利人</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">购买价格</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.bargainTotalprice!}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">房屋用途</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.usage!}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">规划用途</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.layout!}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">建筑结构</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.architStructcode!}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">房屋户型</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.houseType!}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">建筑面积</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.architArea!}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">套内面积</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.roomArea!}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">分摊面积</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.apportArea!}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">房屋性质</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.houseProp!}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">房屋坐落</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" value="${house.sitnumGather!}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <#button btnCss="danger" name="关闭" id="cancel" icon="fa-eraser" clickFun="payRent.close()"/>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/supporthouse/payRent.js"></script>
+@}

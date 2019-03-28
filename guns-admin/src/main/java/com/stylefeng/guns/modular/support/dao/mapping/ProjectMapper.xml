@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.support.dao.ProjectMapper">
+
+    <resultMap id="bzfProjectMap" type="com.stylefeng.guns.modular.support.model.Project">
+        <result column="ID"                     property="id" />
+        <result column="CONSTRUCTION_UNIT"    property="constructionUnit" />
+        <result column="CONTRACTOR"            property="contractor" />
+        <result column="NAME"                   property="name" />
+        <result column="ADDRESS"                property="address" />
+
+        <result column="START_TIME"            property="startTime" />
+        <result column="END_TIME"              property="endTime" />
+        <result column="HOUSE_NUMBER"          property="houseNumber" />
+        <result column="AREA"                   property="area" />
+        <result column="PLANNING_PERMIT"      property="planningPermit" />
+
+        <result column="CONSTRUCTION_PERMIT"  property="constructionPermit" />
+        <result column="PLOT_RATIO"            property="plotRatio" />
+        <result column="CONSTRUCTION_SCALE"   property="constructionScale" />
+        <result column="BUILD_RECEIVE"         property="buildReceive" />
+    </resultMap>
+
+    <resultMap id="buildProjectMap" type="com.stylefeng.guns.modular.support.model.Build">
+        <result column="buildid"                  property="projectId" />
+        <result column="SITBUILDNUM"             property="name" />
+        <result column="SITNUMGATHER"            property="sitnum" />
+        <result column="DISTRICTCODE"            property="roadCode" />
+    </resultMap>
+
+
+    <select id="getProject" resultMap="bzfProjectMap">
+        SELECT * FROM BZF_PROJECT
+        WHERE 1=1
+        <if test="name != null and name != ''">
+            AND  name LIKE '%${name}%'
+        </if>
+    </select>
+
+    <insert id="addProject" parameterType="com.stylefeng.guns.modular.support.model.Project">
+        INSERT INTO bzf_project
+        (id,construction_unit,contractor,name,address,
+        start_time,end_time,house_number,area,planning_permit,
+        construction_permit,plot_ratio,construction_scale,build_receive)
+        VALUES
+        (#{id},#{constructionUnit},#{contractor},#{name},#{address},
+        #{startTime},#{endTime},#{houseNumber},#{area},#{planningPermit},
+        #{constructionPermit},#{plotRatio},#{constructionScale},#{buildReceive})
+    </insert>
+
+    <delete id="deleteProject" parameterType="String">
+        DELETE FROM bzf_project
+        WHERE id = #{id}
+    </delete>
+
+    <update id="updateProject" parameterType="com.stylefeng.guns.modular.support.model.Project">
+        UPDATE bzf_project
+        set
+            construction_unit = #{constructionUnit},
+            contractor = #{contractor},
+            name = #{name},
+            address = #{address},
+            start_time = #{startTime},
+
+            end_time = #{endTime},
+            house_number = #{houseNumber},
+            area = #{area},
+            planning_permit = #{planningPermit},
+            construction_permit = #{constructionPermit},
+
+            plot_ratio = #{plotRatio},
+            construction_scale = #{constructionScale}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getProjectById" parameterType="String" resultMap="bzfProjectMap">
+        SELECT * FROM bzf_project
+        WHERE id = #{id}
+    </select>
+
+    <select id="getBuildProject" resultMap="buildProjectMap">
+        select buildid,SITBUILDNUM,SITNUMGATHER,DISTRICTCODE
+        from TBBWDIAGRAMBUILD
+        where sitbuildnum is not null
+        and BUILDIDTEMP = '-1'
+        <if test="name != null and name != ''">
+            AND  sitbuildnum LIKE '%${name}%'
+        </if>
+    </select>
+
+    <update id="bindingHouseTable" parameterType="String">
+        UPDATE bzf_project
+        set
+            BUILD_RECEIVE = #{buildReceive}
+        WHERE id = #{projectId}
+    </update>
+</mapper>

@@ -1,0 +1,64 @@
+@layout("/common/_container.html"){
+<style>
+    .projectClass{
+        font-size: 18px;
+    }
+</style>
+
+<div class="col-sm-12" style="margin-bottom: 20px;">
+    <div class="col-sm-2">
+    </div>
+    <div class="col-sm-1">
+        <div>
+            <input type="checkbox" id="checkAll" title="全选" style="width: 15px;height: 15px;">
+            <label style="font-size: 20px;">全选</label>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <#NameCon id="chooseName" name="项目名称" />
+    </div>
+    <div class="col-sm-3">
+        <#button name="查询" icon="fa-search" clickFun="nameQuery()"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12" id="contentDiv">
+                        @for(project in projectList){
+                            <div class="col-sm-4 projectClass" id="${project.id!}">
+                                <input type="checkbox" name="projectName" class="projectName" style="margin-left:10px;width: 15px;height: 15px;" value="${project.id!}" >${project.name!}
+                            </div>
+                        @}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <#button name="保存" icon="fa-search" clickFun="save()"/>
+        <#button btnCss="danger" name="关闭" id="cancel" icon="fa-eraser" clickFun="authorityAllot.close()"/>
+    </div>
+</div>
+
+<script src="${ctxPath}/static/modular/authority/authority.js"></script>
+
+<script>
+    var authorityList = '${authorityList!}';
+    authorityList = JSON.parse(authorityList);
+    $(function () {
+        for(var x = 0;x<authorityList.length;x++){
+            var inputCheckBox = $("input[name='projectName']");
+            for(var i = 0;i<inputCheckBox.length;i++){
+                var id = $(inputCheckBox[i]).val();
+                if(authorityList[x].projectId == id){
+                    $(inputCheckBox[i]).attr("checked",'true');
+                    break;
+                }
+            }
+        }
+    });
+
+</script>
+
+@}

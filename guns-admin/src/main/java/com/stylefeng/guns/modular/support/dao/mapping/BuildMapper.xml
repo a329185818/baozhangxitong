@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.support.dao.BuildMapper">
+
+    <select id="tree" resultType="com.stylefeng.guns.core.node.ZTreeNode">
+		select buildid as id, BUILDIDTEMP as pId, SITBUILDNUM as name, 'false' as isOpen,SITNUMGATHER as value
+        from TBBWDIAGRAMBUILD b
+        where sitbuildnum is not null
+	</select>
+
+    <select id="createProject" statementType="CALLABLE" parameterType="java.util.Map">
+        call up_CreateProject(
+            #{sdistrictcode,mode=IN,jdbcType=VARCHAR},
+            #{sPROJECTNAME, mode=IN, jdbcType=VARCHAR},
+            #{ssitnumgather, mode=IN, jdbcType=VARCHAR},
+            #{sMsg, mode=OUT, jdbcType=VARCHAR},
+            #{iSuccess, mode=OUT, jdbcType=INTEGER}
+        )
+    </select>
+    
+    <select id="buildList" resultType="com.stylefeng.guns.modular.support.model.Build">
+        SELECT BUILDIDTEMP as "projectId",BUILDID as "buildId", SITBUILDNUM as "buildNum", FLOORCOUNT as "floorCount", UNITCOUNT as "unitCount"
+        FROM TBBWDIAGRAMBUILD
+        WHERE BUILDIDTEMP > 0 AND BUILDIDTEMP IS NOT NULL
+        <if test="projectId != null and projectId != 0">
+              AND  BUILDIDTEMP = #{projectId}
+        </if>
+        <if test="condition != null and condition != ''">
+            AND  SITBUILDNUM LIKE '%${condition}%'
+        </if>
+    </select>
+
+    <insert id="createRidgepole" parameterType="com.stylefeng.guns.modular.support.model.Build">
+        insert into TBBWDIAGRAMBUILD
+        (buildid,buildidtemp,sitbuildnum,floorcount,unitcount,districtcode)
+        values
+        ( #{buildId},#{projectId},#{buildNum},#{floorCount},#{unitCount},#{roadCode})
+
+    </insert>
+
+    <select id="houseList" resultType="com.stylefeng.guns.modular.support.model.House">
+        SELECT HOUSEID as houseId,BUILDID as buildId,SITFLOORNUM as floorNum,SITUNITNUM as unitNum,SITDOORNUM as roomNum,HOUSEUSAGE1CODE as "usage",DIAGRAMSTATECODE as stateCode,CREATETIME as createTime,HOUSEPROP as houseProp,LAYOUT as layout,HOUSETYPE as houseType,
+        ARCHITSTRUCTCODE as architStructcode,ARCHITAREA as architArea,ROOMAREA as roomArea,APPORTAREA as apportArea,BARGAINTOTALPRICE as bargainTotalprice,SITNUMGATHER as sitnumGather,OTHERPROP as otherprop,house_Code as houseCode
+        FROM TBBWDIAGRAMHOUSE
+        WHERE BUILDID = #{buildId}
+    </select>
+    
+    <insert id="createHouse" parameterType="com.stylefeng.guns.modular.support.model.House">
+        INSERT INTO TBBWDIAGRAMHOUSE
+        (HOUSEID,SITDOORNUM,BUILDID,SITFLOORNUM,SITUNITNUM)
+        VALUES
+        (#{houseId},#{roomNum},#{buildId},#{floorNum},#{unitNum})
+    </insert>
+    
+    <update id="updateHouse" parameterType="com.stylefeng.guns.modular.support.model.House">
+        update TBBWDIAGRAMHOUSE SET
+        ARCHITSTRUCTCODE = #{architStructcode},
+        HOUSEUSAGE1CODE = #{usage},
+        HOUSETYPE = #{houseType},
+        HOUSEPROP = #{houseProp},
+        LAYOUT = #{layout},
+        OTHERPROP = #{otherprop},
+        ARCHITAREA = #{architArea},
+        ROOMAREA = #{roomArea},
+        APPORTAREA = #{apportArea},
+        BARGAINTOTALPRICE = #{bargainTotalprice}
+        where HOUSEID = #{houseId}
+    </update>
+
+    <update id="updateHouseOne" parameterType="com.stylefeng.guns.modular.support.model.House">
+        update TBBWDIAGRAMHOUSE SET
+        SITDOORNUM = #{roomNum},
+        ARCHITSTRUCTCODE = #{architStructcode},
+        HOUSEUSAGE1CODE = #{usage},
+        HOUSETYPE = #{houseType},
+        HOUSEPROP = #{houseProp},
+        LAYOUT = #{layout},
+        OTHERPROP = #{otherprop},
+        ARCHITAREA = #{architArea},
+        ROOMAREA = #{roomArea},
+        APPORTAREA = #{apportArea},
+        BARGAINTOTALPRICE = #{bargainTotalprice}
+        where HOUSEID = #{houseId}
+    </update>
+
+    <delete id="deleteHouse" parameterType="string">
+            delete FROM TBBWDIAGRAMHOUSE where HOUSEID = #{houseId}
+    </delete>
+
+    <delete id="deleteHouseByBuildId" parameterType="string">
+        delete FROM TBBWDIAGRAMHOUSE where BUILDID = #{buildId}
+    </delete>
+
+    <delete id="deleteBuild" parameterType="string">
+        delete FROM TBBWDIAGRAMBUILD where BUILDID = #{buildId}
+    </delete>
+
+    <delete id="deleteProject" parameterType="string">
+        delete FROM TBBWDIAGRAMBUILD where BUILDID = #{projectId} and BUILDIDTEMP = -1
+    </delete>
+
+    <update id="updateProject" parameterType="com.stylefeng.guns.modular.support.model.House">
+        update TBBWDIAGRAMBUILD SET
+        sitbuildnum = #{projectName},
+        sitnumgather = #{sitnumgather},
+        districtcode = #{region}
+        where BUILDID = #{projectId}
+    </update>
+
+    <select id="getBulidInfo" parameterType="string" resultType="string">
+        SELECT districtcode from TBBWDIAGRAMBUILD WHERE buildID = #{projectId}
+    </select>
+
+    <select id="getOnlyId" statementType="CALLABLE" parameterType="java.util.Map">
+        {#{onlyId,mode=OUT,jdbcType=VARCHAR} =call uf_CreateDiagramID(
+              #{itype,mode=IN,jdbcType=VARCHAR},
+              #{idistrict,mode=IN,jdbcType=VARCHAR}
+            )
+        }
+    </select>
+
+    <select id="getHouse" resultType="com.stylefeng.guns.modular.support.model.House">
+        SELECT HOUSEID as houseId,BUILDID as buildId,SITFLOORNUM as floorNum,SITUNITNUM as unitNum,SITDOORNUM as roomNum,HOUSEUSAGE1CODE as "usage",DIAGRAMSTATECODE as stateCode,CREATETIME as createTime,HOUSEPROP as houseProp,LAYOUT as layout,HOUSETYPE as houseType,
+        ARCHITSTRUCTCODE as architStructcode,ARCHITAREA as architArea,ROOMAREA as roomArea,APPORTAREA as apportArea,BARGAINTOTALPRICE as bargainTotalprice,SITNUMGATHER as sitnumGather,OTHERPROP as otherprop,house_Code as houseCode
+        FROM TBBWDIAGRAMHOUSE
+        WHERE HOUSEID = #{houseId}
+    </select>
+    
+    <select id="searchByHouseId" parameterType="string" resultType="map">
+        select rwc.OWNERNAME as holderName,rwc.OWNERCERTNUM as holderCard,rwc.OWNERNAME_PEIOU as holderSpouseName,rwc.OWNERCERTNUM_PEIOU as holderSpouseCard,CVE.HOUSEID
+        from RWRECOWNER rwc,RWRECRECEIVE CVE
+        where CVE.HOUSEID = #{houseId}
+        AND rwc.OPTYPENUM = CVE.OPTYPENUM and rwc.RECYEAR = CVE.RECYEAR and rwc.RECNUM = CVE.RECNUM
+    </select>
+</mapper>
