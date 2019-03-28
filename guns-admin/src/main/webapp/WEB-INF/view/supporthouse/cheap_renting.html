@@ -101,9 +101,11 @@
                 <li>
                     <a data-toggle="tab" href="#tab-3">申请理由</a>
                 </li>
+                @if(isPeiFang == '1'){
                 <li>
                     <a data-toggle="tab" href="#tab-4">分配房屋</a>
                 </li>
+                @}
                 <li>
                     <a data-toggle="tab" href="#tab-5">材料</a>
                 </li>
@@ -138,7 +140,7 @@
                                         <td colspan="2">性别</td>
                                         <td colspan="3">
                                             <select class="form-control" name="applicantSex" >
-                                                @if(apply.applicantSex == 1){
+                                                @if(apply.applicantSex == "1"){
                                                 <option value="1" selected>男</option>
                                                 <option value="2">女</option>
                                                 @}else{
@@ -217,7 +219,7 @@
                                         <td colspan="2">性别</td>
                                         <td colspan="1">
                                             <select class="form-control" name="jointApplicantSex[]" >
-                                                @if(spouse.jointApplicantSex == 1){
+                                                @if(spouse.jointApplicantSex == "1"){
                                                 <option value="1" selected>男</option>
                                                 <option value="2">女</option>
                                                 @}else{
@@ -229,12 +231,12 @@
                                         <td colspan="1">婚否</td>
                                         <td colspan="1">
                                             <select class="form-control" name="jointApplicantMarry[]">
-                                                @if(spouse.jointApplicantMarry == 0){
-                                                <option value="1" selected>未婚</option>
-                                                <option value="2">已婚</option>
+                                                @if(spouse.jointApplicantMarry == "1"){
+                                                <option value="0" >未婚</option>
+                                                <option value="1" selected>已婚</option>
                                                 @}else{
-                                                <option value="1">未婚</option>
-                                                <option value="2" selected>已婚</option>
+                                                <option value="0" selected>未婚</option>
+                                                <option value="1" >已婚</option>
                                                 @}
                                             </select>
                                         <td colspan="2" rowspan="4">
@@ -270,12 +272,12 @@
                                         <td colspan="3">与申请人关系</td>
                                         <td colspan="3">
                                             <select class="form-control" name="jointApplicantRelation[]" >
-                                                @for(node in familyType){
-                                                @if(spouse.jointApplicantRelation == node.code){
-                                                <option value="${node.code!}" selected>${node.value!}</option>
+                                                @if(spouse.jointApplicantRelation == '9'){
+                                                <option value="2" >配偶</option>
+                                                <option value="9" selected>媳妇</option>
                                                 @}else{
-                                                <option value="${node.code!}">${node.value!}</option>
-                                                @}
+                                                <option value="2" selected>配偶</option>
+                                                <option value="9" >媳妇</option>
                                                 @}
                                             </select>
                                         </td>
@@ -301,7 +303,7 @@
                                         <td colspan="2">性别</td>
                                         <td colspan="1">
                                             <select class="form-control" name="jointApplicantSex[]" >
-                                                @if(jointApplicant.jointApplicantSex == 1){
+                                                @if(jointApplicant.jointApplicantSex == "1"){
                                                 <option value="1" selected>男</option>
                                                 <option value="2">女</option>
                                                 @}else{
@@ -313,12 +315,12 @@
                                         <td colspan="1">婚否</td>
                                         <td colspan="1">
                                             <select class="form-control" name="jointApplicantMarry[]">
-                                                @if(jointApplicant.jointApplicantMarry == 0){
-                                                <option value="1" selected>未婚</option>
-                                                <option value="2">已婚</option>
+                                                @if(jointApplicant.jointApplicantMarry == "1"){
+                                                <option value="0" >未婚</option>
+                                                <option value="1" selected>已婚</option>
                                                 @}else{
-                                                <option value="1">未婚</option>
-                                                <option value="2" selected>已婚</option>
+                                                <option value="0" selected>未婚</option>
+                                                <option value="1" >已婚</option>
                                                 @}
                                             </select>
                                         <td colspan="2" rowspan="4">

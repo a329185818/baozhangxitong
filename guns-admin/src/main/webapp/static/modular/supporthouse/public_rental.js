@@ -216,6 +216,7 @@ function addJointTable(OPTYPENUM,RECYEAR,RECNUM,tableId) {
             familyStr += '<option value="'+familyTypeJson[family].code+'">'+familyTypeJson[family].value+'</option>'
         }
     }
+    jointApplicantListSize++;
     var str = '<tbody id="'+tbodyId+'">' +
         '                            <input type="hidden" name="OPTYPENUM[]" value="'+OPTYPENUM+'">' +
         '                            <input type="hidden" name="RECYEAR[]" value="'+RECYEAR+'">' +
@@ -242,12 +243,8 @@ function addJointTable(OPTYPENUM,RECYEAR,RECNUM,tableId) {
         '                                            </select>' +
         '                                        </td>' +
         '                                        <td colspan="2" rowspan="4">' +
-        '                                            一</br>' +
-        '                                            寸</br>' +
-        '                                            近</br>' +
-        '                                            期</br>' +
-        '                                            彩</br>' +
-        '                                            照</br>' +
+        '                                            <input id="'+(jointApplicantListSize+1)+'Input" data-num="'+(jointApplicantListSize+1)+'" type="file" style="position: absolute;float: left; z-index: 10; opacity: 0;width: 100px; height: 100px;margin-left: 40px;" accept="image/png, image/jpeg, image/gif, image/jpg">' +
+        '                                            <img id="'+(jointApplicantListSize+1)+'Img" src="'+ctxPath+'/static/img/sample.png" title="点击更换图片" style="z-index: 9; float: left; width: 100px; height: 100px;margin-left: 40px;">' +
         '                                        </td>' +
         '                                    </tr>' +
         '                                    <tr class="tableTrClass">' +
@@ -281,4 +278,14 @@ function addJointTable(OPTYPENUM,RECYEAR,RECNUM,tableId) {
         '                                    </tr>' +
         '                                    </tbody>';
     $("#"+tableId).append(str);
+    //添加监听事件
+    $("#"+(jointApplicantListSize+1)+"Input").change(function () {
+        var num = $(this).data("num");
+        var obj=$("#"+num+"Input")[0].files[0];
+        var fr=new FileReader();
+        fr.onload=function () {
+            $("#"+num+"Img").attr('src',this.result);
+        };
+        fr.readAsDataURL(obj);
+    });
 }
