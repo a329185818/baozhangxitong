@@ -65,7 +65,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-3" style="display: none;">
                                 <#NameCon id="num" name="批号" />
                             </div>
                             <div class="col-sm-3">
@@ -74,7 +74,9 @@
                             <div class="col-sm-3">
                                 <#button name="查询" icon="fa-search" clickFun="houseProject.query()"/>
                                 <#button name="新建" icon="fa-plus" clickFun="houseProject.createProject()" id="create_project"/>
+<!--
                                 <#button name="导出" icon="fa-plus" clickFun="houseProject.exportProject()" id="export_project"/>
+-->
                             </div>
                         </div>
                         <!--<div class="hidden-xs" id="supportHouseTableToolbar" role="group">

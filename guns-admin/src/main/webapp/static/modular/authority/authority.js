@@ -25,8 +25,8 @@ authorityAllot.initColumn = function () {
 
         {title: '分配权限',  align: 'center', valign: 'middle',
             formatter:function(value,row,index){
-                return '<a onclick="authorityAllot.detail('+'\'' + row.ID + '\',\'编辑\')">编辑</a>&nbsp;&nbsp;|&nbsp;&nbsp;' +
-                    '<a onclick="authorityAllot.detail('+'\'' + row.ID + '\',\'查看\')">查看</a>';
+                return '<a onclick="authorityAllot.detail('+'\'' + row.ID + '\',\'编辑\')">编辑</a>&nbsp;&nbsp;'/* +
+                    '<a onclick="authorityAllot.detail('+'\'' + row.ID + '\',\'查看\')">查看</a>'*/;
             }
         }
     ];

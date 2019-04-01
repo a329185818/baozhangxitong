@@ -293,6 +293,9 @@ $(function () {
     buildTree.bindOnClick(build.treeClick);
     buildTree.bindRightClick(build.treeRightClick);
     buildTree.init();
+    if(buildId==0){
+        buildId="none"
+    }
     var data = {
         projectId:buildId
     };
