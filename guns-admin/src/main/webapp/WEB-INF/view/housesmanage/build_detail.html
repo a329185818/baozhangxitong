@@ -1,9 +1,14 @@
 @layout("/common/_container.html"){
 <script>
-    var buildId = window.parent.build.buildId;//栋id
+   /* var buildId = window.parent.build.buildId;//栋id
     var floorCount = window.parent.build.floorCount;//总层数
     var unitCount = window.parent.build.unitCount;//总单元
-    var buildNum = window.parent.build.buildNum;//栋号
+    var buildNum = window.parent.build.buildNum;//栋号*/
+
+   var buildId = '${build.buildId}';//栋id
+   var floorCount = '${build.floorCount}';//总层数
+   var unitCount = '${build.unitCount}';//总单元
+   var buildNum = '${build.buildNum}';//栋号
     var house = ${houseList};
     var holder = ${holderList};
 </script>

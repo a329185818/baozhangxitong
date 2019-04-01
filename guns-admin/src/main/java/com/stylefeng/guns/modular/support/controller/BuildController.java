@@ -114,6 +114,7 @@ public class BuildController extends BaseController {
 
     @RequestMapping(value = "/open_detail")
     public String detailBuildPage(String buildId, Model model) {
+        Build build = buildService.getbuildByBuildId(buildId);
         List<House> houseList = buildService.houseList(buildId);
         List<Map<String,Object>> holderList = new ArrayList<>();
         for(House house:houseList){
@@ -123,6 +124,7 @@ public class BuildController extends BaseController {
             }
         }
         String houseListJson = JSONObject.toJSONString(houseList);
+        model.addAttribute("build",build);
         model.addAttribute("houseList",houseListJson);
         //已配房人员列表
         model.addAttribute("holderList",JSONObject.toJSONString(holderList));

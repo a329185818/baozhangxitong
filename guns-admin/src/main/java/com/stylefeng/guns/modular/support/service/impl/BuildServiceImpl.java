@@ -145,4 +145,9 @@ public class BuildServiceImpl implements IBuildService{
     public Map<String,Object> searchByHouseId(String houseId){
         return buildMapper.searchByHouseId(houseId);
     }
+
+    @Override
+    public Build getbuildByBuildId(String buildId) {
+        return buildMapper.getbuildByBuildId(buildId);
+    }
 }

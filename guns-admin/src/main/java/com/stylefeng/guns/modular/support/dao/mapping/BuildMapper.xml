@@ -132,4 +132,16 @@
         where CVE.HOUSEID = #{houseId}
         AND rwc.OPTYPENUM = CVE.OPTYPENUM and rwc.RECYEAR = CVE.RECYEAR and rwc.RECNUM = CVE.RECNUM
     </select>
+
+
+
+    <select id="getbuildByBuildId" resultType="com.stylefeng.guns.modular.support.model.Build">
+        SELECT BUILDIDTEMP as "projectId",BUILDID as "buildId", SITBUILDNUM as "buildNum", FLOORCOUNT as "floorCount", UNITCOUNT as "unitCount"
+        FROM TBBWDIAGRAMBUILD
+        WHERE 1=1
+        <if test="buildId != null and buildId != ''">
+            AND  BUILDID = '${buildId}'
+        </if>
+    </select>
+
 </mapper>

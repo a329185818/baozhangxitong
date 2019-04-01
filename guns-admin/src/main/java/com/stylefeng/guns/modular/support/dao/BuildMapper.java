@@ -97,4 +97,12 @@ public interface BuildMapper{
     House getHouse(@Param("houseId")String houseId);
 
     Map<String,Object> searchByHouseId(String houseId);
+
+    /**
+     * 获取栋信息
+     * @param buildId
+     * @return
+     */
+    Build getbuildByBuildId(@Param("buildId") String buildId);
+
 }

@@ -62,4 +62,11 @@ public interface IBuildService {
      * 根据房屋ID查所有者
      */
     Map<String,Object> searchByHouseId(String houseId);
+
+    /**
+     * 获取栋信息
+     * @param buildId
+     * @return
+     */
+    Build getbuildByBuildId(@Param("buildId") String buildId);
 }
