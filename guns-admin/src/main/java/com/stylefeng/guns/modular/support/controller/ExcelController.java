@@ -106,16 +106,17 @@ public class ExcelController extends BaseController {
                    tbbwimport=houseProjectMapper.findIdTbbwimport(idCard);
                    if (tbbwimport!=null){
 
-                   arr.add(isNull(tbbwimport.getCol6()));
-                    arr.add(isNull(tbbwimport.getCol7()));
-                    arr.add(isNull(tbbwimport.getCol8()));
-                    arr.add(isNull(tbbwimport.getCol9()));
-                    arr.add(isNull(tbbwimport.getCol10()));
-                    arr.add(isNull(tbbwimport.getCol11()));
-                    arr.add(isNull(tbbwimport.getCol12()));
-                    arr.add(isNull(tbbwimport.getCol13()));
-                    arr.add(isNull(tbbwimport.getCol14()));
-                    arr.add(isNull(tbbwimport.getCol15()));}
+                        arr.add(isNull(tbbwimport.getCol6()));
+                        arr.add(isNull(tbbwimport.getCol7()));
+                        arr.add(isNull(tbbwimport.getCol8()));
+                        arr.add(isNull(tbbwimport.getCol9()));
+                        arr.add(isNull(tbbwimport.getCol10()));
+                        arr.add(isNull(tbbwimport.getCol11()));
+                        arr.add(isNull(tbbwimport.getCol12()));
+                        arr.add(isNull(tbbwimport.getCol13()));
+                        arr.add(isNull(tbbwimport.getCol14()));
+                        arr.add(isNull(tbbwimport.getCol15()));
+                   }
                 }
 //                for (ArrayList<String> arr : readResult) {
 //                    String idCard = arr.get(2);
