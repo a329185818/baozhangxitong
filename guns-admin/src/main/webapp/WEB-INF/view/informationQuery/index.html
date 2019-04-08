@@ -59,6 +59,16 @@
                                 <#button name="查询" icon="fa-search" clickFun="queryProject.query()"/>
                                 <!--<#button name="导出" icon="fa-plus" clickFun="exportProject()"/>-->
                             </div>
+                            <form action="/excel/import_excel" method="post" id="import_excel" enctype="multipart/form-data">
+                                <div class="col-sm-2">
+                                    <input type="file" id="excelExport" name="excelExport" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                    <input type="hidden" id="numInput" name="num">
+                                </div>
+                                <div class="col-sm-3">
+                                    <#button name="导入" icon="" clickFun="projecManage.exportExc('1')"/>
+                                    <#button name="检查" icon="fa-search" clickFun="projecManage.exportExc('2')"/>
+                                </div>
+                            </form>
                         </div>
                         <#table id="queryProjectTable"/>
 
@@ -68,6 +78,6 @@
         </div>
     </div>
 </div>
-
+<script src="${ctxPath}/static/modular/project/project.js"></script>
 <script src="${ctxPath}/static/modular/query/query.js"></script>
 @}
