@@ -348,6 +348,27 @@ public class SupportHouseController extends BaseController {
         HandleNode handleNode =  JSON.parseObject(json,HandleNode.class);
 
         Integer state = houseProjectService.nextState(iOptypenum,iRecyear,iRecnum,handleNode);
+
+        /*黄辅湘*/
+        Map param = new HashMap();
+        param.put("iOptypenum",iOptypenum);
+        param.put("iRecyear",iRecyear);
+        param.put("iRecnum",iRecnum);
+        param.put("rcList",new ArrayList<Map<String,Object>>());
+        //节点列表
+        houseProjectMapper.getNodeList(param);
+        List<Map<String,Object>> node =  (List)param.get("rcList");
+        if(node.get(node.size()-1).get("OPFLOWPHASENAME").toString().equals("配房")){
+            //修改人员状态
+            param.put("status","2");
+            param.put("iOpTypeNum",Convert.toInt(iOptypenum));
+            param.put("iRecYear",Convert.toInt(iRecyear));
+            param.put("iRecNum",Convert.toInt(iRecnum));
+            houseProjectMapper.updatePeopleStatus(param);
+        }else{
+
+        }
+
         return state;
     }
 
