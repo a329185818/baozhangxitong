@@ -4,6 +4,7 @@ package com.stylefeng.guns.modular.support.model;
  * 导入excel实体类
  */
 public class Tbbwimport {
+    private String id; //ID
     private String col1;    //申请人姓名
     private String col2;    //申请人身份证号
     private String col3;    //配偶姓名
@@ -20,6 +21,7 @@ public class Tbbwimport {
     private String col14;    //项目名称
     private String col15;    //房源情况
     private String col16;    //导入日期
+    private String col17;    //备注
 
     public String getCol1() {
         return col1;
@@ -147,5 +149,21 @@ public class Tbbwimport {
 
     public void setCol16(String col16) {
         this.col16 = col16;
+    }
+
+    public String getCol17() {
+        return col17;
+    }
+
+    public void setCol17(String col17) {
+        this.col17 = col17;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

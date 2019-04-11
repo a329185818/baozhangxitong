@@ -15,5 +15,8 @@ public interface InformationMapper {
      */
     Map<String, Object> infoList(Map param);
     RecOwner findProject(String idNum);  //根据申请人身份证号查找申请人信息
+    List<Tbbwimport> importQuery(Map map);//导入信息查询
+    List<Tbbwimport> importQueryList(Map map);//导入信息分页查询
+    Integer importQueryCount(Map map);//查询导入信息总数
 
 }

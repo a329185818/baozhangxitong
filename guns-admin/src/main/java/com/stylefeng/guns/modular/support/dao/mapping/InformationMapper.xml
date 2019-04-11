@@ -26,4 +26,54 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select OWNERNAME,OWNERCERTNUM,OWNERNAME_PEIOU,OWNERCERTNUM_PEIOU FROM RWRECOWNER where OWNERCERTNUM = #{idNum} and  1>=rownum
     </select>
 
+    <!--导入信息查询-->
+    <select id="importQuery" parameterType="java.util.HashMap" resultType="com.stylefeng.guns.modular.support.model.Tbbwimport">
+        select * FROM TBBWIMPORT
+        WHERE 1=1
+        <if test="name != null and name != ''">
+            AND  col1 LIKE '%${name}%'
+        </if>
+        <if test="idCard != null and idCard != ''">
+            AND  col2 LIKE '%${idCard}%'
+        </if>
+        <!--<if test="beginTime != null and beginTiem != ''">-->
+            <!--AND  col16>= to_date(#{beinTime},'yyyy-mm-dd hh24:mi:ss')-->
+        <!--</if>-->
+        <!--<if test="endTime != null and endTiem != ''">-->
+            <!--AND  to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')>=col16-->
+        <!--</if>-->
+    </select>
+    <!--导入信息查询(分页)-->
+    <select id="importQueryList" parameterType="java.util.HashMap" resultType="com.stylefeng.guns.modular.support.model.Tbbwimport">
+        SELECT * FROM
+        (
+        SELECT A.*, ROWNUM RN
+        FROM (SELECT * FROM TBBWIMPORT where 1=1
+        <if test="name != null and name != ''">
+        AND  col1 LIKE '%${name}%'
+        </if>
+        <if test="idCard != null and idCard != ''">
+        AND  col2 LIKE '%${idCard}%'
+        </if>
+        ) A
+        WHERE #{iEnd}>= ROWNUM
+        )
+        WHERE RN >= #{iStart}
+
+    </select>
+
+    <!--查询导入信息总数目-->
+    <select id="importQueryCount" parameterType="java.util.HashMap" resultType="Integer">
+
+      SELECT count(*) FROM TBBWIMPORT where 1=1
+        <if test="name != null and name != ''">
+            AND  col1 LIKE '%${name}%'
+        </if>
+        <if test="idCard != null and idCard != ''">
+            AND  col2 LIKE '%${idCard}%'
+        </if>
+
+
+    </select>
+
 </mapper>

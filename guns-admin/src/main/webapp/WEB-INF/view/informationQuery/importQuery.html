@@ -1,0 +1,69 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>保障房项目</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+
+
+
+                            <div class="col-sm-4">
+                                <#NameCon id="application" name="申请人" />
+                            </div>
+
+
+
+                            <div class="col-sm-4">
+                                <#NameCon id="idCard" name="身份证号" />
+                            </div>
+
+                            <div class="col-sm-2" style="height: 39px;">
+                            </div>
+                            <div class="col-sm-2" style="height: 39px;">
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group" style="display: none">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">
+                                            导入日期
+                                        </button>
+                                    </div>
+                                    <input style="width:120px;" type="text" class="form-control layer-date" id="beginTime"/>
+                                    <span style="float: left;padding: 6px 5px 0 5px;">至</span>
+                                    <input style="width:120px;" type="text" class="form-control layer-date" id="endTime"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="text-align: center;">
+                                <#button name="查询" icon="fa-search" clickFun="queryImport.query()"/>
+                                <#button name="导出" icon="fa-plus" clickFun="exportProject()" />
+                            </div>
+
+
+                            <form action="/excel/import_excel" method="post" id="import_excel" enctype="multipart/form-data">
+                                <div class="col-sm-2">
+                                    <input type="file" id="excelExport" name="excelExport" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                    <input type="hidden" id="numInput" name="num">
+                                </div>
+                                <div class="col-sm-3">
+                                    <#button name="导入" icon="" clickFun="projecManage.exportExc('1')"/>
+                                    <#button name="检查" icon="fa-search" clickFun="projecManage.exportExc('2')"/>
+                                </div>
+                            </form>
+                        </div>
+                        <#table id="queryImportTable"/>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/project/project.js"></script>
+<script src="${ctxPath}/static/modular/query/importQuery.js"></script>
+<script src="${ctxPath}/static/modular/supporthouse/house_project.js"></script>
+@}
