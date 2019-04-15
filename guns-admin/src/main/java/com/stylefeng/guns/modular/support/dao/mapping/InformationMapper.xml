@@ -29,12 +29,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!--导入信息查询-->
     <select id="importQuery" parameterType="java.util.HashMap" resultType="com.stylefeng.guns.modular.support.model.Tbbwimport">
         select * FROM TBBWIMPORT
-        WHERE 1=1
-        <if test="name != null and name != ''">
-            AND  col1 LIKE '%${name}%'
+        WHERE
+        <if test="condition == null or condition == ''">
+            1=1
         </if>
-        <if test="idCard != null and idCard != ''">
-            AND  col2 LIKE '%${idCard}%'
+        <if test="condition != null and condition != ''">
+             col1 LIKE '%${condition}%'
+        </if>
+        <if test="condition != null and condition != ''">
+            or  col2 LIKE '%${condition}%'
+        </if>
+        <if test="condition != null and condition != ''">
+            or  col3 LIKE '%${condition}%'
+        </if>
+        <if test="condition != null and condition != ''">
+            or  col4 LIKE '%${condition}%'
         </if>
         <!--<if test="beginTime != null and beginTiem != ''">-->
             <!--AND  col16>= to_date(#{beinTime},'yyyy-mm-dd hh24:mi:ss')-->
@@ -48,12 +57,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT * FROM
         (
         SELECT A.*, ROWNUM RN
-        FROM (SELECT * FROM TBBWIMPORT where 1=1
-        <if test="name != null and name != ''">
-        AND  col1 LIKE '%${name}%'
+        FROM (SELECT * FROM TBBWIMPORT where
+        <if test="condition == null or condition == ''">
+           1=1
         </if>
-        <if test="idCard != null and idCard != ''">
-        AND  col2 LIKE '%${idCard}%'
+        <if test="condition != null and condition != ''">
+           col1 LIKE '%${condition}%'
+        </if>
+        <if test="condition != null and condition != ''">
+        or  col2 LIKE '%${condition}%'
+        </if>
+        <if test="condition != null and condition != ''">
+            or  col3 LIKE '%${condition}%'
+        </if>
+        <if test="condition != null and condition != ''">
+           or  col4 LIKE '%${condition}%'
         </if>
         ) A
         WHERE #{iEnd}>= ROWNUM
@@ -65,15 +83,87 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!--查询导入信息总数目-->
     <select id="importQueryCount" parameterType="java.util.HashMap" resultType="Integer">
 
-      SELECT count(*) FROM TBBWIMPORT where 1=1
-        <if test="name != null and name != ''">
-            AND  col1 LIKE '%${name}%'
+      SELECT count(*) FROM TBBWIMPORT where
+        <if test="condition == null or condition == ''">
+            1=1
         </if>
-        <if test="idCard != null and idCard != ''">
-            AND  col2 LIKE '%${idCard}%'
+        <if test="condition != null and condition != ''">
+             col1 LIKE '%${condition}%'
+        </if>
+        <if test="condition != null and condition != ''">
+            or  col2 LIKE '%${condition}%'
+        </if>
+        <if test="condition != null and condition != ''">
+            or  col3 LIKE '%${condition}%'
+        </if>
+        <if test="condition != null and condition != ''">
+            or  col4 LIKE '%${condition}%'
         </if>
 
 
     </select>
+    <!--查找检查信息)-->
+    <select id="findTbbwimportList" parameterType="java.util.HashMap" resultType="com.stylefeng.guns.modular.support.model.Tbbwimport">
+        select * FROM TBBWIMPORT
+        WHERE
+        <if test="proposerName != null and proposerName != ''">
+              col1=#{proposerName}
+        </if>
+        <if test="proposerId != null and proposerId != ''">
+            or  col2 =#{proposerId}
+        </if>
+        <if test="spouseName != null and spouseName != ''">
+            or  col3 =#{spouseName}
+        </if>
+        <if test="spouseId != null and spouseId != ''">
+            or  col4 =#{spouseId}
+        </if>
 
+    </select>
+
+    <!--添加申请记录-->
+    <insert id="addTbbwimport" parameterType="com.stylefeng.guns.modular.support.model.Tbbwimport">
+        INSERT INTO TBBWIMPORT(
+          id,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11,col12,col13,col14,col15,col16,col17
+        )
+        VALUES (
+          #{id},#{col1},#{col2},#{col3},#{col4},#{col5},#{col6},#{col7},#{col8},#{col9},#{col10},#{col11},#{col12},#{col13},#{col14},#{col15},#{col16},#{col17}
+        )
+    </insert>
+
+    <!--删除申请记录-->
+    <delete id="deleteProposer" parameterType="String">
+        DELETE from TBBWIMPORT
+        WHERE id= #{proposerId}
+    </delete>
+
+    <!--根据申请人身份证号查找申请记录-->
+    <select id="findProposer" parameterType="String" resultType="com.stylefeng.guns.modular.support.model.Tbbwimport">
+        select * from TBBWIMPORT
+        WHERE id= #{proposerId}
+    </select>
+
+    <!--修改申请记录-->
+    <update id="alterProposer" parameterType="com.stylefeng.guns.modular.support.model.Tbbwimport">
+        UPDATE TBBWIMPORT
+        set
+            col1 = #{col1},
+            col2 = #{col2},
+            col3 = #{col3},
+            col4 = #{col4},
+            col5 = #{col5},
+            col6 = #{col6},
+            col7 = #{col7},
+            col8 = #{col8},
+            col9 = #{col9},
+            col10 = #{col10},
+            col11 = #{col11},
+            col12 = #{col12},
+            col13 = #{col13},
+            col14 = #{col14},
+            col15 = #{col15},
+            col16 = #{col16},
+            col17 = #{col17}
+        WHERE id = #{id}
+    </update>
 </mapper>

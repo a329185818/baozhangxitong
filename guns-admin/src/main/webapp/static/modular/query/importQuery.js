@@ -16,6 +16,7 @@ var queryImport = {
 queryImport.initColumn = function () {
     return [
         {field: 'selectItem', radio: false},
+        {title: 'ID', field: 'id', visible: false, align: 'center', valign: 'middle'},
         {title: '申请人姓名', field: 'col1', align: 'center', valign: 'middle'},
         {title: '申请人身份证件号', field: 'col2', align: 'center', valign: 'middle'},
         {title: '配偶姓名', field: 'col3', align: 'center', valign: 'middle'},
@@ -31,6 +32,15 @@ queryImport.initColumn = function () {
         {title: '项目地址', field: 'col13', align: 'center', valign: 'middle',visible: false},
         {title: '项目名称', field: 'col14', align: 'center', valign: 'middle',visible: false},
         {title: '房源情况', field: 'col15', align: 'center', valign: 'middle',visible: false},
+        {title: '操作',  align: 'center', valign: 'middle',
+            formatter:function(value,row,index){
+
+                    return '<a onclick="queryImport.changeProposer('+'\''+row.id+'\')">编辑</a>'
+
+
+            }
+
+        }
 
 
 
@@ -40,13 +50,96 @@ queryImport.initColumn = function () {
 queryImport.query = function(){
 
     var param = {
-        "application":$("#application").val(),
-        "idCard":$("#idCard").val(),
+        "condition":$("#condition ").val(),
         "beginTime":$("#beginTime").val(),
         "endTime":$("#endTime").val(),
     };
     queryImport.table.refresh({query: param});
 }
+
+/**
+ * 检查是否选中
+ */
+queryImport.check = function () {
+    var selected = $('#' + this.id).bootstrapTable('getSelections');
+
+    if (selected.length == 0) {
+        Feng.info("请先选中表格中的某一记录！");
+        return false;
+    } else {
+        queryImport.seItem = selected[0];
+        return true;
+    }
+};
+
+/**
+ * 点击添加申请记录
+ */
+queryImport.addProposer = function () {
+    var index = layer.open({
+        type: 2,
+        title: '添加申请记录',
+        area: ['800px', '560px'], //宽高
+        fix: false, //不固定
+        maxmin: true,
+        content: Feng.ctxPath + '/info/add_proposer'
+    });
+    this.layerIndex = index;
+};
+
+/**
+ * 点击修改按钮时
+ * @param userId 申请记录id
+ */
+queryImport.changeProposer= function (id) {
+        var proposerId=id
+        var index = layer.open({
+            type: 2,
+            title: '编辑申请记录',
+            area: ['800px', '450px'], //宽高
+            fix: false, //不固定
+            maxmin: true,
+            content: Feng.ctxPath + '/info/proposer_edit?proposerId=' + proposerId
+        });
+        this.layerIndex = index;
+
+};
+
+/**
+ * 删除申请记录
+ */
+queryImport.delProposer = function () {
+    var me = this;
+    if (this.check()) {
+        var operation = function(){
+            var selected = $('#' + me.id).bootstrapTable('getSelections');
+            console.log(selected)
+            var ids="";
+            for(var i=0;i<selected.length;i++) {
+                var seItem = selected[i];
+
+                if (seItem.id) {
+
+                    ids += seItem.id + ",";
+
+                }
+
+            }
+            ids= ids.substr(0,ids.length-1);
+            var ajax = new $ax(Feng.ctxPath + "/info/deleteProposer", function () {
+                Feng.success("删除成功!");
+                queryImport.table.refresh();
+            }, function (data) {
+                Feng.error("删除失败!" + data.responseJSON.message + "!");
+            });
+            console.log(ids)
+            ajax.set("proposerIds", ids);
+            ajax.start();
+        };
+
+        Feng.confirm("是否删除申请记录" + "?",operation);
+    }
+};
 
 queryImport.initSecondType = function(pNum){
     if(pNum == ''){

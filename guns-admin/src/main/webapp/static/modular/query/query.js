@@ -136,25 +136,6 @@ $(function () {
     queryProject.table = table.init();
 });
 
-/**
- * 导出
- */
-exportProject = function(){
 
-    var rows = $("#queryProjectTable").bootstrapTable('getSelections');
-    if (rows.length== 0) {
-        alert("请先选择要删除的记录!");
-        return;
-    }
-    var ids = '';
-    for (var i = 0; i < rows.length; i++) {
-        if (typeof(rows[i]['身份证件号']) == "undefined") {
-            continue;
-        }
-        ids += rows[i]['身份证件号'] + ",";
-    }
-    window.location.href =Feng.ctxPath +"/excel/apply_approval?projectId="+ids;
-
-}
 
 

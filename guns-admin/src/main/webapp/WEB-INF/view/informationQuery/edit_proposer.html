@@ -1,0 +1,55 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="proposerInfoForm">
+
+
+            <div class="row">
+                <div style="display: none">
+                    <#input id="col16" name="导入日期" underline="true" value="${tbbwimport.col16}" />
+                    <#input id="id" name="id" underline="true"  value="${tbbwimport.id}" />
+                </div>
+                <div class="col-sm-6 b-r">
+                    <#input id="col1" name="申请人" underline="true" value="${tbbwimport.col1}" />
+                    <#input id="col3" name="配偶" underline="true" value="${tbbwimport.col3}" />
+                    <#input id="col5" name="申报状态" underline="true" value="${tbbwimport.col5}" />
+                    <#input id="col7" name="房号" underline="true" value="${tbbwimport.col7}" />
+                    <#input id="col9" name="套内面积" underline="true" value="${tbbwimport.col9}" />
+                    <#input id="col11" name="合同签订日期" underline="true" type="text" value="${tbbwimport.col11}" />
+                    <#input id="col13" name="项目地址" underline="true" value="${tbbwimport.col13}" />
+                    <#input id="col15" name="房源情况" underline="true" type="text" value="${tbbwimport.col15}" />
+
+                </div>
+                <div class="col-sm-6">
+                    <div id="driverInfoContent">
+                        <#input id="col2" name="申请人身份证号" underline="true" value="${tbbwimport.col2}" />
+                        <#input id="col4" name="配偶身份证号" underline="true" value="${tbbwimport.col4}" />
+                        <#input id="col6" name="保障房类型" underline="true" value="${tbbwimport.col6}" />
+                        <#input id="col8" name="建筑面积" underline="true" value="${tbbwimport.col8}" />
+                        <#input id="col10" name="合同份数" underline="true" value="${tbbwimport.col10}" />
+                        <#input id="col12" name="联系电话" underline="true" value="${tbbwimport.col12}" />
+                        <#input id="col14" name="项目名称" underline="true" value="${tbbwimport.col14}" />
+                        <#input id="col17" name="备注" underline="true" value="${tbbwimport.col17}" />
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="proposerInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="proposerInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/query/proposer_info.js"></script>
+<script>
+    laydate.render({
+        elem: '#col11'
+    });
+</script>
+@}

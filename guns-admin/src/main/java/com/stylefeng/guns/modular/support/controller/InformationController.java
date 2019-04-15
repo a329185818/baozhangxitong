@@ -1,22 +1,27 @@
 package com.stylefeng.guns.modular.support.controller;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.stylefeng.guns.config.StaticClass;
 import com.stylefeng.guns.core.base.controller.BaseController;
+import com.stylefeng.guns.core.base.tips.Tip;
+import com.stylefeng.guns.core.common.annotion.Permission;
+
+import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.shiro.ShiroKit;
-import com.stylefeng.guns.core.util.Convert;
+
 import com.stylefeng.guns.modular.support.dao.InformationMapper;
 import com.stylefeng.guns.modular.support.model.Tbbwimport;
 import com.stylefeng.guns.modular.support.service.InformationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.naming.NoPermissionException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Controller
@@ -162,15 +167,14 @@ public class InformationController extends BaseController {
 
     @RequestMapping("/importQueryList")
     @ResponseBody
-    public Object importQueryList(Integer offset,Integer limit,String application,String idCard,String beginTime,String endTime){
+    public Object importQueryList(Integer offset,Integer limit,String condition ,String beginTime,String endTime){
             List<Tbbwimport> projectList = new ArrayList<Tbbwimport>();
             Map<String,Object> param = new HashMap<>();
             param.put("iStart",offset);//0
             param.put("iEnd",limit + offset);//
             param.put("beginTime",beginTime);
             param.put("endTime",endTime);
-            param.put("name",application);
-            param.put("idCard",idCard);//
+            param.put("condition",condition);
             projectList =informationMapper.importQueryList(param);
         //分页数据
         List<Tbbwimport> newProjectList = new ArrayList<>();
@@ -188,7 +192,63 @@ public class InformationController extends BaseController {
         page.setTotal(listNum);
         page.setCurrent(offset / limit + 1);
         return super.packForBT(page);
+    }
+    /**
+     * 跳转到添加申请记录的页面
+     */
+    @RequestMapping("/add_proposer")
+    public String addView() {
+        return PREFIX + "add_proposer.html";
+    }
 
+    /**
+     * 添加申请记录
+     */
+    @RequestMapping("/addProposer")
+    @ResponseBody
+    public Tip add(Tbbwimport tbbwimport) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 
+        // 获得日期
+        tbbwimport.setId(StaticClass.getUUID());
+        tbbwimport.setCol16(df.format(new Date()));
+        informationMapper.addTbbwimport(tbbwimport);
+        return SUCCESS_TIP;
+    }
+
+    /**
+     * 跳转到编辑申请记录页面
+     */
+    @RequestMapping("/proposer_edit")
+    public String userEdit(String proposerId, Model model) {
+
+        Tbbwimport tbbwimport  = informationMapper.findProposer(proposerId);
+        model.addAttribute(tbbwimport);
+        LogObjectHolder.me().set(tbbwimport);
+        return PREFIX + "edit_proposer.html";
+    }
+    /**
+     * 修改申请记录信息
+     *
+     * @throws NoPermissionException
+     */
+    @RequestMapping("/proposer_alter")
+    @ResponseBody
+    public Tip edit(Tbbwimport tbbwimport){
+        informationMapper.alterProposer(tbbwimport);
+        return SUCCESS_TIP;
+    }
+
+    /**
+     * 删除申请记录（逻辑删除）
+     */
+    @RequestMapping("/deleteProposer")
+    @ResponseBody
+    public Tip delete(String proposerIds) {
+        String [] ids=proposerIds.split(",");
+        for(int i=0;i<ids.length;i++) {
+            informationMapper.deleteProposer(ids[i]);
+        }
+        return SUCCESS_TIP;
     }
 }
