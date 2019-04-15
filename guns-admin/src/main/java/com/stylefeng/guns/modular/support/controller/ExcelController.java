@@ -190,6 +190,7 @@ public class ExcelController extends BaseController {
             }//若为导入
             else{
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                String dateStr= df.format(new Date());
                 for (ArrayList<String> arr : readResult) {
                     Tbbwimport tbbwimport = new Tbbwimport();
                     tbbwimport.setId(StaticClass.getUUID());
@@ -209,7 +210,7 @@ public class ExcelController extends BaseController {
                     tbbwimport.setCol13(isNull(arr.get(13)));
                     tbbwimport.setCol14(isNull(arr.get(14)));
                     tbbwimport.setCol15(isNull(arr.get(15)));
-                    tbbwimport.setCol16(df.format(new Date()));
+                    tbbwimport.setCol16(dateStr);
                     houseProjectMapper.insertTbbwimport(tbbwimport);
                 }
                 return "导入成功";
