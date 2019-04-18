@@ -1,5 +1,6 @@
 package com.stylefeng.guns.modular.api;
 
+import com.stylefeng.guns.modular.support.model.Tbbwimport;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
@@ -222,5 +223,141 @@ public class ExcelUtil {
             return null;
         }
         return path.substring(path.lastIndexOf(".") + 1, path.length()).trim();
+    }
+
+
+
+
+
+    /**
+     * 导出Excel
+     * @param sheetName sheet名称
+     * @param title 标题
+     * @param listTbbwimport 内容
+     * @param wb HSSFWorkbook对象
+     * @return
+     */
+    public static HSSFWorkbook getHSSFWorkbook2(String sheetName, String []title, List<Tbbwimport> listTbbwimport, HSSFWorkbook wb){
+
+        // 第一步，创建一个HSSFWorkbook，对应一个Excel文件
+        if(wb == null){
+            wb = new HSSFWorkbook();
+        }
+
+        // 第二步，在workbook中添加一个sheet,对应Excel文件中的sheet
+        HSSFSheet sheet = wb.createSheet(sheetName);
+
+        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制
+        HSSFRow row = sheet.createRow(0);
+
+        // 第四步，创建单元格，并设置值表头 设置表头居中
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+        Font font = wb.createFont();
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        font.setFontHeightInPoints((short) 12);
+        font.setFontName("宋体");
+        style.setFont(font);
+        //设置自动换行
+        style.setWrapText(true);
+
+        //设置自动换行
+        HSSFCellStyle contentStyle = wb.createCellStyle();
+        contentStyle.setWrapText(true);
+        contentStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+        //声明列对象
+        HSSFCell cell = null;
+
+        //创建标题
+        for(int i=0;i<title.length;i++){
+            cell = row.createCell(i);
+            cell.setCellValue(title[i]);
+            cell.setCellStyle(style);
+            if(i == 0){
+                sheet.setColumnWidth(i, 8 * 256);
+            }else if(i == 2 || i == 4 || i == 11){
+                sheet.setColumnWidth(i, 20 * 256);
+            }else if(i == 15){
+                sheet.setColumnWidth(i, 50 * 256);
+            }else{
+                sheet.setColumnWidth(i, 15 * 256);  //设置列宽，15个字符宽
+            }
+        }
+
+        //创建内容
+        for(int i=0;i<listTbbwimport.size();i++){
+            row = sheet.createRow(i + 1);
+
+            cell = row.createCell(0);
+            cell.setCellValue(i+1);
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(1);
+            cell.setCellValue(listTbbwimport.get(i).getCol1());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(2);
+            cell.setCellValue(listTbbwimport.get(i).getCol2());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(3);
+            cell.setCellValue(listTbbwimport.get(i).getCol3());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(4);
+            cell.setCellValue(listTbbwimport.get(i).getCol4());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(5);
+            cell.setCellValue(listTbbwimport.get(i).getCol5());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(6);
+            cell.setCellValue(listTbbwimport.get(i).getCol6());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(7);
+            cell.setCellValue(listTbbwimport.get(i).getCol7());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(8);
+            cell.setCellValue(listTbbwimport.get(i).getCol8());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(9);
+            cell.setCellValue(listTbbwimport.get(i).getCol9());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(10);
+            cell.setCellValue(listTbbwimport.get(i).getCol10());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(11);
+            cell.setCellValue(listTbbwimport.get(i).getCol11());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(12);
+            cell.setCellValue(listTbbwimport.get(i).getCol12());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(13);
+            cell.setCellValue(listTbbwimport.get(i).getCol13());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(14);
+            cell.setCellValue(listTbbwimport.get(i).getCol14());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(15);
+            cell.setCellValue(listTbbwimport.get(i).getCol15());
+            cell.setCellStyle(contentStyle);
+
+            cell = row.createCell(16);
+            cell.setCellValue(listTbbwimport.get(i).getCol17());
+            cell.setCellStyle(contentStyle);
+
+
+        }
+        return wb;
     }
 }

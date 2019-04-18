@@ -215,8 +215,5 @@ public interface HouseProjectMapper {
 
     Map<String,Object> getInfomation(@Param("idCard") String idCard);
 
-    //批量导入申请人信息
-    int insertTbbwimport(Tbbwimport tbbwimport);
-    //导出申请人信息
-    Tbbwimport findIdTbbwimport(@Param("id")String id);
+
 }

@@ -45,12 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="condition != null and condition != ''">
             or  col4 LIKE '%${condition}%'
         </if>
-        <!--<if test="beginTime != null and beginTiem != ''">-->
-            <!--AND  col16>= to_date(#{beinTime},'yyyy-mm-dd hh24:mi:ss')-->
-        <!--</if>-->
-        <!--<if test="endTime != null and endTiem != ''">-->
-            <!--AND  to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')>=col16-->
-        <!--</if>-->
+
     </select>
     <!--导入信息查询(分页)-->
     <select id="importQueryList" parameterType="java.util.HashMap" resultType="com.stylefeng.guns.modular.support.model.Tbbwimport">
@@ -75,6 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
         ) A
         WHERE #{iEnd}>= ROWNUM
+        order by A.col1
         )
         WHERE RN >= #{iStart}
 
@@ -166,4 +162,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             col17 = #{col17}
         WHERE id = #{id}
     </update>
+    <!--批量导入-->
+    <insert id="insertTbbwimport" parameterType="com.stylefeng.guns.modular.support.model.Tbbwimport">
+        INSERT INTO TBBWIMPORT(
+          id,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11,col12,col13,col14,col15,col16，col17
+        )
+        VALUES (
+          #{id},#{col1},#{col2},#{col3},#{col4},#{col5},#{col6},#{col7},#{col8},#{col9},#{col10},#{col11},#{col12},#{col13},#{col14},#{col15},#{col16},#{col17}
+        )
+    </insert>
+
+    <!--批量导出-->
+    <select id="findIdTbbwimport" parameterType="String" resultType="com.stylefeng.guns.modular.support.model.Tbbwimport">
+          SELECT * FROM TBBWIMPORT WHERE col2=#{id} and 1>=rownum
+
+    </select>
 </mapper>

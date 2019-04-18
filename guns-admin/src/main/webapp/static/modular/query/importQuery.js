@@ -46,7 +46,9 @@ queryImport.initColumn = function () {
 
     ];
 };
-
+/**
+ * 查询
+ */
 queryImport.query = function(){
 
     var param = {
@@ -220,11 +222,10 @@ $(function () {
  * 导出
  */
 function exportProject  () {
-    var application=$("#application").val();
-    var idCard=$("#idCard").val();
+    var condition=$("#condition").val();
     var beginTime=$("#beginTime").val();
     var endTime=$("#endTime").val();
-    window.location.href=Feng.ctxPath+"/excel/exportQueryList?application="+application+'&idCard='+idCard+'&beginTime='+beginTime+'&endTime='+endTime;
+    window.location.href=Feng.ctxPath+"/excel/exportQueryList?condition="+condition;
 }
 
 

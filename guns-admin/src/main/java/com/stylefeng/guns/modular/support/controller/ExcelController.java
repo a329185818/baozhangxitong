@@ -38,39 +38,6 @@ public class ExcelController extends BaseController {
     @Autowired
     private InformationMapper informationMapper;
 
-    @Autowired
-    private HouseProjectMapper houseProjectMapper;
-
-//    @RequestMapping(value = "/apply_approval")
-//    @ResponseBody
-//    public void exportData(String[][] content,HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        //excel标题
-//        String[] title = {"序号","申请人姓名","申请人身份证号","配偶","配偶身份证号","申报状态","保障房类型","房号","建筑面积","套内面积","合同份数"
-//                ,"合同签定日期","联系电话","项目地址","项目名称","房源情况"};
-//
-//        //excel文件名
-//        String fileName = "人员信息"+System.currentTimeMillis()+".xls";
-//
-//        //sheet名
-//        String sheetName = "人员信息表";
-//
-////        String[][] content = JSON.parseObject(json, String[][].class);
-//
-//        //创建HSSFWorkbook
-//        HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
-//
-//        //响应到客户端
-//        try {
-//            this.setResponseHeader(response, fileName);
-//            OutputStream os = response.getOutputStream();
-//            wb.write(os);
-//            os.flush();
-//            os.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     /**
      * 检查数据
      *
@@ -82,6 +49,7 @@ public class ExcelController extends BaseController {
     public Object savePicture(MultipartFile excelExport, HttpServletRequest request, String num, HttpServletResponse response) throws IOException {
         List<ArrayList<String>> readResult = null;//总行记录
         List<ArrayList<String>> listResult = new ArrayList<ArrayList<String>>();
+        List<Tbbwimport> listAll = new ArrayList<Tbbwimport>();
         if (excelExport != null) {
             //判断文件大小
             long size = excelExport.getSize();
@@ -113,23 +81,28 @@ public class ExcelController extends BaseController {
                     String spouseName;
                     if(arr.size()>1) {
                         proposerName = arr.get(1);
+                        tbbwimport.setCol1(proposerName);
                     }else {
                          proposerName = null;
                     }
                     if(arr.size()>2) {
                         proposerId = arr.get(2);
+                        tbbwimport.setCol2(proposerId);
                     }else {
                         proposerId = null;
                     }
-                    if(arr.size()>3) {
-                         spouseId = arr.get(3);
+                    if(arr.size()>3&&!(arr.get(3).equals("无"))) {
+                        spouseName = arr.get(3);
+                        tbbwimport.setCol3(spouseName);
                     }else {
-                        spouseId = null;
+                        spouseName = null;
                     }
                     if(arr.size()>4) {
-                        spouseName = arr.get(4);
+                        spouseId = arr.get(4);
+                        tbbwimport.setCol4(spouseId);
+
                     }else{
-                        spouseName = null;
+                        spouseId = null;
                     }
                     Map<String, Object> param = new HashMap<>();
                     param.put("proposerName", proposerName);//查询条件
@@ -138,9 +111,13 @@ public class ExcelController extends BaseController {
                     param.put("spouseId", spouseId);//
                     listTbbwimport = informationMapper.findTbbwimportList(param);
                     if (!listTbbwimport.isEmpty()) {
+
+
                         for (int i = 0; i <listTbbwimport.size(); i++) {
+
                             tbbwimport = listTbbwimport.get(i);
-                            arr.add(1, isNull(tbbwimport.getCol1()));
+                            listAll.add( tbbwimport);
+                           /* arr.add(1, isNull(tbbwimport.getCol1()));
                             arr.add(2, isNull(tbbwimport.getCol2()));
                             arr.add(3, isNull(tbbwimport.getCol3()));
                             arr.add(4, isNull(tbbwimport.getCol4()));
@@ -156,10 +133,12 @@ public class ExcelController extends BaseController {
                             arr.add(14, isNull(tbbwimport.getCol14()));
                             arr.add(15, isNull(tbbwimport.getCol15()));
                             arr.add(16, isNull(tbbwimport.getCol17()));
-                            listResult.add(arr);
+                            listResult.add(arr);*/
                         }
                     } else {
-                        listResult.add(arr);
+
+                        listAll.add( tbbwimport);
+                        /*listResult.add(arr);*/
                     }
                 }
 
@@ -194,12 +173,12 @@ public class ExcelController extends BaseController {
 //                        arr.add("不合格");
 //                    }
 //                }
-            //转换成字符串二维数组
+          /*  //转换成字符串二维数组
             int lenght = listResult.size();
             String[][] content = new String[lenght][];
             for (int i = 0; i < lenght; i++) {
                 ArrayList<String> arrayList = listResult.get(i);
-                content[i] = new String[arrayList.size()];
+                content[i] = new String[17];
                 for (int y = 0; y < arrayList.size(); y++) {
                     if (y == 0) {
                         content[i][y] = String.valueOf(i + 1);
@@ -207,10 +186,10 @@ public class ExcelController extends BaseController {
                         content[i][y] = arrayList.get(y);
                     }
                 }
-            }
+            }*/
 
             String[] title = {"序号", "申请人姓名", "申请人身份证号", "配偶", "配偶身份证号", "申报状态", "保障房类型", "房号", "建筑面积", "套内面积", "合同份数"
-                    , "合同签定日期", "联系电话", "项目地址", "项目名称", "房源情况"};
+                    , "合同签定日期", "联系电话", "项目地址", "项目名称", "房源情况","备注"};
             /*hfx*/
             //excel文件名
             String fileName = "人员信息" + System.currentTimeMillis() + ".xls";
@@ -222,7 +201,7 @@ public class ExcelController extends BaseController {
             response.addHeader("Pargam", "no-cache");
             response.addHeader("Cache-Control", "no-cache");
             //创建HSSFWorkbook
-            HSSFWorkbook wkb = ExcelUtil.getHSSFWorkbook("人员信息表", title, content, null);
+            HSSFWorkbook wkb = ExcelUtil.getHSSFWorkbook2("人员信息表", title, listAll, null);
             wkb.write(output);
             output.close();
             return null;
@@ -249,7 +228,8 @@ public class ExcelController extends BaseController {
                 tbbwimport.setCol14(isNull(arr.get(14)));
                 tbbwimport.setCol15(isNull(arr.get(15)));
                 tbbwimport.setCol16(df.format(new Date()));
-                houseProjectMapper.insertTbbwimport(tbbwimport);
+                tbbwimport.setCol17(isNull(arr.get(16)));
+                informationMapper.insertTbbwimport(tbbwimport);
             }
             return "导入成功";
         }
@@ -286,14 +266,11 @@ public class ExcelController extends BaseController {
     //导出
     @RequestMapping("/exportQueryList")
     @ResponseBody
-    public Object exportQueryList(HttpServletRequest request, HttpServletResponse response,String application,String idCard,String beginTime,String endTime) throws Exception {
+    public Object exportQueryList(HttpServletRequest request, HttpServletResponse response,String condition) throws Exception {
 
         List<Tbbwimport> exportQueryList = new ArrayList<Tbbwimport>();
         Map<String,Object> param = new HashMap<>();
-        param.put("beginTime",beginTime);
-        param.put("endTime",endTime);
-        param.put("name",application);
-        param.put("idCard",idCard);//
+        param.put("condition",condition);
         exportQueryList =informationMapper.importQuery(param);
         //转换成字符串二维数组
         String[][] content = new String[exportQueryList.size()][];
@@ -318,7 +295,7 @@ public class ExcelController extends BaseController {
                     content[i][16] = exportQueryList.get(i).getCol17();
         }
         String[] title = {"序号","申请人姓名","申请人身份证号","配偶","配偶身份证号","申报状态","保障房类型","房号","建筑面积","套内面积","合同份数"
-                ,"合同签定日期","联系电话","项目地址","项目名称","房源情况"};
+                ,"合同签定日期","联系电话","项目地址","项目名称","房源情况","备注"};
         /*hfx*/
         //excel文件名
         String fileName = "人员信息"+System.currentTimeMillis()+".xls";

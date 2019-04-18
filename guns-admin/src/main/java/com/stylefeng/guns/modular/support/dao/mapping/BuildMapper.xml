@@ -39,11 +39,11 @@
     </insert>
 
     <select id="houseList" resultType="com.stylefeng.guns.modular.support.model.House">
-        SELECT HOUSEID as houseId,BUILDID as buildId,SITFLOORNUM as floorNum,SITUNITNUM as unitNum,SITDOORNUM as roomNum,HOUSEUSAGE1CODE as "usage",DIAGRAMSTATECODE as stateCode,CREATETIME as createTime,HOUSEPROP as houseProp,LAYOUT as layout,HOUSETYPE as houseType,
-        ARCHITSTRUCTCODE as architStructcode,ARCHITAREA as architArea,ROOMAREA as roomArea,APPORTAREA as apportArea,BARGAINTOTALPRICE as bargainTotalprice,SITNUMGATHER as sitnumGather,OTHERPROP as otherprop,house_Code as houseCode
-        FROM TBBWDIAGRAMHOUSE
-        WHERE BUILDID = #{buildId}
-    </select>
+    SELECT HOUSEID as houseId,BUILDID as buildId,SITFLOORNUM as floorNum,SITUNITNUM as unitNum,SITDOORNUM as roomNum,HOUSEUSAGE1CODE as "usage",DIAGRAMSTATECODE as stateCode,CREATETIME as createTime,HOUSEPROP as houseProp,LAYOUT as layout,HOUSETYPE as houseType,
+    ARCHITSTRUCTCODE as architStructcode,ARCHITAREA as architArea,ROOMAREA as roomArea,APPORTAREA as apportArea,BARGAINTOTALPRICE as bargainTotalprice,SITNUMGATHER as sitnumGather,OTHERPROP as otherprop,house_Code as houseCode
+    FROM TBBWDIAGRAMHOUSE
+    WHERE BUILDID = #{buildId}
+</select>
     
     <insert id="createHouse" parameterType="com.stylefeng.guns.modular.support.model.House">
         INSERT INTO TBBWDIAGRAMHOUSE
