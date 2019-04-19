@@ -102,17 +102,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findTbbwimportList" parameterType="java.util.HashMap" resultType="com.stylefeng.guns.modular.support.model.Tbbwimport">
         select * FROM TBBWIMPORT
         WHERE
-        <if test="proposerName != null and proposerName != ''">
-              col1=#{proposerName}
-        </if>
+
         <if test="proposerId != null and proposerId != ''">
-            or  col2 =#{proposerId}
+              col2 =#{proposerId} or  col4 =#{proposerId}
         </if>
-        <if test="spouseName != null and spouseName != ''">
-            or  col3 =#{spouseName}
-        </if>
+
         <if test="spouseId != null and spouseId != ''">
-            or  col4 =#{spouseId}
+            or  col4 =#{spouseId} or  col2 =#{spouseId}
         </if>
 
     </select>
