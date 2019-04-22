@@ -97,7 +97,7 @@ public class ExcelController extends BaseController {
                     }else {
                         spouseName = null;
                     }
-                    if(arr.size()>4) {
+                    if(arr.size()>4&&!(arr.get(4).equals("无"))) {
                         spouseId = arr.get(4);
                         tbbwimport.setCol4(spouseId);
 
