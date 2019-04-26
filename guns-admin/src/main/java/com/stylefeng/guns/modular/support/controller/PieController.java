@@ -60,7 +60,7 @@ public class PieController extends BaseController {
      */
     @RequestMapping(value = "/choosePie")
     public String choosePie(Model model){
-        List<Map<String, Object>> users = userService.selectUsers(null, "", "", "", "a2f29a2e5c7e43be9bf348012c78a5c4");
+        List<Map<String, Object>> users = userService.selectUsers(null, "", "", "", "07fa9b825cb142f8a69cbf35e7043945");
         model.addAttribute("userList",users);
         return PREFIX + "choosePie.html";
     }
@@ -71,7 +71,7 @@ public class PieController extends BaseController {
     @RequestMapping(value = "/chooseName")
     @ResponseBody
     public Object list(@RequestParam(required = false) String name) {
-        List<Map<String, Object>> users = userService.selectUsers(null, name, "", "", "a2f29a2e5c7e43be9bf348012c78a5c4");
+        List<Map<String, Object>> users = userService.selectUsers(null, name, "", "", "07fa9b825cb142f8a69cbf35e7043945");
         return new UserWarpper(users).warp();
     }
 

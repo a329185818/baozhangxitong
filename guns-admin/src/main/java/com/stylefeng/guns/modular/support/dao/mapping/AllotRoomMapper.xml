@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.support.dao.AllotRoomMapper">
+    <!--申请人信息（申请状态）查询(分页)-->
+    <select id="allotRoomQuery" parameterType="java.util.HashMap" resultType="map">
+        SELECT
+        OWNERNAME,OWNERCERTNUM,OWNERNAME_PEIOU,OWNERCERTNUM_PEIOU,PEOPLE_STATUS,OPTYPENUM,RECYEAR,RECNUM,RecNumGather
+         FROM
+        (
+        SELECT  OWNERNAME,OWNERCERTNUM,OWNERNAME_PEIOU,OWNERCERTNUM_PEIOU,PEOPLE_STATUS,OPTYPENUM,RECYEAR,RECNUM,RecNumGather,
+ ROWNUM RN
+        FROM (SELECT a.*,b.recnumgather,  b.oppartnum FROM RWRECOWNER a,rwrecinfo b where
+        a.optypenum = b.optypenum and a.recyear=b.recyear and a.recnum = b.recnum
+
+        <if test="userId!= null and userId!=''" >
+            and b.CURRECLOCKUSERNUM=#{userId}
+        </if>
+        <if test="status == 0">
+            and (a.people_status=3 or a.people_status=2)
+        </if>
+        <if test="status != 0">
+            and  a.PEOPLE_STATUS =#{status}
+        </if>
+        <if test="condition != null and condition != ''">
+           and
+            instr(a.OWNERNAME||a.OWNERCERTNUM||a.OWNERNAME_PEIOU||a.OWNERCERTNUM_PEIOU||b.RECNUMGATHER,#{condition})>0
+        </if>
+        ) A
+        WHERE #{iEnd}>= ROWNUM
+        )
+        WHERE RN >= #{iStart}
+
+    </select>
+
+    <!--申查询总条数-->
+    <select id="allotRoomQueryCount" parameterType="java.util.HashMap" resultType="Integer">
+    SELECT count(*)
+    FROM (SELECT a.*,b.recnumgather,  b.oppartnum FROM RWRECOWNER a,rwrecinfo b where
+    a.optypenum = b.optypenum and a.recyear=b.recyear and a.recnum = b.recnum
+
+        <if test="userId!= null and userId!=''" >
+            and b.CURRECLOCKUSERNUM=#{userId}
+        </if>
+        <if test="status == 0">
+            and (a.people_status=3 or a.people_status=2)
+        </if>
+        <if test="status != 0">
+            and  a.PEOPLE_STATUS =#{status}
+        </if>
+        <if test="condition != null and condition !=''">
+            and
+            instr(a.OWNERNAME||a.OWNERCERTNUM||a.OWNERNAME_PEIOU||a.OWNERCERTNUM_PEIOU||b.RECNUMGATHER,#{condition})>0
+        </if>
+
+    )
+   </select>
+</mapper>

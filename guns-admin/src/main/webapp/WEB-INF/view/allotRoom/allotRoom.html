@@ -1,0 +1,308 @@
+@layout("/common/_container.html"){
+<style>
+    .info-title{
+        font-size: 16px;padding:5px 0 5px 5px; background: #0e9aef;color:#fff;margin:5px 0;
+    }
+    #houseTable{
+        width: 100%;
+    }
+    #houseTable th,#houseTable td{
+        border: 1px solid #0e9aef;
+        text-align: center;
+        height: 30px;
+        color:#0000ff;
+    }
+    #houseTable th{
+        background: #a8e4ff;
+    }
+    #houseTable th:first-child,#houseTable td:first-child{
+        background: #a8e4ff;
+        width:35px;
+    }
+    .floor_selected{
+        background-color: #ffc600;
+    }
+    ul{
+        list-style:none;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    ul li{
+        float:left; /* 向左漂移，将竖排变为横排 */
+        border-right: 1px solid #0e9aef;
+        height: 100%;
+    }
+</style>
+<style type="text/css">
+    .dataTable{
+        width: 100%
+    }
+    .dataTable thead{
+        background: #ebf0f6;
+    }
+    .dataTable thead th{
+        padding: 10px 0;
+        text-align:center;
+    }
+    .dataTable tbody td{
+        padding: 8px 0;
+        text-align:center;
+        word-break:break-all;
+        white-space : normal;
+    }
+    table,table tr th, table tr td {
+        border:1px solid #bababa;
+    }
+
+    .m-t-30{
+        margin-top:30px;
+    }
+    .d-title{
+        width: 100%;height: 30px;padding-left: 30px;background: #eee;line-height:30px;font-weight: bold;margin-bottom:20px;
+    }
+    .tableTrClass{
+        text-align: center;
+        height: 40px;
+        font-size: 20px;
+    }
+    table{
+        border-spacing:0;
+        cellpadding:0;
+        cellspacing:0;
+    }
+    .tableInputClass{
+        border: 0px;
+        outline:none;
+        width:100%;
+        height: 100%;
+        margin-left: 5px;
+    }
+
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+</style>
+
+<div class="panel blank-panel">
+
+
+    <div class="panel-body">
+            <div >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div class="row row-lg">
+                                    <div class="col-sm-3">
+                                        <#NameCon id="projectName" name="项目名称" placeholder=""/>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <#NameCon id="buildName" name="栋名称" placeholder=""/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12">
+                                                <#button name="搜索" icon="fa-search" clickFun="ProjectInfoDlg.buildSearch()"/>
+                                                @if(apply.house != null){
+                                                <button type="button" class="btn btn-success" onclick="ProjectInfoDlg.searchHouse()" id="">
+                                                    <i></i>&nbsp;已分配房屋信息
+                                                </button>
+                                                @}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" id="buildDiv">
+
+                                    </div>
+                                    <div style="clear: both"></div>
+                                    <div id="buildForm">
+                                        <div class="info-title">幢 信 息</div>
+                                        <div class="col-sm-4 form-group">
+                                            <label class="col-sm-6 text-right control-label" style="padding-top: 6px;width: 90px">幢唯一号</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control"  style="width: 250px;" id="buildId" name="buildId" type="text" value="" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label class="col-sm-6 text-right control-label" style="padding-top: 6px;width: 90px">总单元数</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control"  id="unitCount" name="unitCount" type="text" value="" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label class="col-sm-6 text-right control-label" style="padding-top: 6px;width: 90px">总 层 数</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control" id="floorCount" name="floorCount" type="text" value="" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="clear: both"></div>
+                                    <div  class="info-title">房 信 息
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="col-sm-6">
+                                            <label style="background: #00ff00;width: 20px;height: 20px;"></label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p>空置</p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label style="background: white;width: 20px;height: 20px;"></label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p>已配房</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <form id="houseForm" action="/build/create_house" method="post">
+                                            <table id="houseTable">
+                                                <thead></thead>
+                                                <tbody id="houseTableTbody"></tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+</div>
+
+<!-- 模态框 -->
+<div class="modal fade" id="editHouseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <input type="hidden" id="checkHouseId">
+                <div class="col-sm-12">
+                    <#label id="roomNum" name="房&emsp;&emsp;&emsp;名" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="obligee" name="权&emsp;利&emsp;人" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="bargainTotalprice" name="购买价格" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="usage" name="房屋用途" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="layout" name="规划用途" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="architStructcode" name="建筑结构" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="houseType" name="房屋户型" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="architArea" name="建筑面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="roomArea" name="套内面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="apportArea" name="分摊面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="houseProp" name="房屋性质" placeholder=""/>
+                </div>
+                <div class="col-sm-12">
+                    <#label id="sitnumGather" name="房屋坐落" placeholder=""/>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="margin-top: 8px;">
+                <#button btnCss="info" name="选择此房" id="chooseHouse" icon="fa-check" clickFun="ProjectInfoDlg.checkHouse('${apply.OPTYPENUM!}','${apply.RECYEAR!}','${apply.RECNUM!}','1')"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    var readonly = Feng.getQueryString("readonly");
+    var materialListJson = '${materialListJson}';
+    materialListJson = JSON.parse(materialListJson);
+    var familyType = '${familyTypeJson}';
+    familyType = JSON.parse(familyType);
+    if(readonly == 'true'){
+        $("#projectInfoForm input").attr("readonly","readonly");
+        $("#ensure").attr("disabled","disabled");
+        $("#tab-2").find("input").attr("readonly","readonly");
+        $("#tab-2").find("button").attr("disabled","disabled");
+    }
+</script>
+<script src="${ctxPath}/static/modular/supporthouse/build_detail.js"></script>
+<script src="${ctxPath}/static/modular/supporthouse/project_info.js"></script>
+<script src="${ctxPath}/static/modular/supporthouse/fixed_price.js"></script>
+<script>
+    ProjectInfoDlg.commonParam.iOptypenum = "${apply.OPTYPENUM!}";
+    ProjectInfoDlg.commonParam.iRecyear = "${apply.RECYEAR!}";
+    ProjectInfoDlg.commonParam.iRecnum = "${apply.RECNUM!}";
+    ProjectInfoDlg.commonParam.iRecmatnum = "${RECMATNUM}";
+
+    //房屋列表
+    var houseJson = '${houseJson!}';
+    if(houseJson != ''){
+        houseJson = JSON.parse(houseJson);
+    }
+    //建筑结构
+    var buildingStructureListJson = '${buildingStructureListJson!}';
+    buildingStructureListJson = JSON.parse(buildingStructureListJson);
+    //户型
+    var houseTypeListJson = '${houseTypeListJson!}';
+    houseTypeListJson = JSON.parse(houseTypeListJson);
+    //用途
+    var houseuSageListJson = '${houseuSageListJson!}';
+    houseuSageListJson = JSON.parse(houseuSageListJson);
+
+    var judgeInfo = '${judgeInfo!}';
+
+    var jointApplicantListSize = "${jointApplicantListSize!}";
+    var ctxPath = "${ctxPath}";
+    /*window.FileReader本地预览*/
+    $(function () {
+        $("#avatarSlect").change(function () {
+            var obj=$("#avatarSlect")[0].files[0];
+            var fr=new FileReader();
+            fr.onload=function () {
+                $("#avatarPreview").attr('src',this.result);
+                console.log(this.result);
+                $("#avatar").val(this.result);
+            };
+            fr.readAsDataURL(obj);
+        })
+        //配偶
+        $("#spouseInput").change(function () {
+            var obj=$("#spouseInput")[0].files[0];
+            var fr=new FileReader();
+            fr.onload=function () {
+                $("#spouseImg").attr('src',this.result);
+            };
+            fr.readAsDataURL(obj);
+        });
+        //共同申请人
+        for(var i = 0;i<jointApplicantListSize+1;i++){
+            $("#"+(i+1)+"Input").change(function () {
+                var num = $(this).data("num");
+                var obj=$("#"+num+"Input")[0].files[0];
+                var fr=new FileReader();
+                fr.onload=function () {
+                    $("#"+num+"Img").attr('src',this.result);
+                };
+                fr.readAsDataURL(obj);
+            });
+        }
+
+    });
+
+</script>
+@}

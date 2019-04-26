@@ -391,7 +391,12 @@
     <update id="allotHouse" parameterType="java.util.Map">
         UPDATE RWRECRECEIVE
         set
-        houseId = #{checkHouseId},
+        <if test="checkHouseId == null or checkHouseId == ''">
+            houseId=null,
+        </if>
+        <if test="checkHouseId != null and checkHouseId != ''">
+            houseId = #{checkHouseId},
+        </if>
         VALIDBEGINDATE = sysdate
         WHERE OpTypeNum = #{iOpTypeNum} and RecYear=#{iRecYear} and RecNum=#{iRecNum}
     </update>

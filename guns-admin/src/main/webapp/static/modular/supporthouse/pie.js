@@ -37,7 +37,7 @@ function nameQuery() {
                 var divStr = "";
                 for(var i = 0;i<response.length;i++){
                     divStr += '<div class="col-sm-2">' +
-                        '          <input type="radio" name="regional" style="margin-left:10px;" value="'+response[i].ID+'">' + response[i].ACCOUNT +
+                        '          <input type="radio" name="regional" style="margin-left:10px;" value="'+response[i].ID+'">' + response[i].NAME +
                         '      </div>';
                 }
                 $("#contentDiv").html(divStr);

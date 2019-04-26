@@ -1,0 +1,107 @@
+@layout("/common/_container.html"){
+
+<script>
+    //建筑结构
+    var buildingStructureListJson = '${buildingStructureListJson!}';
+    buildingStructureListJson = JSON.parse(buildingStructureListJson);
+    //户型
+    var houseTypeListJson = '${houseTypeListJson!}';
+    houseTypeListJson = JSON.parse(houseTypeListJson);
+    //用途
+    var houseuSageListJson = '${houseuSageListJson!}';
+    houseuSageListJson = JSON.parse(houseuSageListJson);
+</script>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>配房管理 </h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <#NameCon id="condition" name="综合条件" />
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">
+                                            状态
+                                        </button>
+                                    </div>
+                                    <select class="form-control" id="status">
+                                        <option value="0">请选择</option>
+                                        <option value="2">轮候</option>
+                                        <option value="3">已配房</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="text-align: center;">
+                                <#button name="查询" icon="fa-search" clickFun="allotRoom.query()"/>
+                            </div>
+                        </div>
+                    </div>
+                    <#table id="allotRoomTable"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框 -->
+<div class="modal fade" id="editHouseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <input type="hidden" id="checkHouseId">
+                <div class="col-sm-12">
+                    <#label id="roomNum" name="房&emsp;&emsp;&emsp;名" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="obligee" name="权&emsp;利&emsp;人" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="bargainTotalprice" name="购买价格" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="usage" name="房屋用途" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="layout" name="规划用途" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="architStructcode" name="建筑结构" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="houseType" name="房屋户型" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="architArea" name="建筑面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="roomArea" name="套内面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="apportArea" name="分摊面积" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="houseProp" name="房屋性质" placeholder=""/>
+                </div>
+                <div class="col-sm-12">
+                    <#label id="sitnumGather" name="房屋坐落" placeholder=""/>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="margin-top: 8px;">
+                <#button btnCss="info" name="选择此房" id="chooseHouse" icon="fa-check" clickFun="ProjectInfoDlg.checkHouse('${apply.OPTYPENUM!}','${apply.RECYEAR!}','${apply.RECNUM!}','1')"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<script src="${ctxPath}/static/modular/allotRoom/allotRoom.js"></script>
+@}
