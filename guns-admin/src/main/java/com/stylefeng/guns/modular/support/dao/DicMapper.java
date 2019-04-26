@@ -1,12 +1,16 @@
 package com.stylefeng.guns.modular.support.dao;
 
 import com.stylefeng.guns.modular.support.model.Dic;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface DicMapper {
     //查找身份类型字典表
     public List<Dic> getIdCard();
+
+    //根据身份证类型code查找名称
+    public String getNameByIdCard(@Param("code")String code);
 
     //查找建筑结构字典表
     public List<Dic> getBuildingStructure();

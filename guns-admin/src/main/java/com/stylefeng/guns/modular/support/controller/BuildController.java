@@ -8,7 +8,6 @@ import com.stylefeng.guns.core.node.ZTreeNode;
 import com.stylefeng.guns.modular.support.model.Build;
 import com.stylefeng.guns.modular.support.model.Dic;
 import com.stylefeng.guns.modular.support.model.House;
-import com.stylefeng.guns.modular.support.model.HouseModel;
 import com.stylefeng.guns.modular.support.service.DicService;
 import com.stylefeng.guns.modular.support.service.IBuildService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,6 +148,9 @@ public class BuildController extends BaseController {
     @RequestMapping(value = "/build_list")
     @ResponseBody
     public Object buildList(String projectId,String condition){
+        if (projectId.equals("none")){
+            projectId = null;
+        }
         Page<Build> page = buildService.buildList(projectId,condition);
         return super.packForBT(page);
     }

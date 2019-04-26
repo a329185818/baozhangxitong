@@ -1,0 +1,177 @@
+@layout("/common/_container.html"){
+<style type="text/css">
+    #NodeTable{
+        width: 100%
+    }
+    #NodeTable thead{
+        background: #ebf0f6;
+    }
+    #NodeTable thead th{
+        padding: 10px 0;
+        text-align:center;
+    }
+    #NodeTable tbody td{
+        padding: 8px 0;
+        text-align:center;
+        word-break:break-all;
+        white-space : normal;
+    }
+    table,table tr th, table tr td {
+        border:1px solid #bababa;
+    }
+
+    .m-t-30{
+        margin-top:30px;
+    }
+</style>
+
+<div class="panel blank-panel">
+    <div class="panel-heading">
+        <div class="panel-options">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#tab-1">合同信息</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="tab-content">
+
+            <div id="tab-1" class="tab-pane active">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form action="#" method="post" class="form-horizontal" id="contractInfoForm">
+                            <input type="hidden" name="optypenum" id="optypenum" value='${apply.OPTYPENUM!}'>
+                            <input type="hidden" name="recyear" id="recyear" value='${apply.RECYEAR!}'>
+                            <input type="hidden" name="recnum" id="recnum" value='${apply.RECNUM!}'>
+                            <input type="hidden" name="id" id="id" value='${contract.id!}'>
+                            <input type="hidden" name="houseId" id="houseId" value='${house.houseId!}'>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">出租方(甲方)</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="partyA" name="partyA" type="text" readonly="readonly" value="三亚市住房保障管理中心">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">承租方(乙方)</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="partyB" name="partyB" type="text" readonly="readonly" value="${apply.applicantName!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">承租方证件类型</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="cardType" name="cardType" type="text" readonly="readonly" value="${apply.OWNERCERTTYPECODE!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">承租方证件号码</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="applicantCard" name="applicantCard" type="text" readonly="readonly" value="${apply.applicantCard!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">房屋坐落</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="sitnumGather" name="sitnumGather" type="text" readonly="readonly" value="${house.sitnumGather!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">房屋结构</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="architStructcode" architStructcode="architStructcode" type="text" readonly="readonly" value="${house.architStructcode!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">建筑面积</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="architArea" name="architArea" type="text" readonly="readonly" value="${house.architArea!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">每平米租金/月</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="rent" name="price" type="text" value="${contract.price!}" onchange="checkField(this.value)">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">合同开始时间</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control layer-date" id="startTime" name="startTime" type="text" value="${contract.startTime,'yyyy-MM-dd'}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">合同截止时间</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control layer-date" id="endTime" name="endTime" type="text" value="${contract.endTime,'yyyy-MM-dd'}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">月租金</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="monthRent" name="monthRent" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">半年房租共计</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="sumMonthRent" name="sumMonthRent" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-12">
+                                    <label class="col-sm-6 control-label">年审情况</label>
+                                    <div class="col-sm-12">
+                                        <textarea class="form-control" id="annualReview" name="annualReview" rows="8">${contract.annualReview!}</textarea>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row btn-group-m-t">
+                                <div class="col-sm-10" style="text-align: center">
+                                    <#button btnCss="info" name="保存" id="ensure" icon="fa-check" clickFun="contractManage.save()"/>
+                                    <#button btnCss="danger" name="关闭" icon="fa-eraser" clickFun="contractManage.close()"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    laydate.render({
+        elem: '#startTime'
+    });
+    laydate.render({
+        elem: '#endTime'
+    });
+
+</script>
+<script src="${ctxPath}/static/modular/contract/contract.js"></script>
+@}

@@ -1,0 +1,226 @@
+<!--封面-->
+<div style="width: 1000px;height: 1400px;border: 1px solid #fff;">
+    <div style="font-size: 70px;text-align: center;margin-top: 200px;">三亚市&nbsp;${houseInfo.projectName!}</div>
+    <div style="font-size: 60px;text-align: center;margin-top: 40px;">公&nbsp;&nbsp;共&nbsp;&nbsp;租&nbsp;&nbsp;赁&nbsp;&nbsp;住&nbsp;&nbsp;房</div>
+    <div style="font-size: 60px;text-align: center;margin-top: 70px;">租</div>
+    <div style="font-size: 60px;text-align: center;margin-top: 40px;">赁</div>
+    <div style="font-size: 60px;text-align: center;margin-top: 40px;">和</div>
+    <div style="font-size: 60px;text-align: center;margin-bottom: 100px;margin-top: 40px;">同</div>
+    <div style="font-size: 30px;text-align: left;margin-left: 170px;">出&nbsp;租&nbsp;方：
+        <div style="border-bottom: 1px solid #000;height: 50px;width: 415px;float: right;margin-right: 230px;">
+            三亚市住房保障管理中心
+        </div>
+    </div>
+    <div style="font-size: 30px;text-align: left;margin-left: 170px;margin-top: 20px;">承&nbsp;租&nbsp;方：
+        <div style="border-bottom: 1px solid #000;height: 50px;width:415px;float: right;margin-right: 230px;">
+           ${apply.applicantName!}
+        </div>
+    </div>
+
+    <div style="font-size: 40px;text-align: center;margin-top: 100px;">三亚市住房保障管理中心&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;印制</div>
+</div>
+<!--封面背面-注意事项-->
+<div style="width: 1000px;height: 1400px;border: 1px solid #ffffff;margin-top: 100px;">
+    <div style="font-size: 50px;text-align: center;margin-top: 130px;margin-bottom: 10px">注&nbsp;&nbsp;意&nbsp;&nbsp;事&nbsp;&nbsp;项</div>
+
+    <div style="font-size: 40px;line-height: 3em;width: 830px;margin:0 auto;text-align: justify;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承租人家庭有下列行为之一的，住房保障部门可与承租人家庭解除租赁合同，收回住房：<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.将承租住房转借、转租的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.擅自修改承租住房居住用途的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.连续6个月以上未在承租住房内居住的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.连续3个月以上未按期交纳租金、水电费或物业费的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.获得其他形式保障性住房保障的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.其他违反租赁合同行为；<br>
+    </div>
+</div>
+
+
+<!--公共租赁住房租赁合同1页-->
+<div style="width: 1000px;height: 1400px;border: 1px solid #fff;margin-top: 100px;letter-spacing:7px" align="center">
+    <div style="font-size: 40px;text-align: center;margin-top: 100px">公共租赁住房租赁合同</div>
+    <div style="font-size: 25px;text-align: left;margin-left: 150px;margin-top: 70px">出租方（甲方）：
+        <div style="border-bottom: 1px solid #000;height: 35px;width: 380px;float: right;margin-right: 210px;">
+            三亚市住房保障管理中心
+        </div>
+    </div>
+
+    <div style="font-size: 25px;text-align: left;margin-left: 150px;margin-top: 15px">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：
+        <div style="border-bottom: 1px solid #000;height: 35px;width: 300px;float: right;margin-right: 290px;">
+            三亚市月川中路2号
+        </div>
+    </div>
+
+    <div style="font-size: 25px;text-align: left;margin-left: 150px;margin-top: 60px;letter-spacing:5px">承租方（乙方）&nbsp;：
+        <div style="border-bottom: 1px solid #000;height: 35px;width: 300px;float: right;margin-right: 290px;">
+            ${apply.applicantName!}
+        </div>
+    </div>
+    <div style="font-size: 26px;text-align: left;margin-left: 150px;margin-top: 15px">身&nbsp;份&nbsp;证&nbsp;号&nbsp;码：
+        <div style="border-bottom: 1px solid #000;height: 35px;width: 300px;float: right;margin-right: 290px;">
+            ${apply.applicantCard!}
+        </div>
+    </div>
+
+    <div style="font-size: 23px;line-height: 2em;width: 830px;margin:40px auto;text-align: justify;letter-spacing:6px">
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据《中华人民共和国城市房地产管理法》、《中华人民共和国合同法》、《三亚市公共租赁住房和廉租住房并轨管理暂行办法》等有关法律法规，经甲、乙双方协商一致，订立本合同。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第一条</b>&nbsp;&nbsp;&nbsp;经审核批准，乙方符合<span style="border-bottom:1px solid #000;">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+        年度公租房（实物配租）的承租资格。甲方将坐落于&nbsp;<span style="border-bottom:1px solid #000;">${houseInfo.projectAddress!}</span>
+        第<span style="border-bottom: 1px solid #000">&nbsp;${houseInfo.buildNum!}&nbsp;</span>栋<span style="border-bottom: 1px solid #000">&nbsp;${houseInfo.unitNum!}&nbsp;</span>单元<span style="border-bottom: 1px solid #000">&nbsp;${houseInfo.roomNum!}&nbsp;</span>室公租房出租给乙方作为住宅使用。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该房屋系<span style="border-bottom:1px solid #000">&nbsp;${houseInfo.architStructcode!}&nbsp;</span>结构，建筑面积<span style="border-bottom:1px solid #000">&nbsp;${area!}&nbsp;</span>平方米（以实测为准），房屋装修标准为简装修。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第二条</b>&nbsp;&nbsp;&nbsp;乙方每次租用该房屋的期限为叁年，自<span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.startYear!}&nbsp;</span>年
+        <span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.startMon!}&nbsp;</span>月<span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.startDay!}&nbsp;</span>日开始到<span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.endYear!}&nbsp;</span>年<span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.endMon!}&nbsp;</span>月<span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.endDay!}&nbsp;</span>日结束。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如乙方在&nbsp;3&nbsp;年租赁期满后续继续租住，乙方必须提前一个月，向甲方申报，甲方会同相关部门在&nbsp;20&nbsp;个工作日内予以调查核实，
+        按照第七条规定确定是否继续履行本合同。继续履行本合同的方式采取在本合同年度审核栏中由甲方注明年度审核情况，并加盖继续履行合同印章。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第三条</b>&nbsp;&nbsp;&nbsp;乙方承租房屋的租金为<span style="border-bottom: 1px solid #000">&nbsp;${rentInfo.rent!}&nbsp;</span>元/平米·月（暂定价），月租金每月<span style="border-bottom: 1px solid #000">&nbsp;${rentInfo.monthRent!}&nbsp;</span>元（大写<span style="border-bottom: 1px solid #000">：&nbsp;${rentInfo.monthRentCapitalization!}&nbsp;）</span>。每半年缴纳
+
+    </div>
+</div>
+
+<!--公共租赁住房租赁合同2页-->
+<div style="width: 1000px;height: 1400px;border: 1px solid #fff;margin-top: 100px;" align="center">
+    <div style="font-size: 24px;line-height: 2em;width: 830px;margin:100px auto;text-align: justify;letter-spacing:5px">
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;房租一次共计<span style="border-bottom: 1px solid #000">&nbsp;${rentInfo.halfYear!}&nbsp;</span>元（大写
+        <span style="border-bottom: 1px solid #000">：&nbsp;${rentInfo.halfYearCapitalization!}&nbsp;）</span>，先交费后入住。乙方必须在满6个月后的下个月10号前向甲方或甲方委托的无业管理服务中心缴纳。租赁期间如遇公租房租金标准调整，将按市政府规定执行。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第四条</b>&nbsp;&nbsp;&nbsp;乙方租赁期满，必须完好退还承租房屋，并交清各项费用。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第五条</b>&nbsp;&nbsp;&nbsp;在租赁期内，甲方应保证出租房屋的使用安全。该房屋及所属设施的维修责任由甲方负责（乙方使用不当和易耗品除外）:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>1.</b>甲方对承租房屋进行维修（大、中修）前须提前十个工作日书面通知乙方，乙方应按甲方的要求积极协助配合，如需暂时迁离的，乙方自行过渡；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>2.</b>乙方向甲方提出数米阿尼或口头维修请求后，甲方应及时勘察，对确需修缮的，应提供维修服务，对乙方的装饰部分甲方不负有修缮的义务；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>3.</b>乙方应正常、合理使用承租房屋及内部设施，不得改变、破坏、损坏房屋结构、装修和设施设备，不得擅自改变室内管线线路。因乙方使用不当
+        造成承租房屋机器内部设施损坏，乙方应负责及时修复或赔偿。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>4.</b>承租房屋原则上不允许二次装修，如乙方缺失因需要进行装修或设置对房屋结构有影响的设备，其设计规模、范围、工艺、用料等方案均须事先征得甲方的书面同意
+        并签订装修管理合同后方可施工。在租赁期满或乙方责任导致合同终止时，除双方另有约定外，甲方有权选择以下权利中的任何一项：<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>（1）</b>房屋的装修归甲方所有，甲方不作补偿；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>（2）</b>要求乙方恢复原状，否则，甲方向乙方收取恢复工程实际发生的费用。<br>
+    </div>
+</div>
+
+<!--公共租赁住房租赁合同3页-->
+<div style="width: 1000px;height: 1400px;border: 1px solid #fff;margin-top: 100px;" align="center">
+
+    <div style="font-size: 24px;line-height: 2em;width: 830px;margin:100px auto;text-align: justify;letter-spacing:5px">
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.因其他承租户的房屋或设施维修需要乙方的协助，乙方应当无条件配合，如造成乙方承租的房屋及装修收到损害，甲方应尽量恢复原状。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第六条</b>&nbsp;&nbsp;&nbsp;乙方有责任看护承租房屋，在发生第三方损坏房屋时，乙方有义务立即制止并及时向甲方报告。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第七条</b>&nbsp;&nbsp;&nbsp;乙方有下列情形之一，甲方有权单方终止合同，并在乙方收到甲方下发书面终止合同通知时，本合同终止。
+        造成甲方损失的，乙方应当赔偿，并在五年内不得租赁公租房：<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>1.</b>未如实申报住房状况或者伪造有关证件、证明的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>2.</b>承租人及共同申请人办理、迁出三亚市或者在三亚市内购置住房的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>3.</b>擅自改变房屋建筑结构、设施、设备和使用用途的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>4.</b>将承租房屋转借、转租、私自调换使用的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>5.</b>转让房屋使用权或者利用承租房屋进行非法活动，损害公共利益的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>6.</b>连续六个月以上未在承租房屋内居住或者连续六个月不按照本合同约定缴纳租金的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>7.</b>未经甲方同意，擅自进行装修，并对房屋造成了损害，要求改正而拒不改正的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>8.</b>故意损坏承租房屋、在公租房用地范围内搭盖违章建筑的；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>9.</b>拒不接受甲方管理或经甲方劝告拒不改正的。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第八条</b>&nbsp;&nbsp;&nbsp;根据本合同约定提前终止合同或合同期满，乙方应在收到甲方正式书面通知之日起7日内搬出全部设备、物品并恢复房屋原状，
+        但双方另有协商的除外。逾期未退回的，甲方可以责令腾退或者依法申请人民法院强制执行，并对承租房屋内的余物视为乙方放弃所有权，由甲方处理。逾期的房屋租金，甲方可
+    </div>
+</div>
+
+<!--公共租赁住房租赁合同4页-->
+<div style="width: 1000px;height: 1400px;border: 1px solid #fff;margin-top: 100px;" align="center">
+
+    <div style="font-size: 24px;line-height: 2em;width: 830px;margin:100px auto;text-align: justify;letter-spacing:5px">
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按照同地段同结构房屋的市场租金向乙方收取。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第九条</b>&nbsp;&nbsp;&nbsp;直管公房或单位公房的承租户取得公租房资格并办理入住手续后一个月内必须腾退公房，否则将取消公租房承租资格。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第十条</b>&nbsp;&nbsp;&nbsp;租赁期间，乙方因政策生活需要产生的燃气费、水电费、电话费、有线电视费、环境卫生费、停车费、物业管理费用等由乙方承担。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第十一条</b>&nbsp;&nbsp;&nbsp;乙方在使用房屋和附属设施时，应充分注意安全。乙方因未尽注意义务，造成乙方、甲方或第三人的财产、人身损害，乙方承担赔偿责任。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第十二条</b>&nbsp;&nbsp;&nbsp;甲、乙双方应履行本合同所规定的各项义务。其他未尽事宜，甲、乙双方另行协商。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第十三条</b>&nbsp;&nbsp;&nbsp;如在履行本华容唐的过程中发生争议，双方应当协商解决。如协商不成，当事人可向三亚市有管辖权的人民法院起诉。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第十四条</b>&nbsp;&nbsp;&nbsp;本合同自签订之日起生效，本合同一式叁份、甲方执壹份，乙方执壹份，由物业服务企业持壹份。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第十五条</b>&nbsp;&nbsp;&nbsp;本合同条款由三亚市住房包装管理中心负责解释。<br>
+
+        <div style="font-size: 24px;text-align: left;margin-left: 70px;margin-top: 100px;">甲&nbsp;&nbsp;方（签章）:
+            <div style="float: right;margin-right: 100px;">乙&nbsp;&nbsp;方（签章）:</div>
+        </div>
+
+        <div style="font-size: 24px;text-align: left;margin-left: 70px;margin-top: 60px;">法&nbsp;定&nbsp;代&nbsp;表&nbsp;人:
+            <div style="float: right;margin-right: 140px;">联&nbsp;系&nbsp;电&nbsp;话:</div>
+        </div>
+        <div style="font-size: 24px;text-align: left;margin-left: 100px;margin-top: 50px;">
+            本合同于<span style="border-bottom: 1px solid #000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>年
+            <span style="border-bottom: 1px solid #000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>月
+            <span style="border-bottom: 1px solid #000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>日在三亚市签订
+        </div>
+
+    </div>
+</div>
+<!--公共租赁住房租赁合同5页-->
+
+
+<div style="width: 1000px;height: 1400px;border: 1px solid #fff;margin-top: 70px;" align="center">
+    <div style="font-size: 40px;text-align: center;margin-top: 80px">共&nbsp;同&nbsp;居&nbsp;住&nbsp;人&nbsp;情&nbsp;况</div>
+    <table style="font-size: 20px;width: 850px;height: 150px;margin-top: 70px;border: hidden;">
+        <tr class="tableTrClass" style="border: hidden">
+            <td colspan="10"></td>
+        </tr>
+
+        @for(jointApplicant in jointApplicantList){
+        <tr style="border: hidden">
+            <td colspan="2" style="border: hidden">
+                <div>&nbsp;姓名：
+                    <div style="border-bottom: 1px solid #000;height: 28px;width: 100px;float: right;">
+                        ${jointApplicant.jointApplicantName!}
+                    </div>
+                </div>
+            </td>
+            <td colspan="5" style="border: hidden">
+                <div>&nbsp;&nbsp;身份证：
+                    <div style="border-bottom: 1px solid #000;height: 28px;width: 330px;float: right;">
+                        ${jointApplicant.jointApplicantCard!}
+                    </div>
+                </div>
+            </td>
+            <td colspan="3">
+                <div>&nbsp;&nbsp;电话：
+                    <div style="border-bottom: 1px solid #000;height: 28px;width: 180px;float: right;">
+                        ${jointApplicant.jointApplicantPhone!}
+                    </div>
+                </div>
+            </td>
+        </tr>
+        @}
+
+        @for(jointApplicant in jointApplicantListOther){
+        <tr style="border: hidden">
+            <td colspan="2" style="border: hidden">
+                <div>&nbsp;姓名：
+                    <div style="border-bottom: 1px solid #000;height: 28px;width: 100px;float: right;">
+
+                    </div>
+                </div>
+            </td>
+            <td colspan="5" style="border: hidden">
+                <div>&nbsp;&nbsp;身份证：
+                    <div style="border-bottom: 1px solid #000;height: 28px;width: 330px;float: right;">
+
+                    </div>
+                </div>
+            </td>
+            <td colspan="3">
+                <div>&nbsp;&nbsp;电话：
+                    <div style="border-bottom: 1px solid #000;height: 28px;width: 180px;float: right;">
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+        @}
+    </table>
+    <br><br><br><br>
+
+    <table style="width: 940px;height: 700px;">
+
+        <tr class="tableTrClass" style="height: 90px;">
+            <td colspan="100"><span style="font-family: 黑体, SimHei;font-size: 30px">年&nbsp;度&nbsp;审&nbsp;核</span></td>
+        </tr>
+        <tr class="tableTrClass" style="height:400px;">
+            <td colspan="100" style="height: 300px;"><textarea class="tableInputClass" readonly>${contract.annualReview!}</textarea>
+            </td>
+        </tr>
+    </table>
+
+</div>

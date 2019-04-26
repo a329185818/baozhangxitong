@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.support.dao.ContractMapper">
+
+    <select id="queryAllAlreadyAllocatedRoom" resultType="com.stylefeng.guns.modular.support.model.ContractUser">
+        SELECT a.OWNERNAME AS name,a.TELCODE AS telphone,a.OWNERCERTNUM AS idCard,b.recnumgather
+        AS recnumgather,b.oppartnum AS oppartnum, a.optypenum AS optypenum,a.recyear AS recyear,a.recnum AS recnum
+        FROM RWRECOWNER a ,  rwrecinfo b
+        WHERE
+        <if test="name != null and name != ''">
+            instr(a.OWNERNAME||'-'||a.TELCODE||'-'||a.OWNERCERTNUM||'-'||b.recnumgather,#{name})>0 AND
+        </if>
+              a.optypenum = b.optypenum AND
+              a.recyear=b.recyear AND
+              a.recnum = b.recnum AND
+              a.people_status=3 AND
+              b.oppartnum=312
+    </select>
+
+    <select id="queryHouseInfo" resultType="com.stylefeng.guns.modular.support.model.House">
+        SELECT HOUSEID as houseId,SITNUMGATHER as sitnumGather, ARCHITAREA as architArea,ROOMAREA
+        as roomArea,APPORTAREA as apportArea,SITUNITNUM as unitNum,SITDOORNUM as roomNum,(select name from tbdwarchitstruct where code=ARCHITSTRUCTCODE) as architStructcode
+        FROM TBBWDIAGRAMHOUSE
+        WHERE houseid=(SELECT houseId FROM RWRECRECEIVE WHERE optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum})
+    </select>
+
+    <select id="getContract" resultType="com.stylefeng.guns.modular.support.model.Contract">
+        SELECT ID AS id,OPTYPENUM AS optypenum,RECYEAR AS recyear,RECNUM AS recnum,OPPARTNUM AS oppartnum,STARTTIME AS startTime,
+        ENDTIME AS endTime,PRICE AS price,ANNUALREVIEW AS annualReview,NUMMONTH AS numMonth,OPRATIONID AS oprationId
+        FROM CONTRACT WHERE optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum}
+    </select>
+
+    <select id="getEffectiveContract" resultType="com.stylefeng.guns.modular.support.model.Contract">
+        SELECT ID AS id,OPTYPENUM AS optypenum,RECYEAR AS recyear,RECNUM AS recnum,OPPARTNUM AS oppartnum,STARTTIME AS startTime,
+        ENDTIME AS endTime,PRICE AS price,ANNUALREVIEW AS annualReview,NUMMONTH AS numMonth,OPRATIONID AS oprationId
+        FROM CONTRACT WHERE optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum} AND ENDTIME > SYSDATE
+    </select>
+    <select id="houseInfo" resultType="com.stylefeng.guns.modular.support.model.ContractUser">
+        select tb.ARCHITAREA as architArea,tb.SITBUILDNUM as buildNum,tb.SITUNITNUM as unitNum,tb.SITDOORNUM as roomNum,tb.architStructcode,bzf.address as projectAddress,bzf.name as projectName
+from (select tbh.ARCHITAREA as ARCHITAREA,tbh.SITUNITNUM as SITUNITNUM,tbh.SITDOORNUM as SITDOORNUM,tbh.architStructcode as architStructcode,tbb.BUILDIDTEMP as BUILDIDTEMP,tbb.SITBUILDNUM as SITBUILDNUM from
+(select BUILDID, ARCHITAREA,SITUNITNUM, SITDOORNUM, (select name from tbdwarchitstruct where code=ARCHITSTRUCTCODE) as architStructcode
+from TBBWDIAGRAMHOUSE
+ where houseid=
+(select houseId from RWRECRECEIVE where optypenum=81 and recyear=2019 and recnum=520))tbh,TBBWDIAGRAMBUILD tbb where tbh.BUILDID=tbb.BUILDID)tb,BZF_PROJECT bzf where tb.BUILDIDTEMP = bzf.BUILD_RECEIVE
+
+    </select>
+
+    <insert id="addContract" parameterType="com.stylefeng.guns.modular.support.model.Contract">
+        INSERT INTO CONTRACT
+        (ID,OPTYPENUM,RECYEAR,RECNUM,OPPARTNUM,STARTTIME,ENDTIME,
+        PRICE,ANNUALREVIEW,NUMMONTH,HOUSEID,OPRATIONID,CREATETIME)
+        VALUES
+        (#{id},#{optypenum},#{recyear},#{recnum},#{oppartnum},
+        #{startTime},#{endTime},#{price},#{annualReview},#{numMonth},
+        #{houseId},#{oprationId},#{createTime})
+    </insert>
+
+    <update id="updateContract" parameterType="com.stylefeng.guns.modular.support.model.Contract">
+        UPDATE CONTRACT
+        SET
+        OPTYPENUM = #{optypenum},
+        RECYEAR = #{recyear},
+        RECNUM = #{recnum},
+        OPPARTNUM = #{oppartnum},
+        STARTTIME = #{startTime},
+        ENDTIME = #{endTime},
+        PRICE = #{price},
+        ANNUALREVIEW = #{annualReview},
+        NUMMONTH = #{numMonth},
+        HOUSEID = #{houseId},
+        OPRATIONID = #{oprationId},
+        CREATETIME = #{createTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteEffectiveContract" parameterType="int">
+        DELETE FROM CONTRACT
+        WHERE optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum} AND ENDTIME > SYSDATE
+    </delete>
+
+</mapper>

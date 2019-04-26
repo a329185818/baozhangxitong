@@ -18,6 +18,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from tbdwownercerttype
     </select>
 
+    <select id="getNameByIdCard" resultType="string">
+        SELECT NAME FROM tbdwownercerttype WHERE code=#{code}
+    </select>
+
     <select id="getBuildingStructure" resultMap="dicMap">
         select * from tbdwarchitstruct
     </select>
