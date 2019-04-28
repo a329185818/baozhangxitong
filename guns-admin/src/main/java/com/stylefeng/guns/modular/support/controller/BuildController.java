@@ -119,6 +119,7 @@ public class BuildController extends BaseController {
         for(House house:houseList){
             if(!("0").equals(house.getHouseCode())){
                 Map<String,Object> holder = buildService.searchByHouseId(house.getHouseId());
+                holder.put("HOUSEID",holder.get("HOUSEID").toString());
                 holderList.add(holder);
             }
         }

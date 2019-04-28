@@ -1,14 +1,12 @@
 package com.stylefeng.guns.modular.support.controller;
 
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.stylefeng.guns.config.StaticClass;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.page.PageInfoBT;
-import com.stylefeng.guns.core.shiro.ShiroKit;
 import com.stylefeng.guns.core.util.Convert;
-import com.stylefeng.guns.modular.support.model.*;
+import com.stylefeng.guns.modular.support.model.Contract;
+import com.stylefeng.guns.modular.support.model.ContractVO;
 import com.stylefeng.guns.modular.support.service.IContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
+import java.util.Date;
 
 /**
  * 当前项目的逻辑都在Controller里，保证项目一致性，所以逻辑处理也放在Controller里.
@@ -69,18 +67,7 @@ public class ContractController extends BaseController {
      */
     @RequestMapping("/contract_detail")//optypenum,recyear,recnum,recnumgather
     public String contractDetail(Model model, String optypenum, String recyear, String recnum) {
-        //获取申请人数据
-        FamilySurvey apply = contractService.getFamilySurvey(Convert.toInt(optypenum), Convert.toInt(recyear), Convert.toInt(recnum));
-        //通过houseID获取到房屋信息
-        House house = contractService.queryHouseInfo(Convert.toInt(optypenum), Convert.toInt(recyear), Convert.toInt(recnum));
-        //获取合同信息,过期的合同不返回,只有有效的合同才有数据
-        Contract contract = contractService.getEffectiveContract(Convert.toInt(optypenum), Convert.toInt(recyear), Convert.toInt(recnum));
-        if (contract == null) {
-            contract = new Contract();
-        }
-        model.addAttribute("apply", apply);
-        model.addAttribute("house", house);
-        model.addAttribute("contract", contract);
+        contractService.contractDetail(model, Convert.toInt(optypenum), Convert.toInt(recyear), Convert.toInt(recnum));
         return PREFIX + "contract_detail.html";
     }
 
@@ -92,32 +79,7 @@ public class ContractController extends BaseController {
     @RequestMapping("/save")
     @ResponseBody
     public Object saveContract(String json) {
-        Contract contract = JSON.parseObject(json, Contract.class);
-        //判断ID是否为空，为空则新增，不为空则修改
-        if (contract != null) {
-            try {
-                if (contract.getId() == null || ("").equals(contract.getId())) {
-                    addContract(contract);
-                } else {
-                    //如果当前时间在此合同开始-截止时间之间，那么此合同还在有效期内，直接更新数据
-                    //如果当前时间在此合同时间之外，那么此合同过期失效，重新增加一条数据
-                    Date curDate = new Date();
-                    if (curDate.compareTo(contract.getEndTime()) >= 0) {
-                        addContract(contract);//当前时间大于合同截止时间
-                    } else {
-                        contract.setOprationId(ShiroKit.getUser().getId());
-                        contract.setCreateTime(new Date());
-                        //更新合同数据
-                        contractService.updateContract(contract);
-                    }
-                }
-                return "Success";
-            } catch (Exception e) {
-                return "Error";
-            }
-        } else {
-            return "Error";
-        }
+        return contractService.saveContract(json);
     }
 
     /**
@@ -126,11 +88,6 @@ public class ContractController extends BaseController {
      * @param contract
      */
     private void addContract(Contract contract) {
-        //获取uuid设置到合同id里
-        contract.setId(StaticClass.getUUID());
-        contract.setOprationId(ShiroKit.getUser().getId());
-        contract.setCreateTime(new Date());
-        //添加新合同
         contractService.addContract(contract);
     }
 
