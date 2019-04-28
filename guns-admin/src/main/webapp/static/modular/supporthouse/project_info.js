@@ -447,6 +447,8 @@ ProjectInfoDlg.checkHouse = function (OPTYPENUM,RECYEAR,RECNUM,houseCode) {
                 $("#editHouseModal").modal("hide");
                 location.reload();
                 Feng.success("分配房屋成功!");
+                parent.allotRoom.table.refresh(); // 父页面表格刷新
+                // parent.location.reload();//此方法直接关掉本页面，重新刷新父页面
             }else if(response == "EXIT"){
                 Feng.info("此人已有分配房屋，不能再分配")
             }else if(response == 'NOEXIT'){
@@ -474,6 +476,7 @@ ProjectInfoDlg.searchHouse = function () {
     $("#architArea").html(isNull(houseJson.architArea));
     $("#roomArea").html(isNull(houseJson.roomArea));
     $("#apportArea").html(isNull(houseJson.apportArea));
+    $("#houseProp").html(isNull(houseJson.houseProp));
     $("#bargainTotalprice").html(isNull(houseJson.bargainTotalprice));
     $("#chooseHouse").hide();
     $("#editHouseModal").modal("show");

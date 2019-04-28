@@ -5,14 +5,11 @@ import com.stylefeng.guns.core.common.constant.factory.PageFactory;
 import com.stylefeng.guns.core.node.ZTreeNode;
 import com.stylefeng.guns.modular.support.dao.BuildMapper;
 import com.stylefeng.guns.modular.support.model.Build;
-import com.stylefeng.guns.modular.support.model.FamilySurvey;
 import com.stylefeng.guns.modular.support.model.House;
-import com.stylefeng.guns.modular.support.model.HouseModel;
 import com.stylefeng.guns.modular.support.service.IBuildService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

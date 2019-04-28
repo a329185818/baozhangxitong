@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.shiro.ShiroKit;
 import com.stylefeng.guns.core.util.Convert;
-import com.stylefeng.guns.modular.support.dao.AllotRoomMapper;
 import com.stylefeng.guns.modular.support.dao.BuildMapper;
 import com.stylefeng.guns.modular.support.dao.HouseProjectMapper;
 import com.stylefeng.guns.modular.support.model.*;
+import com.stylefeng.guns.modular.support.service.AllotRoomService;
 import com.stylefeng.guns.modular.support.service.DicService;
 import com.stylefeng.guns.modular.support.service.IHouseProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * 配房管理模块
+ */
 @Controller
 @RequestMapping("/allotRoom")
 public class AllotRoomController extends BaseController{
@@ -29,15 +33,15 @@ public class AllotRoomController extends BaseController{
         private String PREFIX = "/allotRoom/";
 
         @Autowired
-        private AllotRoomMapper allotRoomMapper;
+        private AllotRoomService allotRoomService;
         @Autowired
         private HouseProjectMapper houseProjectMapper;
         @Autowired
         private BuildMapper buildMapper;
         @Autowired
         private DicService dicService;
-    @Autowired
-    private IHouseProjectService houseProjectService;
+        @Autowired
+        private IHouseProjectService houseProjectService;
 
     /**
      * 信息查询列表
@@ -60,11 +64,14 @@ public class AllotRoomController extends BaseController{
 
     }
 
-        /**
-         * 配房界面
-         * @param
-         * @return
-         */
+    /**
+     * 配房界面
+     * @param offset
+     * @param limit
+     * @param condition
+     * @param status
+     * @return
+     */
         @RequestMapping(value = "/index2")
         @ResponseBody
         public Object index(Integer offset,Integer limit,String condition ,int status){
@@ -86,11 +93,11 @@ public class AllotRoomController extends BaseController{
                 }
             }
             param.put("userId",userId);
-            projectList =(List)allotRoomMapper.allotRoomQuery(param);
+            projectList =(List)allotRoomService.allotRoomQuery(param);
             //分页数据
             List<Tbbwimport> newProjectList = new ArrayList<>();
             //查询总数
-            int listNum = allotRoomMapper.allotRoomQueryCount(param);
+            int listNum = allotRoomService.allotRoomQueryCount(param);
             Page page = new Page();
             page.setRecords(projectList);
             page.setTotal(listNum);
@@ -101,26 +108,28 @@ public class AllotRoomController extends BaseController{
 
     /**
      * 获取房屋信息
+     * @param OpTypeNum
+     * @param RecYear
+     * @param RecNum
      * @return
      */
     @RequestMapping(value = "/findHouse")
     @ResponseBody
-        public House findHouse(String OpTypeNum,String RecYear,String RecNum){
-            //获取房屋Id
-            String houseId = houseProjectMapper.getHouseReceive(Convert.toInt(OpTypeNum),Convert.toInt(RecYear),Convert.toInt(RecNum));
-            if(houseId != null && !("").equals(houseId)){
-                //分配房了则获取房屋信息
-                House house = buildMapper.getHouse(houseId);
-                return house;
+        public Map findHouse(String OpTypeNum,String RecYear,String RecNum){
 
-            }else{
-                return new House();
-            }
+        return allotRoomService.findHouse(OpTypeNum,RecYear,RecNum);
 
         }
 
     /**
-     *项目详细
+     * 详细
+     * @param page
+     * @param OpTypeNum
+     * @param RecYear
+     * @param RecNum
+     * @param model
+     * @param info
+     * @return
      */
     @RequestMapping("/detail")
     public String projectDetail(String page,String OpTypeNum,String RecYear,String RecNum,Model model,String info){
@@ -253,43 +262,21 @@ public class AllotRoomController extends BaseController{
         List<Map<String,Object>> n = (ArrayList)param.get("rcList");
         List<Map<String,Object>> node =  (List)param.get("rcList");
         model.addAttribute("lastNode",node.get(node.size()-1).get("OPFLOWPHASENAME").toString());
-
-            model.addAttribute("isPeiFang","1");
+        model.addAttribute("isPeiFang","1");
 
         return PREFIX + "allotRoom.html";
     }
 
     /**
      * 解除配房
+     * @param OpTypeNum
+     * @param RecYear
+     * @param RecNum
      * @return
      */
     @RequestMapping(value = "/relieve")
     @ResponseBody
     public String relieveHouse(String OpTypeNum, String RecYear, String RecNum){
-        Map<String,Object> param = new HashMap<>();
-        param.put("iOpTypeNum",Convert.toInt(OpTypeNum));
-        param.put("iRecYear",Convert.toInt(RecYear));
-        param.put("iRecNum",Convert.toInt(RecNum));
-        //获取房屋Id
-        String houseId = houseProjectMapper.getHouseReceive(Convert.toInt(OpTypeNum),Convert.toInt(RecYear),Convert.toInt(RecNum));
-        if(houseId == null && ("").equals(houseId)){
-            return "EXIT";
-        }else{
-
-            param.put("checkHouseId",houseId);
-            //修改房屋状态
-            param.put("houseCode",0);
-            houseProjectMapper.updateHouseCode(param);
-            //修改人员状态
-            param.put("status","2");
-            houseProjectMapper.updatePeopleStatus(param);
-            //清除houseId
-            param.put("checkHouseId",null);
-            houseProjectMapper.allotHouse(param);
-            return "SUCCESS";
-        }
-
-
-
+     return allotRoomService.relieveHouse(OpTypeNum, RecYear, RecNum);
     }
 }

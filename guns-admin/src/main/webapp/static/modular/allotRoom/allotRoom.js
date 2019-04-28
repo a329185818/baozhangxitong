@@ -185,17 +185,20 @@ allotRoom.searchHouse = function (OPTYPENUM,RECYEAR,RECNUM) {
         data:data,
         type:"post",
         success:function (houseJson) {
-            $("#roomNum").html(houseJson.roomNum);
-            $("#architStructcode").html(houseTypeExchange(isNull(houseJson.architStructcode),buildingStructureListJson));
-            $("#usage").html(houseTypeExchange(isNull(houseJson.usage),houseuSageListJson));
-            $("#houseType").html(houseTypeExchange(isNull(houseJson.houseType),houseTypeListJson));
-            $("#sitnumGather").html(isNull(houseJson.sitnumGather));
-            $("#layout").html(isNull(houseJson.layout));
+            $("#roomNum").html(houseJson.house.roomNum);
+            $("#obligee").html(houseJson.obligee);
+            $("#architStructcode").html(houseTypeExchange(isNull(houseJson.house.architStructcode),buildingStructureListJson));
+            $("#usage").html(houseTypeExchange(isNull(houseJson.house.usage),houseuSageListJson));
+            $("#houseType").html(houseTypeExchange(isNull(houseJson.house.houseType),houseTypeListJson));
+            $("#sitnumGather").html(isNull(houseJson.house.sitnumGather));
+            $("#layout").html(isNull(houseJson.house.layout));
             $("#otherprop").html(isNull(houseJson.otherprop));
-            $("#architArea").html(isNull(houseJson.architArea));
-            $("#roomArea").html(isNull(houseJson.roomArea));
-            $("#apportArea").html(isNull(houseJson.apportArea));
-            $("#bargainTotalprice").html(isNull(houseJson.bargainTotalprice));
+            $("#architArea").html(isNull(houseJson.house.architArea));
+            $("#roomArea").html(isNull(houseJson.house.roomArea));
+            $("#apportArea").html(isNull(houseJson.house.apportArea));
+            $("#bargainTotalprice").html(isNull(houseJson.house.bargainTotalprice));
+            $("#houseProp").html(isNull(houseJson.house.houseProp));
+            $("#sitnumGather").html(isNull(houseJson.house.sitnumGather));
             $("#chooseHouse").hide();
             $("#editHouseModal").modal("show");
 
@@ -231,18 +234,21 @@ allotRoom.relieve = function (OPTYPENUM,RECYEAR,RECNUM) {
         RecYear:RECYEAR,
         RecNum:RECNUM
     };
-    $.ajax({
-        url:Feng.ctxPath + '/allotRoom/relieve',
-        data:data,
-        type:"post",
-        success:function (result) {
-            Feng.success("解除配房成功！", allotRoom.table.refresh());
-        },
-        error:function (result) {
-            Feng.info("系统异常！");
-        }
-    })
+    var operation = function() {
+        $.ajax({
+            url: Feng.ctxPath + '/allotRoom/relieve',
+            data: data,
+            type: "post",
 
+            success: function (result) {
+                Feng.success("解除成功！", allotRoom.table.refresh());
+            },
+            error: function (result) {
+                Feng.error("解除失败!" );
+            }
+        })
+    }
+    Feng.confirm("是否解除配房？", operation);
 
 }
 //字典值转换
