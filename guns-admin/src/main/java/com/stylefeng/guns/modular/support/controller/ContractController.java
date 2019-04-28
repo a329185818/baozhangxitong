@@ -42,7 +42,8 @@ public class ContractController extends BaseController {
     }
 
     /**
-     * 合同页面获取数据
+     * 合同页面获取数据,显示所有已分配好房子的
+     *
      * @param offset
      * @param limit
      * @param name
@@ -52,44 +53,14 @@ public class ContractController extends BaseController {
     @ResponseBody
     public PageInfoBT contractList(Integer offset, Integer limit, @RequestParam(required = false) String name) {
         //获取所有已分配好房子的申请人
-        List<ContractUser> list = contractService.queryAllAlreadyAllocatedRoom(name);
-        /**
-         //是否需要权限才能操作?
-         //获取个人ID
-         String userId = ShiroKit.getUser().getId();
-         //项目查看权限
-         List<Authority> lookAuthorityList = authorityService.getAuthority(userId,"查看");
-         //项目编辑权限
-         List<Authority> changeAuthorityList = authorityService.getAuthority(userId,"编辑");
-         projectList = projectService.getProjectByAuthority(projectList,lookAuthorityList,changeAuthorityList);
-         */
-
-        //分页数据
-        List<ContractUser> newProjectList = new ArrayList<>();
-        //项目总数
-        int listNum = list.size();
-        //当前分页最大数
-        int pagingNum = limit * (offset / limit + 1);
-        //取两数最小值
-        int num;
-        if (listNum > pagingNum) {
-            num = pagingNum;
-        } else {
-            num = listNum;
-        }
-
-        for (int i = offset; i < num; i++) {
-            newProjectList.add(list.get(i));
-        }
-        Page page = new Page();
-        page.setRecords(newProjectList);
-        page.setTotal(listNum);
-        page.setCurrent(offset / limit + 1);
+        int iEnd = limit + offset;
+        Page<ContractVO> page = contractService.queryAllAlreadyAllocatedRoom(offset,iEnd,name);
         return super.packForBT(page);
     }
 
     /**
      * 设置合同
+     *
      * @param model
      * @param optypenum
      * @param recyear
@@ -97,7 +68,7 @@ public class ContractController extends BaseController {
      * @return
      */
     @RequestMapping("/contract_detail")//optypenum,recyear,recnum,recnumgather
-    public String projectDetail(Model model,String optypenum, String recyear, String recnum) {
+    public String contractDetail(Model model, String optypenum, String recyear, String recnum) {
         //获取申请人数据
         FamilySurvey apply = contractService.getFamilySurvey(Convert.toInt(optypenum), Convert.toInt(recyear), Convert.toInt(recnum));
         //通过houseID获取到房屋信息
@@ -151,6 +122,7 @@ public class ContractController extends BaseController {
 
     /**
      * 新增合同到数据库
+     *
      * @param contract
      */
     private void addContract(Contract contract) {
@@ -162,22 +134,39 @@ public class ContractController extends BaseController {
         contractService.addContract(contract);
     }
 
+
+    @RequestMapping("/lookAndPrint")
+    public String lookAndPrint(Model model, String optypenum, String recyear, String recnum) {
+        model.addAttribute("optypenum",optypenum);
+        model.addAttribute("recyear",recyear);
+        model.addAttribute("recnum",recnum);
+        return PREFIX + "contract_lookAndPrint.html";
+    }
+
+    @RequestMapping("/all_list")
+    @ResponseBody
+    public Object personContractList(String optypenum, String recyear, String recnum){
+        Page<ContractVO> page = contractService.getPersonAllContract(Convert.toInt(optypenum), Convert.toInt(recyear), Convert.toInt(recnum));
+        return super.packForBT(page);
+    }
+
+
     /**
      * 打印
+     *
      * @param model
      * @param optypenum
      * @param recyear
      * @param recnum
-     * @param recnumgather
      * @return
      */
     @RequestMapping(value = "/export_pdf")
-    public String exportPdf(Model model,String optypenum, String recyear, String recnum,String recnumgather) {
+    public String exportPdf(Model model, String optypenum, String recyear, String recnum,Date endTime) {
         //获取承租方信息,拿到姓名和身份证号码
         //获取房屋地址，拿到小区地址+栋+室+房屋结构+建筑面积
         //获取合同设置的时间，年申情况，合同租金/每平米·月，计算出月租金，月租金大写，半年租金，半年租金大写
         //共同居住人情况
-        contractService.exportPdf(model,Convert.toInt(optypenum), Convert.toInt(recyear), Convert.toInt(recnum));
+        contractService.exportPdf(model, Convert.toInt(optypenum), Convert.toInt(recyear), Convert.toInt(recnum),endTime);
         return PREFIX + "contract_pdf.html";
     }
 

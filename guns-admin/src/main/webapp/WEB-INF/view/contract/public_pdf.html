@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <div style="font-size: 23px;line-height: 2em;width: 830px;margin:40px auto;text-align: justify;letter-spacing:6px">
+    <div style="font-size: 23px;line-height: 2em;width: 830px;margin:40px auto;text-align: justify;letter-spacing:5px">
 
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据《中华人民共和国城市房地产管理法》、《中华人民共和国合同法》、《三亚市公共租赁住房和廉租住房并轨管理暂行办法》等有关法律法规，经甲、乙双方协商一致，订立本合同。<br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第一条</b>&nbsp;&nbsp;&nbsp;经审核批准，乙方符合<span style="border-bottom:1px solid #000;">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
@@ -72,7 +72,7 @@
         <span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.startMon!}&nbsp;</span>月<span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.startDay!}&nbsp;</span>日开始到<span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.endYear!}&nbsp;</span>年<span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.endMon!}&nbsp;</span>月<span style="border-bottom: 1px solid #000">&nbsp;${dateInfo.endDay!}&nbsp;</span>日结束。<br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如乙方在&nbsp;3&nbsp;年租赁期满后续继续租住，乙方必须提前一个月，向甲方申报，甲方会同相关部门在&nbsp;20&nbsp;个工作日内予以调查核实，
         按照第七条规定确定是否继续履行本合同。继续履行本合同的方式采取在本合同年度审核栏中由甲方注明年度审核情况，并加盖继续履行合同印章。<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第三条</b>&nbsp;&nbsp;&nbsp;乙方承租房屋的租金为<span style="border-bottom: 1px solid #000">&nbsp;${rentInfo.rent!}&nbsp;</span>元/平米·月（暂定价），月租金每月<span style="border-bottom: 1px solid #000">&nbsp;${rentInfo.monthRent!}&nbsp;</span>元（大写<span style="border-bottom: 1px solid #000">：&nbsp;${rentInfo.monthRentCapitalization!}&nbsp;）</span>。每半年缴纳
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>第三条</b>&nbsp;&nbsp;&nbsp;乙方承租房屋的租金为<span style="border-bottom: 1px solid #000">&nbsp;${rentInfo.rent!}&nbsp;</span>元/平米·月（暂定价），月租金每月<span style="border-bottom: 1px solid #000">&nbsp;${rentInfo.monthRent!}</span>元（大写<span style="border-bottom: 1px solid #000">：${rentInfo.monthRentCapitalization!}）</span>。每半年缴纳
 
     </div>
 </div>
@@ -151,8 +151,8 @@
 <!--公共租赁住房租赁合同5页-->
 
 
-<div style="width: 1000px;height: 1400px;border: 1px solid #fff;margin-top: 70px;" align="center">
-    <div style="font-size: 40px;text-align: center;margin-top: 80px">共&nbsp;同&nbsp;居&nbsp;住&nbsp;人&nbsp;情&nbsp;况</div>
+<div style="width: 1000px;height: 1400px;border: 1px solid #fff;margin-top: 100px;" align="center">
+    <div style="font-size: 40px;text-align: center;margin-top: 100px">共&nbsp;同&nbsp;居&nbsp;住&nbsp;人&nbsp;情&nbsp;况</div>
     <table style="font-size: 20px;width: 850px;height: 150px;margin-top: 70px;border: hidden;">
         <tr class="tableTrClass" style="border: hidden">
             <td colspan="10"></td>
@@ -184,7 +184,7 @@
         </tr>
         @}
 
-        @for(jointApplicant in jointApplicantListOther){
+        @for(var i=0;i < jointApplicantListOther; i++){
         <tr style="border: hidden">
             <td colspan="2" style="border: hidden">
                 <div>&nbsp;姓名：

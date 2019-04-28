@@ -4,19 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.stylefeng.guns.modular.support.dao.ContractMapper">
 
-    <select id="queryAllAlreadyAllocatedRoom" resultType="com.stylefeng.guns.modular.support.model.ContractUser">
-        SELECT a.OWNERNAME AS name,a.TELCODE AS telphone,a.OWNERCERTNUM AS idCard,b.recnumgather
-        AS recnumgather,b.oppartnum AS oppartnum, a.optypenum AS optypenum,a.recyear AS recyear,a.recnum AS recnum
+    <select id="queryAllAlreadyAllocatedRoom" resultType="com.stylefeng.guns.modular.support.model.ContractVO">
+        select * from
+        (select c.*,ROWNUM RN from
+        (SELECT a.OWNERNAME AS name,a.TELCODE AS telphone,a.OWNERCERTNUM AS idCard,b.recnumgather
+        AS recnumgather,(select OPPARTNAME from tbbcoppart where OPPARTNUM= b.oppartnum) AS oppartnum, a.optypenum AS optypenum,a.recyear AS recyear,a.recnum AS recnum,count(*)over()total
         FROM RWRECOWNER a ,  rwrecinfo b
         WHERE
         <if test="name != null and name != ''">
             instr(a.OWNERNAME||'-'||a.TELCODE||'-'||a.OWNERCERTNUM||'-'||b.recnumgather,#{name})>0 AND
         </if>
-              a.optypenum = b.optypenum AND
-              a.recyear=b.recyear AND
-              a.recnum = b.recnum AND
-              a.people_status=3 AND
-              b.oppartnum=312
+        a.optypenum = b.optypenum AND
+        a.recyear=b.recyear AND
+        a.recnum = b.recnum AND
+        a.people_status=3 AND
+        b.oppartnum=312 ORDER BY a.recnum DESC)c where #{iEnd}>=ROWNUM) WHERE RN>=#{iStart}
     </select>
 
     <select id="queryHouseInfo" resultType="com.stylefeng.guns.modular.support.model.House">
@@ -26,10 +28,15 @@
         WHERE houseid=(SELECT houseId FROM RWRECRECEIVE WHERE optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum})
     </select>
 
-    <select id="getContract" resultType="com.stylefeng.guns.modular.support.model.Contract">
-        SELECT ID AS id,OPTYPENUM AS optypenum,RECYEAR AS recyear,RECNUM AS recnum,OPPARTNUM AS oppartnum,STARTTIME AS startTime,
-        ENDTIME AS endTime,PRICE AS price,ANNUALREVIEW AS annualReview,NUMMONTH AS numMonth,OPRATIONID AS oprationId
-        FROM CONTRACT WHERE optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum}
+    <select id="getPersonAllContract" resultType="com.stylefeng.guns.modular.support.model.ContractVO">
+        select OWNERNAME as name,OWNERCERTNUM as idCard,sitnumgather as houseAddress,startTime,endTime,price,optypenum,recyear,recnum
+        from(select houseid,OWNERNAME,OWNERCERTNUM,startTime,endTime,price,owner.optypenum as optypenum,owner.recyear as recyear,owner.recnum as recnum
+        from(select OWNERNAME,OWNERCERTNUM,startTime,endTime,price,o.optypenum as optypenum,o.recyear as recyear,o.recnum as recnum
+        from (select optypenum,recyear,recnum,OWNERNAME,OWNERCERTNUM from RWRECOWNER
+        where optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum}) o,CONTRACT c
+        where c.optypenum=o.optypenum and c.recyear=o.recyear and c.recnum=o.recnum)owner,RWRECRECEIVE receive
+        where receive.optypenum=owner.optypenum and receive.recyear=owner.recyear and receive.recnum=owner.recnum)h,TBBWDIAGRAMHOUSE tbh
+        where tbh.houseid=h.houseid ORDER BY endTime DESC
     </select>
 
     <select id="getEffectiveContract" resultType="com.stylefeng.guns.modular.support.model.Contract">
@@ -37,13 +44,20 @@
         ENDTIME AS endTime,PRICE AS price,ANNUALREVIEW AS annualReview,NUMMONTH AS numMonth,OPRATIONID AS oprationId
         FROM CONTRACT WHERE optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum} AND ENDTIME > SYSDATE
     </select>
-    <select id="houseInfo" resultType="com.stylefeng.guns.modular.support.model.ContractUser">
+
+    <select id="getEffectiveContractForPrint" resultType="com.stylefeng.guns.modular.support.model.Contract">
+        SELECT ID AS id,OPTYPENUM AS optypenum,RECYEAR AS recyear,RECNUM AS recnum,OPPARTNUM AS oppartnum,STARTTIME AS startTime,
+        ENDTIME AS endTime,PRICE AS price,ANNUALREVIEW AS annualReview,NUMMONTH AS numMonth,OPRATIONID AS oprationId
+        FROM CONTRACT WHERE optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum} AND ENDTIME = #{endTime}
+    </select>
+
+    <select id="houseInfo" resultType="com.stylefeng.guns.modular.support.model.ContractVO">
         select tb.ARCHITAREA as architArea,tb.SITBUILDNUM as buildNum,tb.SITUNITNUM as unitNum,tb.SITDOORNUM as roomNum,tb.architStructcode,bzf.address as projectAddress,bzf.name as projectName
 from (select tbh.ARCHITAREA as ARCHITAREA,tbh.SITUNITNUM as SITUNITNUM,tbh.SITDOORNUM as SITDOORNUM,tbh.architStructcode as architStructcode,tbb.BUILDIDTEMP as BUILDIDTEMP,tbb.SITBUILDNUM as SITBUILDNUM from
 (select BUILDID, ARCHITAREA,SITUNITNUM, SITDOORNUM, (select name from tbdwarchitstruct where code=ARCHITSTRUCTCODE) as architStructcode
 from TBBWDIAGRAMHOUSE
  where houseid=
-(select houseId from RWRECRECEIVE where optypenum=81 and recyear=2019 and recnum=520))tbh,TBBWDIAGRAMBUILD tbb where tbh.BUILDID=tbb.BUILDID)tb,BZF_PROJECT bzf where tb.BUILDIDTEMP = bzf.BUILD_RECEIVE
+(select houseId from RWRECRECEIVE where optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum}))tbh,TBBWDIAGRAMBUILD tbb where tbh.BUILDID=tbb.BUILDID)tb,BZF_PROJECT bzf where tb.BUILDIDTEMP = bzf.BUILD_RECEIVE
 
     </select>
 

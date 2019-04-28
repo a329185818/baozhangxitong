@@ -1,5 +1,5 @@
 /**
- * 保障房项目初始化
+ * 合同初始化
  */
 var contractManage = {
     id: "ContractTable",	//表格id
@@ -20,18 +20,10 @@ contractManage.initColumn = function () {
         }
         },
         {title: '申请人姓名', field: 'name', align: 'center', valign: 'middle', sortable: true},
-        {title: '身份证号', field: 'idCard', align: 'center', valign: 'middle', sortable: true},
-        {title: '电话', field: 'telphone', align: 'center', valign: 'middle', sortable: true},
+        {title: '身份证号码', field: 'idCard', align: 'center', valign: 'middle', sortable: true},
+        {title: '电话号码', field: 'telphone', align: 'center', valign: 'middle', sortable: true},
         {title: '登记编号', field: 'recnumgather', align: 'center', valign: 'middle', sortable: true},
-        {title: '登记类型', field: 'oppartnum', align: 'center', valign: 'middle', sortable: true,
-            formatter:function(value,row,index){
-            if(value==312){
-                return "公租房申请";
-            }
-            else {
-                return "";
-            }
-        }},
+        {title: '登记类型', field: 'oppartnum', align: 'center', valign: 'middle', sortable: true},
         {title: 'OPTYPENUM', field: 'optypenum', align: 'center', valign: 'middle',visible: false},
         {title: 'RECYEAR', field: 'recyear', align: 'center', valign: 'middle',visible: false},
         {title: 'RECNUM', field: 'recnum', align: 'center', valign: 'middle',visible: false},
@@ -40,13 +32,19 @@ contractManage.initColumn = function () {
             formatter:function(value,row,index){
                 var str = '';
                 str +=  '<a onclick="contractManage.detail('+'\'' + row.optypenum + '\',\'' +row.recyear + '\',\''+ row.recnum +'\')">设置合同</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
-                str += '<a onclick="contractManage.exportMaterial('+'\'' + row.optypenum + '\',\'' +row.recyear + '\',\''+ row.recnum +'\',\''+ row.recnumgather +'\')">查看/打印</a>';
+                str += '<a onclick="contractManage.lookAndPrint('+'\'' + row.optypenum + '\',\'' +row.recyear + '\',\''+ row.recnum +'\')">查看/打印</a>';
                 return str;
             }
         }
     ];
 };
 
+/**
+ * 设置合同
+ * @param optypenum
+ * @param recyear
+ * @param recnum
+ */
 contractManage.detail = function (optypenum,recyear,recnum) {
     var index = layer.open({
         type: 2,
@@ -60,12 +58,25 @@ contractManage.detail = function (optypenum,recyear,recnum) {
     layer.full(index);
 };
 
-//打印export_pdf
-contractManage.exportMaterial = function (optypenum,recyear,recnum,recnumgather) {
-    window.open(Feng.ctxPath + '/contract/export_pdf?optypenum='+optypenum+'&recyear=' + recyear +'&recnum=' + recnum + '&recnumgather=' + recnumgather);
+/**
+ * 查看/打印
+ * @param OPTYPENUM
+ * @param RECYEAR
+ * @param RECNUM
+ */
+contractManage.lookAndPrint = function (optypenum,recyear,recnum) {
+    var index = layer.open({
+        type: 2,
+        title: '查看/打印',
+        area: ['80%', '95%'], //宽高
+        fix: false, //不固定
+        maxmin: true,
+        content: Feng.ctxPath + '/contract/lookAndPrint?optypenum=' + optypenum +'&recyear=' + recyear +'&recnum=' + recnum
+    });
+    contractManage.layerIndex = index;
 }
 
-//保存项目信息
+//保存合同信息
 contractManage.save = function () {
     var data = $("#contractInfoForm").serializeJSON();
     if(data.price == null || data.price == "" || data.price == undefined || data.price == 0){

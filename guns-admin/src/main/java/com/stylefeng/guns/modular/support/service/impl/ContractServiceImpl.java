@@ -1,6 +1,8 @@
 package com.stylefeng.guns.modular.support.service.impl;
 
 
+import com.baomidou.mybatisplus.plugins.Page;
+import com.stylefeng.guns.core.common.constant.factory.PageFactory;
 import com.stylefeng.guns.core.util.Convert;
 import com.stylefeng.guns.modular.support.dao.ContractMapper;
 import com.stylefeng.guns.modular.support.dao.DicMapper;
@@ -28,8 +30,15 @@ public class ContractServiceImpl implements IContractService {
 
 
     @Override
-    public List<ContractUser> queryAllAlreadyAllocatedRoom(String name) {
-        return contractMapper.queryAllAlreadyAllocatedRoom(name);
+    public Page<ContractVO> queryAllAlreadyAllocatedRoom(int iStart,int iEnd,String name) {
+        Page<ContractVO> page = new Page<ContractVO>();
+        List<ContractVO> contractList =contractMapper.queryAllAlreadyAllocatedRoom(iStart,iEnd,name);
+        if (contractList.size()>0){
+            page.setRecords(contractList);
+            page.setTotal(contractList.get(0).getTotal());
+            page.setCurrent(iStart / (iEnd-iStart) + 1);
+        }
+        return page;
     }
 
     @Override
@@ -50,11 +59,6 @@ public class ContractServiceImpl implements IContractService {
     }
 
     @Override
-    public Contract getContract(Integer optypenum, Integer recyear, Integer recnum) {
-        return contractMapper.getContract(optypenum, recyear, recnum);
-    }
-
-    @Override
     public Contract getEffectiveContract(Integer optypenum, Integer recyear, Integer recnum) {
         return contractMapper.getEffectiveContract(optypenum, recyear, recnum);
     }
@@ -70,16 +74,7 @@ public class ContractServiceImpl implements IContractService {
     }
 
     @Override
-    public void deleteEffectiveContract(Integer optypenum, Integer recyear, Integer recnum) {
-        //先查询是否有合同数据，如果有合同数据，可能会存在多条（有效和失效）
-        Contract contract = contractMapper.getContract(optypenum, recyear, recnum);
-        if (contract != null) {
-            contractMapper.deleteEffectiveContract(optypenum, recyear, recnum);
-        }
-    }
-
-    @Override
-    public void exportPdf(Model model, Integer optypenum, Integer recyear, Integer recnum) {
+    public void exportPdf(Model model, Integer optypenum, Integer recyear, Integer recnum,Date endTime) {
         Map param = new HashMap();
         param.put("iOptypenum", optypenum);
         param.put("iRecyear", recyear);
@@ -88,11 +83,11 @@ public class ContractServiceImpl implements IContractService {
         FamilySurvey apply = houseProjectMapper.getFamilySurvey(optypenum, recyear, recnum);
         model.addAttribute("apply", apply);
         //获取房屋地址：小区地址+栋+室+房屋结构+建筑面积
-        ContractUser houseInfo = contractMapper.houseInfo(optypenum, recyear, recnum);
+        ContractVO houseInfo = contractMapper.houseInfo(optypenum, recyear, recnum);
         model.addAttribute("area",doubleTrans(houseInfo.getArchitArea()));
         model.addAttribute("houseInfo", houseInfo);
         //获取合同设置的时间：年审情况，合同租金/每平米·月，计算出月租金，月租金大写，半年租金，半年租金大写
-        Contract contract = contractMapper.getEffectiveContract(optypenum, recyear, recnum);
+        Contract contract = contractMapper.getEffectiveContractForPrint(optypenum, recyear, recnum,endTime);
         model.addAttribute("contract", contract);
         //获取合同开始和结束时间的年月日
         Date start = contract.getStartTime();
@@ -107,7 +102,6 @@ public class ContractServiceImpl implements IContractService {
         double halfYear = rent * housingArea * 6;
         String monthRentCapitalization = Convert.digitUppercase(monthRent);
         String halfYearCapitalization = Convert.digitUppercase(halfYear);
-        String num = doubleTrans(100.2);
         Map map = new HashMap();
         map.put("rent",doubleTrans(contract.getPrice()));//租金/每平米·月
         map.put("monthRent", doubleTrans(monthRent));//月租金
@@ -118,11 +112,15 @@ public class ContractServiceImpl implements IContractService {
         //共同居住人情况
         List<JointApplicant> jointApplicantList = houseProjectMapper.selectJointApplicant(param);
         model.addAttribute("jointApplicantList", jointApplicantList);
-        List<JointApplicant> jointApplicantListOther = new ArrayList<JointApplicant>();
-        for (int i = 0; i < 5-jointApplicantList.size(); i++){
-            jointApplicantListOther.add(new JointApplicant());
-        }
-        model.addAttribute("jointApplicantListOther",jointApplicantListOther);
+        model.addAttribute("jointApplicantListOther",5-jointApplicantList.size());
+    }
+
+    @Override
+    public Page<ContractVO> getPersonAllContract(Integer optypenum, Integer recyear, Integer recnum) {
+        Page<ContractVO> page = new PageFactory().defaultPage();
+        List<ContractVO> contractList = contractMapper.getPersonAllContract(page,optypenum,recyear,recnum);
+        page.setRecords(contractList);
+        return page;
     }
 
     /**
