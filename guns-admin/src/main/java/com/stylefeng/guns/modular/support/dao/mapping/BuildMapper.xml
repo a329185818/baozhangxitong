@@ -47,9 +47,9 @@
     
     <insert id="createHouse" parameterType="com.stylefeng.guns.modular.support.model.House">
         INSERT INTO TBBWDIAGRAMHOUSE
-        (HOUSEID,SITDOORNUM,BUILDID,SITFLOORNUM,SITUNITNUM)
+        (HOUSEID,SITDOORNUM,BUILDID,SITFLOORNUM,SITUNITNUM,SITNUMGATHER)
         VALUES
-        (#{houseId},#{roomNum},#{buildId},#{floorNum},#{unitNum})
+        (#{houseId},#{roomNum},#{buildId},#{floorNum},#{unitNum},#{sitnumGather})
     </insert>
     
     <update id="updateHouse" parameterType="com.stylefeng.guns.modular.support.model.House">
@@ -109,6 +109,12 @@
 
     <select id="getBulidInfo" parameterType="string" resultType="string">
         SELECT districtcode from TBBWDIAGRAMBUILD WHERE buildID = #{projectId}
+    </select>
+
+    <select id="getProjectAddress" parameterType="string" resultType="map">
+        SELECT ADDRESS,DISTRICTCODE,SITBUILDNUM FROM
+        (SELECT SITBUILDNUM,BUILDIDTEMP,districtcode FROM TBBWDIAGRAMBUILD WHERE buildID = #{buildId})tb, BZF_PROJECT bzf
+        WHERE tb.BUILDIDTEMP = bzf.BUILD_RECEIVE
     </select>
 
     <select id="getOnlyId" statementType="CALLABLE" parameterType="java.util.Map">

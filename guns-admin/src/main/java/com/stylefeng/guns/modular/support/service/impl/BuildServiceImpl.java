@@ -70,9 +70,14 @@ public class BuildServiceImpl implements IBuildService{
     @Override
     public void createHouse(List<House> houseList){
         String roadCode = "";
+        String projectAddress = "";
+        String buildNum = "";
         Map<String,Object> param = new HashMap();
         if(houseList.size()>0){
-            roadCode = buildMapper.getBulidInfo(houseList.get(0).getBuildId());
+            Map<String,Object> map = buildMapper.getProjectAddress(houseList.get(0).getBuildId());
+            roadCode = map.get("DISTRICTCODE").toString();
+            projectAddress = map.get("ADDRESS").toString();
+            buildNum = map.get("SITBUILDNUM").toString();
             //获得ID
             param.put("onlyId","");
             param.put("itype",2);
@@ -82,6 +87,8 @@ public class BuildServiceImpl implements IBuildService{
         for(House house:houseList){
             buildMapper.getOnlyId(param);
             house.setHouseId(param.get("onlyId").toString());
+            String sitnumGather = projectAddress + buildNum + "栋" + house.getUnitNum() + "单元" + house.getRoomNum();//projectaddress,buildnum,unitnum,roomnum
+            house.setSitnumGather(sitnumGather);
             buildMapper.createHouse(house);
         }
     }

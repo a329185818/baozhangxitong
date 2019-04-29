@@ -3,7 +3,6 @@ package com.stylefeng.guns.modular.support.dao;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.core.node.ZTreeNode;
 import com.stylefeng.guns.modular.support.model.Build;
-import com.stylefeng.guns.modular.support.model.FamilySurvey;
 import com.stylefeng.guns.modular.support.model.House;
 import org.apache.ibatis.annotations.Param;
 
@@ -104,5 +103,12 @@ public interface BuildMapper{
      * @return
      */
     Build getbuildByBuildId(@Param("buildId") String buildId);
+
+    /**
+     * 获取项目地址，用于房屋坐落=项目地址+栋+单元+房号
+     * @param buildId
+     * @return
+     */
+    Map<String,Object> getProjectAddress(@Param("buildId") String buildId);
 
 }
