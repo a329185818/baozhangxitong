@@ -71,6 +71,8 @@ buildInfo.showOtherDate = function (num,type) {
                     $("#architArea").html(isNull(item.architArea));
                     $("#roomArea").html(isNull(item.roomArea));
                     $("#apportArea").html(isNull(item.apportArea));
+                    $("#houseProp").html(isNull(item.houseProp));
+                    debugger;
                     $("#bargainTotalprice").html(isNull(item.bargainTotalprice));
                     if(item.houseCode != 0){
                         for(var i =0;i<holder.length;i++){
@@ -109,6 +111,7 @@ buildInfo.showOtherDate = function (num,type) {
                         $("#architArea").html(isNull(item.architArea));
                         $("#roomArea").html(isNull(item.roomArea));
                         $("#apportArea").html(isNull(item.apportArea));
+                        $("#houseProp").html(isNull(item.houseProp));
                         $("#bargainTotalprice").html(isNull(item.bargainTotalprice));
                         $("#chooseHouse").show();
                         $("#editHouseModal").modal("show");
