@@ -91,6 +91,10 @@ contractManage.save = function () {
         Feng.info("请选择合同截止时间！");
         return ;
     }
+    if (data.endTime <= data.startTime){
+        Feng.info("截止时间小于等于开始时间！");
+        return ;
+    }
 
     data = {json:JSON.stringify(data)};
     $.ajax({

@@ -65,7 +65,6 @@ public class ContractServiceImpl implements IContractService {
         return apply;
     }
 
-    @Override
     public void addContract(Contract contract) {
         //获取uuid设置到合同id里
         contract.setId(StaticClass.getUUID());

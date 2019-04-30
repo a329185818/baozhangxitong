@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.page.PageInfoBT;
 import com.stylefeng.guns.core.util.Convert;
-import com.stylefeng.guns.modular.support.model.Contract;
 import com.stylefeng.guns.modular.support.model.ContractVO;
 import com.stylefeng.guns.modular.support.service.IContractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,16 +80,6 @@ public class ContractController extends BaseController {
     public Object saveContract(String json) {
         return contractService.saveContract(json);
     }
-
-    /**
-     * 新增合同到数据库
-     *
-     * @param contract
-     */
-    private void addContract(Contract contract) {
-        contractService.addContract(contract);
-    }
-
 
     @RequestMapping("/lookAndPrint")
     public String lookAndPrint(Model model, String optypenum, String recyear, String recnum) {

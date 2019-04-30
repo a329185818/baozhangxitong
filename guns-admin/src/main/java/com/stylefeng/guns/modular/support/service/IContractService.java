@@ -1,7 +1,6 @@
 package com.stylefeng.guns.modular.support.service;
 
 import com.baomidou.mybatisplus.plugins.Page;
-import com.stylefeng.guns.modular.support.model.Contract;
 import com.stylefeng.guns.modular.support.model.ContractVO;
 import org.springframework.ui.Model;
 
@@ -17,12 +16,6 @@ public interface IContractService {
      * @return
      */
     Page<ContractVO> queryAllAlreadyAllocatedRoom(int iStart,int iEnd,String name);
-
-    /**
-     * 保存新合同数据
-     * @param contract
-     */
-    void addContract(Contract contract);
 
     /**
      *获取打印所需的数据
