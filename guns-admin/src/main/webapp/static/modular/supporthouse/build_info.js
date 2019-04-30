@@ -158,6 +158,7 @@ buildInfo.editHouse = function(){
             var str = chooseId.substr(0,chooseId.length-1);
             $.each(house,function (i,item) {
                 if(item.houseId == str){
+                    $("#obligee").val(item.obligee);
                     $("#roomNum").val(item.roomNum);
                     $("#architStructcode").val(item.architStructcode);
                     $("#usage").val(item.usage);
@@ -173,6 +174,7 @@ buildInfo.editHouse = function(){
             });
             $("#roomNum").attr("disabled",false);
         }else{
+            $("#obligee").val("");
             $("#roomNum").val("");
             $("#roomNum").attr("disabled",true);
             $("#architStructcode").val("");

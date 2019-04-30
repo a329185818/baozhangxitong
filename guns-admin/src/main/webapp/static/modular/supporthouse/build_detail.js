@@ -61,7 +61,8 @@ buildInfo.showOtherDate = function (num,type) {
             var houseId = $(this).attr('id');
             $.each(house,function (i,item) {
                 if(item.houseId == houseId){
-                    $("#roomNum").html(item.roomNum);
+                    $("#obligee").html(isNull(item.obligee));
+                    $("#roomNum").html(isNull(item.roomNum));
                     $("#architStructcode").html(houseTypeExchange(isNull(item.architStructcode),buildingStructureListJson));
                     $("#usage").html(houseTypeExchange(isNull(item.usage),houseuSageListJson));
                     $("#houseType").html(houseTypeExchange(isNull(item.houseType),houseTypeListJson));
@@ -72,7 +73,6 @@ buildInfo.showOtherDate = function (num,type) {
                     $("#roomArea").html(isNull(item.roomArea));
                     $("#apportArea").html(isNull(item.apportArea));
                     $("#houseProp").html(isNull(item.houseProp));
-                    debugger;
                     $("#bargainTotalprice").html(isNull(item.bargainTotalprice));
                     if(item.houseCode != 0){
                         for(var i =0;i<holder.length;i++){
@@ -101,6 +101,7 @@ buildInfo.showOtherDate = function (num,type) {
                 if(item.houseId == houseId){
                     if(item.houseCode == 0){
                         $("#checkHouseId").val(item.houseId);
+                        $("#obligee").html(isNull(item.obligee));
                         $("#roomNum").html(item.roomNum);
                         $("#architStructcode").html(houseTypeExchange(isNull(item.architStructcode),buildingStructureListJson));
                         $("#usage").html(houseTypeExchange(isNull(item.usage),houseuSageListJson));

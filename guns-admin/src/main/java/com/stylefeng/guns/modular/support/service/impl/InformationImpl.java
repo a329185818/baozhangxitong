@@ -4,15 +4,8 @@ import com.stylefeng.guns.core.common.Result;
 import com.stylefeng.guns.core.shiro.ShiroKit;
 import com.stylefeng.guns.core.util.Convert;
 import com.stylefeng.guns.core.util.ToolUtil;
-import com.stylefeng.guns.modular.support.dao.BuildMapper;
 import com.stylefeng.guns.modular.support.dao.HouseProjectMapper;
-import com.stylefeng.guns.modular.support.model.FamilySurvey;
-import com.stylefeng.guns.modular.support.model.HandleNode;
-import com.stylefeng.guns.modular.support.model.House;
-import com.stylefeng.guns.modular.support.model.JointApplicant;
-import com.stylefeng.guns.modular.support.service.IHouseProjectService;
 import com.stylefeng.guns.modular.support.service.InformationService;
-import com.stylefeng.guns.modular.system.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service

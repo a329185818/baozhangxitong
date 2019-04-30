@@ -11,6 +11,8 @@ public class House {
     private Integer floorNum;
     //所在单元
     private Integer unitNum;
+    //权利人
+    private  String obligee;
     //房号
     private String roomNum;
     //房屋用途
@@ -193,7 +195,13 @@ public class House {
     public void setHouseCode(String houseCode) {
         this.houseCode = houseCode;
     }
+    public String getObligee() {
+        return obligee;
+    }
 
+    public void setObligee(String obligee) {
+        this.obligee = obligee;
+    }
     @Override
     public String toString() {
         return "House{" +
@@ -201,6 +209,7 @@ public class House {
                 ", buildId='" + buildId + '\'' +
                 ", floorNum=" + floorNum +
                 ", unitNum=" + unitNum +
+                ",obligee='" + obligee + '\'' +
                 ", roomNum='" + roomNum + '\'' +
                 ", usage='" + usage + '\'' +
                 ", stateCode='" + stateCode + '\'' +

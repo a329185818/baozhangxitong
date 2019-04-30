@@ -465,7 +465,7 @@ ProjectInfoDlg.checkHouse = function (OPTYPENUM,RECYEAR,RECNUM,houseCode) {
  * 查看此人分配的房屋信息
  */
 ProjectInfoDlg.searchHouse = function () {
-
+    $("#obligee").html(houseJson.obligee);
     $("#roomNum").html(houseJson.roomNum);
     $("#architStructcode").html(houseTypeExchange(isNull(houseJson.architStructcode),buildingStructureListJson));
     $("#usage").html(houseTypeExchange(isNull(houseJson.usage),houseuSageListJson));
