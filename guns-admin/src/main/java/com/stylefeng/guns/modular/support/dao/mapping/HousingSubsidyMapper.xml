@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.support.dao.HousingSubsidyMapper">
+
+    <select id="getHousingSubsidy" resultType="com.stylefeng.guns.modular.support.model.HousingSubsidy">
+        SELECT ID,OPTYPENUM,RECYEAR,RECNUM,STARTTIME,ENDTIME,RENT,REMARK,OPRATIONID,CREATETIME
+        FROM HOUSINGSUBSIDY
+        WHERE OPTYPENUM=#{optypenum} AND RECYEAR=#{recyear} AND RECNUM=#{recnum} AND RELIEVETIME IS NULL
+    </select>
+
+    <insert id="addHousingSubsidy" parameterType="com.stylefeng.guns.modular.support.model.HousingSubsidy">
+        INSERT INTO HOUSINGSUBSIDY
+        (ID,OPTYPENUM,RECYEAR,RECNUM,STARTTIME,ENDTIME,RENT,REMARK,OPRATIONID,CREATETIME)
+        VALUES
+        (#{id},#{optypenum},#{recyear},#{recnum},#{startTime},#{endTime},#{rent},#{remark},#{oprationId},#{createTime})
+    </insert>
+
+    <update id="updateHousingSubsidy">
+        UPDATE HOUSINGSUBSIDY
+        SET RELIEVETIME=SYSDATE,RELIEVEOPRATIONID=#{relieveOprationId}
+        WHERE OPTYPENUM=#{optypenum} AND RECYEAR=#{recyear} AND RECNUM=#{recnum} AND RELIEVETIME IS NULL
+    </update>
+
+    <select id="queryALLHousingSubsidy" resultType="com.stylefeng.guns.modular.support.model.HousingSubsidyVO">
+        SELECT * FROM
+        (SELECT c.*,ROWNUM RN from
+        (SELECT a.OWNERNAME AS name,a.TELCODE AS telphone,a.OWNERCERTNUM AS idCard,a.optypenum AS optypenum,a.recyear AS recyear,a.recnum AS recnum,count(*)over()total
+        FROM (SELECT optypenum,recyear,recnum FROM HOUSINGSUBSIDY GROUP BY optypenum,recyear,recnum) b,RWRECOWNER a
+        WHERE
+        <if test="name != null and name != ''">
+            instr(a.OWNERNAME||'-'||a.TELCODE||'-'||a.OWNERCERTNUM,#{name})>0 AND
+        </if>
+        a.optypenum = b.optypenum AND
+        a.recyear=b.recyear AND
+        a.recnum = b.recnum
+        ORDER BY a.recnum DESC)c where 15>=ROWNUM) WHERE RN>=0
+    </select>
+
+    <select id="getPersonAllHousingSubsidy" resultType="com.stylefeng.guns.modular.support.model.HousingSubsidyVO">
+        SELECT h.optypenum AS optypenum,h.recyear AS recyear,h.recnum AS recnum,OWNERNAME AS name,OWNERCERTNUM AS idCard,TELCODE AS telphone,RENT AS rent,
+        STARTTIME AS startTime,ENDTIME AS endTime,REMARK AS remark,(select name from sys_user where id=OPRATIONID) AS oprationName,RELIEVETIME AS relieveTime,
+         (select name from sys_user where id=RELIEVEOPRATIONID) AS relieveOprationName FROM
+        (SELECT optypenum,recyear,recnum,OWNERNAME,OWNERCERTNUM，TELCODE from RWRECOWNER
+        WHERE optypenum=#{optypenum} AND recyear=#{recyear} AND recnum=#{recnum})o,HOUSINGSUBSIDY h
+        WHERE o.optypenum=h.optypenum AND o.recyear=h.recyear AND o.recnum=h.recnum ORDER BY RELIEVETIME DESC,ENDTIME DESC
+    </select>
+</mapper>

@@ -1,0 +1,137 @@
+@layout("/common/_container.html"){
+<style type="text/css">
+    #NodeTable{
+        width: 100%
+    }
+    #NodeTable thead{
+        background: #ebf0f6;
+    }
+    #NodeTable thead th{
+        padding: 10px 0;
+        text-align:center;
+    }
+    #NodeTable tbody td{
+        padding: 8px 0;
+        text-align:center;
+        word-break:break-all;
+        white-space : normal;
+    }
+    table,table tr th, table tr td {
+        border:1px solid #bababa;
+    }
+
+    .m-t-30{
+        margin-top:30px;
+    }
+</style>
+
+<div class="panel blank-panel">
+    <div class="panel-heading">
+        <div class="panel-options">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#tab-1">住房补贴</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="tab-content">
+
+            <div id="tab-1" class="tab-pane active">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form action="#" method="post" class="form-horizontal" id="housingSubsidyInfoForm">
+                            <input type="hidden" name="optypenum" id="optypenum" value='${apply.OPTYPENUM!}'>
+                            <input type="hidden" name="recyear" id="recyear" value='${apply.RECYEAR!}'>
+                            <input type="hidden" name="recnum" id="recnum" value='${apply.RECNUM!}'>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">申请人姓名</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="applicantName" name="applicantName" type="text" readonly="readonly" value="${apply.applicantName!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">登记编号</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="recnumgather" name="recnumgather" type="text" readonly="readonly" value="${recnumgather!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">申请人证件类型</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="cardType" name="cardType" type="text" readonly="readonly" value="${apply.OWNERCERTTYPECODE!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">申请人证件号码</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="applicantCard" name="applicantCard" type="text" readonly="readonly" value="${apply.applicantCard!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">住房补贴金额</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="rent" name="rent" type="text" value="${subsidy.rent!}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">备注</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="remark" name="remark" type="text" value="${subsidy.remark!}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">开始时间</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control layer-date" id="startTime" name="startTime" type="text" value="${subsidy.startTime,'yyyy-MM-dd'}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-sm-3 control-label">截止时间</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control layer-date" id="endTime" name="endTime" type="text" value="${subsidy.endTime,'yyyy-MM-dd'}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row btn-group-m-t">
+                                <div class="col-sm-6" style="text-align: right">
+                                    <#button btnCss="info" name="保存" id="ensure" icon="fa-check" clickFun="allotRoom.save()"/>
+                                    <#button btnCss="danger" name="关闭" icon="fa-eraser" clickFun="allotRoom.close()"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    laydate.render({
+        elem: '#startTime'
+    });
+    laydate.render({
+        elem: '#endTime'
+    });
+
+</script>
+<script src="${ctxPath}/static/modular/allotRoom/allotRoom.js"></script>
+@}

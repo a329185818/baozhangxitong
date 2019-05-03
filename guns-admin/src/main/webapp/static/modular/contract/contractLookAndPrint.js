@@ -1,5 +1,5 @@
 /**
- * 保障房项目初始化
+ * 合同个人查看初始化
  */
 var contractLookManage = {
     id: "ContractLookTable",	//表格id
@@ -51,7 +51,7 @@ contractLookManage.close = function () {
 
 
 $(function () {
-    contractLookManage.url = "/contract/all_list";
+    contractLookManage.url = "/contract/person_list";
     var data = {
         optypenum:contractOptypenum,
         recyear:contractRecyear,

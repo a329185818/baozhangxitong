@@ -89,7 +89,7 @@ public class ContractController extends BaseController {
         return PREFIX + "contract_lookAndPrint.html";
     }
 
-    @RequestMapping("/all_list")
+    @RequestMapping("/person_list")
     @ResponseBody
     public Object personContractList(String optypenum, String recyear, String recnum){
         Page<ContractVO> page = contractService.getPersonAllContract(Convert.toInt(optypenum), Convert.toInt(recyear), Convert.toInt(recnum));

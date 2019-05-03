@@ -14,6 +14,7 @@ import com.stylefeng.guns.modular.support.model.*;
 import com.stylefeng.guns.modular.support.service.IContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.text.DecimalFormat;
@@ -49,6 +50,7 @@ public class ContractServiceImpl implements IContractService {
 
     /**
      * 获取申请人信息
+     *
      * @param optypenum
      * @param recyear
      * @param recnum
@@ -63,14 +65,6 @@ public class ContractServiceImpl implements IContractService {
         //设置到apply
         apply.setOWNERCERTTYPECODE(name);
         return apply;
-    }
-
-    public void addContract(Contract contract) {
-        //获取uuid设置到合同id里
-        contract.setId(StaticClass.getUUID());
-        contract.setOprationId(ShiroKit.getUser().getId());
-        contract.setCreateTime(new Date());
-        contractMapper.addContract(contract);
     }
 
     @Override
@@ -139,6 +133,7 @@ public class ContractServiceImpl implements IContractService {
         model.addAttribute("contract", contract);
     }
 
+    @Transactional
     @Override
     public Object saveContract(String json) {
         Contract contract = JSON.parseObject(json, Contract.class);
@@ -198,5 +193,13 @@ public class ContractServiceImpl implements IContractService {
         map.put("endMon", endMon);
         map.put("endDay", endDay);
         return map;
+    }
+
+    public void addContract(Contract contract) {
+        //获取uuid设置到合同id里
+        contract.setId(StaticClass.getUUID());
+        contract.setOprationId(ShiroKit.getUser().getId());
+        contract.setCreateTime(new Date());
+        contractMapper.addContract(contract);
     }
 }

@@ -18,7 +18,7 @@
             and b.CURRECLOCKUSERNUM=#{userId}
         </if>
         <if test="status == 0">
-            and (a.people_status=3 or a.people_status=2)
+            and (a.people_status=3 or a.people_status=2 or a.people_status=4)
         </if>
         <if test="status != 0">
             and  a.PEOPLE_STATUS =#{status}
@@ -44,7 +44,7 @@
             and b.CURRECLOCKUSERNUM=#{userId}
         </if>
         <if test="status == 0">
-            and (a.people_status=3 or a.people_status=2)
+            and (a.people_status=3 or a.people_status=2 or a.people_status=4)
         </if>
         <if test="status != 0">
             and  a.PEOPLE_STATUS =#{status}

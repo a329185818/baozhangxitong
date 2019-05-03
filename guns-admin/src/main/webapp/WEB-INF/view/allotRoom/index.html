@@ -36,6 +36,7 @@
                                         <option value="0">请选择</option>
                                         <option value="2">轮候</option>
                                         <option value="3">已配房</option>
+                                        <option value="4">已补贴</option>
                                     </select>
                                 </div>
                             </div>
@@ -96,6 +97,41 @@
 
             <div class="modal-footer" style="margin-top: 8px;">
                 <#button btnCss="info" name="选择此房" id="chooseHouse" icon="fa-check" clickFun="ProjectInfoDlg.checkHouse('${apply.OPTYPENUM!}','${apply.RECYEAR!}','${apply.RECNUM!}','1')"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 点击"已补贴"，显示住房补贴模态框 -->
+<div class="modal fade" id="editSubsidyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content " style="width: 800px;">
+            <div class="modal-body">
+                <div class="col-sm-12">
+                    <#label id="applicantName" name="申请人姓名" placeholder=""/>
+                </div>
+                <div class="col-sm-5">
+                    <#label id="cardType" name="申请人证件类型" placeholder=""/>
+                </div>
+                <div class="col-sm-7">
+                    <#label id="applicantCard" name="申请人证件号码" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="rent" name="住房补贴金额" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="remark" name="备注" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="startTime" name="开始时间" placeholder=""/>
+                </div>
+                <div class="col-sm-6">
+                    <#label id="endTime" name="截止时间" placeholder=""/>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="margin-top: 8px;">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div><!-- /.modal-content -->
