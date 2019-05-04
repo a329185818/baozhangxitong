@@ -5,6 +5,7 @@ import com.stylefeng.guns.modular.support.model.ContractVO;
 import org.springframework.ui.Model;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 合同管理业务
@@ -15,7 +16,7 @@ public interface IContractService {
      * a.optypenum = b.optypenum and a.recyear=b.recyear and a.recnum = b.recnum and a.people_status=3 and b.oppartnum=312
      * @return
      */
-    Page<ContractVO> queryAllAlreadyAllocatedRoom(int iStart,int iEnd,String name);
+    Page<ContractVO> queryAllAlreadyAllocatedRoomAop(Map param);
 
     /**
      *获取打印所需的数据

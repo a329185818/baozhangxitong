@@ -35,16 +35,16 @@ public class ContractServiceImpl implements IContractService {
     @Autowired
     private DicMapper dicMapper;
 
-
+    /**
+     *方法参数为Map,使用aop切入设置userId：详情查看CurUserAspect,方法名称后缀为Aop
+     * @param param
+     * @return
+     */
     @Override
-    public Page<ContractVO> queryAllAlreadyAllocatedRoom(int iStart, int iEnd, String name) {
-        Page<ContractVO> page = new Page<ContractVO>();
-        List<ContractVO> contractList = contractMapper.queryAllAlreadyAllocatedRoom(iStart, iEnd, name);
-        if (contractList.size() > 0) {
-            page.setRecords(contractList);
-            page.setTotal(contractList.get(0).getTotal());
-            page.setCurrent(iStart / (iEnd - iStart) + 1);
-        }
+    public Page<ContractVO> queryAllAlreadyAllocatedRoomAop(Map param) {
+        Page<ContractVO> page = new PageFactory().defaultPage();
+        List<ContractVO> list = contractMapper.queryAllAlreadyAllocatedRoom(page,param);
+        page.setRecords(list);
         return page;
     }
 
@@ -112,8 +112,8 @@ public class ContractServiceImpl implements IContractService {
     @Override
     public Page<ContractVO> getPersonAllContract(Integer optypenum, Integer recyear, Integer recnum) {
         Page<ContractVO> page = new PageFactory().defaultPage();
-        List<ContractVO> contractList = contractMapper.getPersonAllContract(page, optypenum, recyear, recnum);
-        page.setRecords(contractList);
+        List<ContractVO> list = contractMapper.getPersonAllContract(page, optypenum, recyear, recnum);
+        page.setRecords(list);
         return page;
     }
 

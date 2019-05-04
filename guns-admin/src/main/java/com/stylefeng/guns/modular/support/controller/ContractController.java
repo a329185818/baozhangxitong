@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 当前项目的逻辑都在Controller里，保证项目一致性，所以逻辑处理也放在Controller里.
@@ -41,17 +43,16 @@ public class ContractController extends BaseController {
     /**
      * 合同页面获取数据,显示所有已分配好房子的
      *
-     * @param offset
-     * @param limit
      * @param name
      * @return
      */
     @RequestMapping("/list")
     @ResponseBody
-    public PageInfoBT contractList(Integer offset, Integer limit, @RequestParam(required = false) String name) {
+    public PageInfoBT contractList(@RequestParam(required = false) String name) {
         //获取所有已分配好房子的申请人
-        int iEnd = limit + offset;
-        Page<ContractVO> page = contractService.queryAllAlreadyAllocatedRoom(offset,iEnd,name);
+        Map<String,Object> param = new HashMap<>();
+        param.put("name",name);
+        Page<ContractVO> page = contractService.queryAllAlreadyAllocatedRoomAop(param);
         return super.packForBT(page);
     }
 

@@ -44,12 +44,10 @@ public interface IHousingSubsidyService {
 
     /**
      * 住房补贴查询页面获取数据,显示所有已补贴的
-     * @param iStart
-     * @param iEnd
-     * @param name
+     * @param param
      * @return
      */
-    Page<HousingSubsidyVO> queryALLHousingSubsidy(int iStart,int iEnd,String name);
+    Page<HousingSubsidyVO> queryALLHousingSubsidyAop(Map param);
 
     /**
      * 获取个人补贴的所有数据(包含过期和有效)

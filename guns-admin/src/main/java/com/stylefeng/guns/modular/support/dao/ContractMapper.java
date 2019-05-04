@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface ContractMapper {
 
@@ -15,7 +16,7 @@ public interface ContractMapper {
      * 返回所有的信息
      * @return
      */
-    List<ContractVO> queryAllAlreadyAllocatedRoom(@Param("iStart")int iStart,@Param("iEnd")int iEnd,@Param("name")String name);
+    List<ContractVO> queryAllAlreadyAllocatedRoom(Page page,Map parame);
     
     House queryHouseInfo(@Param("optypenum") Integer optypenum, @Param("recyear") Integer recyear, @Param("recnum") Integer recnum);
 

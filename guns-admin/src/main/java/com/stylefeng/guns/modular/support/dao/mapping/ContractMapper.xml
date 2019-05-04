@@ -4,12 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.stylefeng.guns.modular.support.dao.ContractMapper">
 
-    <select id="queryAllAlreadyAllocatedRoom" resultType="com.stylefeng.guns.modular.support.model.ContractVO">
-        select * from
-        (select c.*,ROWNUM RN from
-        (SELECT a.OWNERNAME AS name,a.TELCODE AS telphone,a.OWNERCERTNUM AS idCard,b.recnumgather
+    <select id="queryAllAlreadyAllocatedRoom" parameterType="java.util.HashMap" resultType="com.stylefeng.guns.modular.support.model.ContractVO">
+       SELECT a.OWNERNAME AS name,a.TELCODE AS telphone,a.OWNERCERTNUM AS idCard,b.recnumgather
         AS recnumgather,(select OPPARTNAME from tbbcoppart where OPPARTNUM= b.oppartnum) AS oppartnum, a.optypenum AS optypenum,a.recyear AS recyear,a.recnum AS recnum,count(*)over()total
-        FROM RWRECOWNER a ,  rwrecinfo b
+        FROM RWRECOWNER a , rwrecinfo b
         WHERE
         <if test="name != null and name != ''">
             instr(a.OWNERNAME||'-'||a.TELCODE||'-'||a.OWNERCERTNUM||'-'||b.recnumgather,#{name})>0 AND
@@ -18,7 +16,11 @@
         a.recyear=b.recyear AND
         a.recnum = b.recnum AND
         a.people_status=3 AND
-        b.oppartnum=312 ORDER BY a.recnum DESC)c where #{iEnd}>=ROWNUM) WHERE RN>=#{iStart}
+        b.oppartnum=312
+        <if test="userId!= null and userId!=''" >
+            AND b.CURRECLOCKUSERNUM=#{userId}
+        </if>
+        ORDER BY a.recnum DESC
     </select>
 
     <select id="queryHouseInfo" resultType="com.stylefeng.guns.modular.support.model.House">

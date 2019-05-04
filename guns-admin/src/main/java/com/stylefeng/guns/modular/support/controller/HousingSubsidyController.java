@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -93,10 +94,11 @@ public class HousingSubsidyController extends BaseController {
      */
     @RequestMapping("/list")
     @ResponseBody
-    public PageInfoBT contractList(Integer offset, Integer limit, @RequestParam(required = false) String name) {
-        //获取所有已分配好房子的申请人
-        int iEnd = limit + offset;
-        Page<HousingSubsidyVO> page = housingSubsidyService.queryALLHousingSubsidy(offset,iEnd,name);
+    public PageInfoBT subsidyList(@RequestParam(required = false) String name) {
+        //获取所有已补贴的申请人
+        Map<String,Object> param = new HashMap<>();
+        param.put("name",name);
+        Page<HousingSubsidyVO> page = housingSubsidyService.queryALLHousingSubsidyAop(param);
         return super.packForBT(page);
     }
 
@@ -117,7 +119,7 @@ public class HousingSubsidyController extends BaseController {
      */
     @RequestMapping("/person_list")
     @ResponseBody
-    public Object personContractList(String optypenum, String recyear, String recnum){
+    public Object personSubsidyList(String optypenum, String recyear, String recnum){
         Page<HousingSubsidyVO> page = housingSubsidyService.getPersonAllHousingSubsidy(Convert.toInt(optypenum), Convert.toInt(recyear), Convert.toInt(recnum));
         return super.packForBT(page);
     }

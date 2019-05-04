@@ -2,11 +2,13 @@ package com.stylefeng.guns.modular.support.controller;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.core.base.controller.BaseController;
-import com.stylefeng.guns.core.shiro.ShiroKit;
 import com.stylefeng.guns.core.util.Convert;
 import com.stylefeng.guns.modular.support.dao.BuildMapper;
 import com.stylefeng.guns.modular.support.dao.HouseProjectMapper;
-import com.stylefeng.guns.modular.support.model.*;
+import com.stylefeng.guns.modular.support.model.Dic;
+import com.stylefeng.guns.modular.support.model.FamilySurvey;
+import com.stylefeng.guns.modular.support.model.House;
+import com.stylefeng.guns.modular.support.model.JointApplicant;
 import com.stylefeng.guns.modular.support.service.AllotRoomService;
 import com.stylefeng.guns.modular.support.service.DicService;
 import com.stylefeng.guns.modular.support.service.IHouseProjectService;
@@ -66,45 +68,19 @@ public class AllotRoomController extends BaseController{
 
     /**
      * 配房界面
-     * @param offset
-     * @param limit
      * @param condition
      * @param status
      * @return
      */
         @RequestMapping(value = "/index2")
         @ResponseBody
-        public Object index(Integer offset,Integer limit,String condition ,int status){
+        public Object index(String condition ,int status){
             Map<String,Object> param = new HashMap<>();
-            List<Map<String,Object>> projectList = new ArrayList<Map<String,Object>>();
-            param.put("iStart",offset);//0
-            param.put("iEnd",limit + offset);//
-
-            param.put("status",status);//状态 2：轮候，3：已配房
+            param.put("status",status);//状态 2：轮候，3：已配房  4:已补贴
             param.put("condition",condition);
-            //获取个人ID
-            String userId = ShiroKit.getUser().getId();
-
-            List<String> roleNames = ShiroKit.getUser().getRoleNames();
-            for(String name:roleNames){
-                if(name.equals("高级管理员")){
-                    userId = null;
-                    break;
-                }
-            }
-            param.put("userId",userId);
-            projectList =(List)allotRoomService.allotRoomQuery(param);
-            //分页数据
-            List<Tbbwimport> newProjectList = new ArrayList<>();
-            //查询总数
-            int listNum = allotRoomService.allotRoomQueryCount(param);
-            Page page = new Page();
-            page.setRecords(projectList);
-            page.setTotal(listNum);
-            page.setCurrent(offset / limit + 1);
+            Page<Map<String,Object>> page =allotRoomService.allotRoomQueryAop(param);
             return super.packForBT(page);
         }
-
 
     /**
      * 获取房屋信息

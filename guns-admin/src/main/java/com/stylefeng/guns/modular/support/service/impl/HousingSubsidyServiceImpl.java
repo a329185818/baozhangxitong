@@ -110,15 +110,16 @@ public class HousingSubsidyServiceImpl implements IHousingSubsidyService {
         return "SUCCESS";
     }
 
+    /**
+     * 方法参数为Map,使用aop切入设置userId：详情查看CurUserAspect,方法名称后缀为Aop
+     * @param param
+     * @return
+     */
     @Override
-    public Page<HousingSubsidyVO> queryALLHousingSubsidy(int iStart, int iEnd, String name) {
-        Page<HousingSubsidyVO> page = new Page<HousingSubsidyVO>();
-        List<HousingSubsidyVO> list = housingSubsidyMapper.queryALLHousingSubsidy(iStart, iEnd, name);
-        if (list.size() > 0) {
-            page.setRecords(list);
-            page.setTotal(list.get(0).getTotal());
-            page.setCurrent(iStart / (iEnd - iStart) + 1);
-        }
+    public Page<HousingSubsidyVO> queryALLHousingSubsidyAop(Map param) {
+        Page<HousingSubsidyVO> page = new PageFactory().defaultPage();
+        List<HousingSubsidyVO> list = housingSubsidyMapper.queryALLHousingSubsidy(page,param);
+        page.setRecords(list);
         return page;
     }
 

@@ -6,6 +6,7 @@ import com.stylefeng.guns.modular.support.model.HousingSubsidyVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface HousingSubsidyMapper {
 
@@ -24,7 +25,7 @@ public interface HousingSubsidyMapper {
 
     void updateHousingSubsidy(@Param("optypenum") Integer optypenum, @Param("recyear") Integer recyear, @Param("recnum") Integer recnum, @Param("relieveOprationId") String relieveOprationId);
 
-    List<HousingSubsidyVO> queryALLHousingSubsidy(@Param("iStart")int iStart,@Param("iEnd")int iEnd,@Param("name")String name);
+    List<HousingSubsidyVO> queryALLHousingSubsidy(Page page,Map parame);
 
     List<HousingSubsidyVO> getPersonAllHousingSubsidy(Page page, @Param("optypenum") Integer optypenum, @Param("recyear") Integer recyear, @Param("recnum") Integer recnum);
 }

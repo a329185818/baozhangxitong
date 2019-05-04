@@ -1,6 +1,8 @@
 package com.stylefeng.guns.modular.support.service.impl;
 
 
+import com.baomidou.mybatisplus.plugins.Page;
+import com.stylefeng.guns.core.common.constant.factory.PageFactory;
 import com.stylefeng.guns.core.util.Convert;
 import com.stylefeng.guns.modular.support.dao.AllotRoomMapper;
 import com.stylefeng.guns.modular.support.dao.BuildMapper;
@@ -36,45 +38,41 @@ public class AllotRoomServiceImpl implements AllotRoomService {
 
     /**
      * 配房人员信息查询查询
-     * @param param
-     * @return
-     */
-   @Override
-    public List<Map<String,Object>> allotRoomQuery(Map param){
-        return allotRoomMapper.allotRoomQuery(param);
-    }
-
-    /**
-     * 查询总条数
+     * 方法参数为Map,使用aop切入设置userId：详情查看CurUserAspect,方法名称后缀为Aop
+     *
      * @param param
      * @return
      */
     @Override
-    public int allotRoomQueryCount(Map param){
-        return allotRoomMapper.allotRoomQueryCount(param);
+    public Page<Map<String, Object>> allotRoomQueryAop(Map param) {
+        Page<Map<String, Object>> page = new PageFactory().defaultPage();
+        List<Map<String, Object>> list = allotRoomMapper.allotRoomQuery(page,param);
+        page.setRecords(list);
+        return page;
     }
 
     /**
      * 获取房屋信息
+     *
      * @param OpTypeNum
      * @param RecYear
      * @param RecNum
      * @return
      */
     @Override
-    public Map findHouse(String OpTypeNum, String RecYear, String RecNum){
-       Map<Object,Object > houseMap=new HashMap<>();
+    public Map findHouse(String OpTypeNum, String RecYear, String RecNum) {
+        Map<Object, Object> houseMap = new HashMap<>();
         //获取房屋Id
-        String houseId = houseProjectMapper.getHouseReceive(Convert.toInt(OpTypeNum),Convert.toInt(RecYear),Convert.toInt(RecNum));
-        if(houseId != null && !("").equals(houseId)){
+        String houseId = houseProjectMapper.getHouseReceive(Convert.toInt(OpTypeNum), Convert.toInt(RecYear), Convert.toInt(RecNum));
+        if (houseId != null && !("").equals(houseId)) {
             //分配房了则获取房屋信息
             House house = buildMapper.getHouse(houseId);
-            FamilySurvey familySurvey = houseProjectMapper.getFamilySurvey(Convert.toInt(OpTypeNum),Convert.toInt(RecYear),Convert.toInt(RecNum));
-            houseMap.put("house",house);
-            houseMap.put("obligee",familySurvey.getApplicantName());//获取权利人
+            FamilySurvey familySurvey = houseProjectMapper.getFamilySurvey(Convert.toInt(OpTypeNum), Convert.toInt(RecYear), Convert.toInt(RecNum));
+            houseMap.put("house", house);
+            houseMap.put("obligee", familySurvey.getApplicantName());//获取权利人
             return houseMap;
 
-        }else{
+        } else {
             return new HashMap<>();
         }
     }
@@ -87,26 +85,26 @@ public class AllotRoomServiceImpl implements AllotRoomService {
      * @return
      */
     @Override
-    public String relieveHouse(String OpTypeNum, String RecYear, String RecNum){
-        Map<String,Object> param = new HashMap<>();
-        param.put("iOpTypeNum",Convert.toInt(OpTypeNum));
-        param.put("iRecYear",Convert.toInt(RecYear));
-        param.put("iRecNum",Convert.toInt(RecNum));
+    public String relieveHouse(String OpTypeNum, String RecYear, String RecNum) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("iOpTypeNum", Convert.toInt(OpTypeNum));
+        param.put("iRecYear", Convert.toInt(RecYear));
+        param.put("iRecNum", Convert.toInt(RecNum));
         //获取房屋Id
-        String houseId = houseProjectMapper.getHouseReceive(Convert.toInt(OpTypeNum),Convert.toInt(RecYear),Convert.toInt(RecNum));
-        if(houseId == null && ("").equals(houseId)){
+        String houseId = houseProjectMapper.getHouseReceive(Convert.toInt(OpTypeNum), Convert.toInt(RecYear), Convert.toInt(RecNum));
+        if (houseId == null && ("").equals(houseId)) {
             return "EXIT";
-        }else{
-            contractMapper.deleteEffectiveContract(Convert.toInt(OpTypeNum),Convert.toInt(RecYear),Convert.toInt(RecNum));
-            param.put("checkHouseId",houseId);
+        } else {
+            contractMapper.deleteEffectiveContract(Convert.toInt(OpTypeNum), Convert.toInt(RecYear), Convert.toInt(RecNum));
+            param.put("checkHouseId", houseId);
             //修改房屋状态,0：空房
-            param.put("houseCode",0);
+            param.put("houseCode", 0);
             houseProjectMapper.updateHouseCode(param);
             //修改人员状态，2：轮候
-            param.put("status","2");
+            param.put("status", "2");
             houseProjectMapper.updatePeopleStatus(param);
             //清除houseId，置为null
-            param.put("checkHouseId",null);
+            param.put("checkHouseId", null);
             houseProjectMapper.allotHouse(param);
             return "SUCCESS";
         }

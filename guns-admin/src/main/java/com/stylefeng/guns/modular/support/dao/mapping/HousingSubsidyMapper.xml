@@ -23,19 +23,23 @@
         WHERE OPTYPENUM=#{optypenum} AND RECYEAR=#{recyear} AND RECNUM=#{recnum} AND RELIEVETIME IS NULL
     </update>
 
-    <select id="queryALLHousingSubsidy" resultType="com.stylefeng.guns.modular.support.model.HousingSubsidyVO">
-        SELECT * FROM
-        (SELECT c.*,ROWNUM RN from
-        (SELECT a.OWNERNAME AS name,a.TELCODE AS telphone,a.OWNERCERTNUM AS idCard,a.optypenum AS optypenum,a.recyear AS recyear,a.recnum AS recnum,count(*)over()total
-        FROM (SELECT optypenum,recyear,recnum FROM HOUSINGSUBSIDY GROUP BY optypenum,recyear,recnum) b,RWRECOWNER a
+    <select id="queryALLHousingSubsidy" parameterType="java.util.HashMap" resultType="com.stylefeng.guns.modular.support.model.HousingSubsidyVO">
+        SELECT a.OWNERNAME AS name,a.TELCODE AS telphone,a.OWNERCERTNUM AS idCard,a.optypenum AS optypenum,a.recyear AS recyear,a.recnum AS recnum,count(*)over()total
+        FROM (SELECT optypenum,recyear,recnum FROM HOUSINGSUBSIDY GROUP BY optypenum,recyear,recnum) b,RWRECOWNER a,rwrecinfo d
         WHERE
         <if test="name != null and name != ''">
             instr(a.OWNERNAME||'-'||a.TELCODE||'-'||a.OWNERCERTNUM,#{name})>0 AND
         </if>
         a.optypenum = b.optypenum AND
         a.recyear=b.recyear AND
-        a.recnum = b.recnum
-        ORDER BY a.recnum DESC)c where 15>=ROWNUM) WHERE RN>=0
+        a.recnum = b.recnum AND
+        b.optypenum = d.optypenum AND
+        b.recyear = d.recyear AND
+        b.recnum = d.recnum
+        <if test="userId!= null and userId!=''" >
+            AND d.CURRECLOCKUSERNUM=#{userId}
+        </if>
+        ORDER BY a.recnum DESC
     </select>
 
     <select id="getPersonAllHousingSubsidy" resultType="com.stylefeng.guns.modular.support.model.HousingSubsidyVO">
