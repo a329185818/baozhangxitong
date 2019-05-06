@@ -19,9 +19,9 @@ HousingSubsidyManage.initColumn = function () {
             return '<input type="hidden" value="'+row.id+'">';
         }
         },
-        {title: '申请人姓名', field: 'name', align: 'center', valign: 'middle', sortable: true},
-        {title: '身份证号码', field: 'idCard', align: 'center', valign: 'middle', sortable: true},
-        {title: '电话号码', field: 'telphone', align: 'center', valign: 'middle', sortable: true},
+        {title: '申请人姓名', field: 'name', align: 'center', valign: 'middle'},
+        {title: '身份证号码', field: 'idCard', align: 'center', valign: 'middle'},
+        {title: '电话号码', field: 'telphone', align: 'center', valign: 'middle'},
         {title: 'OPTYPENUM', field: 'optypenum', align: 'center', valign: 'middle',visible: false},
         {title: 'RECYEAR', field: 'recyear', align: 'center', valign: 'middle',visible: false},
         {title: 'RECNUM', field: 'recnum', align: 'center', valign: 'middle',visible: false},

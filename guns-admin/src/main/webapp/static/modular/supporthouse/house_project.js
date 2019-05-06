@@ -265,7 +265,7 @@ $(function () {
     var now = new Date();
     var month = now.getMonth();
     var year = now.getFullYear();
-    if(month < 4){
+    if(month <= 4){
         year --;
         month = month + 12;
     }

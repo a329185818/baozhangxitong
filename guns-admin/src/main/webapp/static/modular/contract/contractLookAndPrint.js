@@ -19,12 +19,12 @@ contractLookManage.initColumn = function () {
             return '<input type="hidden" value="'+row.id+'">';
         }
         },
-        {title: '申请人姓名', field: 'name', align: 'center', valign: 'middle', sortable: true},
-        {title: '身份证号码', field: 'idCard', align: 'center', valign: 'middle', sortable: true},
-        {title: '房屋坐落', field: 'houseAddress', align: 'center', valign: 'middle', sortable: true},
-        {title: '每平米租金/月', field: 'price', align: 'center', valign: 'middle', sortable: true},
-        {title: '合同开始时间', field: 'startTime', align: 'center', valign: 'middle', sortable: true},
-        {title: '合同结束时间', field: 'endTime', align: 'center', valign: 'middle', sortable: true},
+        {title: '申请人姓名', field: 'name', align: 'center', valign: 'middle'},
+        {title: '身份证号码', field: 'idCard', align: 'center', valign: 'middle'},
+        {title: '房屋坐落', field: 'houseAddress', align: 'center', valign: 'middle'},
+        {title: '每平米租金/月', field: 'price', align: 'center', valign: 'middle'},
+        {title: '合同开始时间', field: 'startTime', align: 'center', valign: 'middle'},
+        {title: '合同结束时间', field: 'endTime', align: 'center', valign: 'middle'},
         {title: 'OPTYPENUM', field: 'optypenum', align: 'center', valign: 'middle',visible: false},
         {title: 'RECYEAR', field: 'recyear', align: 'center', valign: 'middle',visible: false},
         {title: 'RECNUM', field: 'recnum', align: 'center', valign: 'middle',visible: false},
