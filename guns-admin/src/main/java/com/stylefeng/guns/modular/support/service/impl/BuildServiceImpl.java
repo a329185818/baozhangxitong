@@ -76,8 +76,9 @@ public class BuildServiceImpl implements IBuildService{
         if(houseList.size()>0){
             Map<String,Object> map = buildMapper.getProjectAddress(houseList.get(0).getBuildId());
             roadCode = map.get("DISTRICTCODE").toString();
-            projectAddress = map.get("ADDRESS").toString();
-            buildNum = map.get("SITBUILDNUM").toString();
+            projectAddress = map.get("DISTRICTNAME").toString()+map.get("BUILDSITNUMGATHER")+map.get("BUILDSITBUILDNUM");
+            buildNum = map.get("HOUSESITBUILDNUM").toString();
+
             //获得ID
             param.put("onlyId","");
             param.put("itype",2);
@@ -87,7 +88,7 @@ public class BuildServiceImpl implements IBuildService{
         for(House house:houseList){
             buildMapper.getOnlyId(param);
             house.setHouseId(param.get("onlyId").toString());
-            String sitnumGather = projectAddress + buildNum + "栋" + house.getUnitNum() + "单元" + house.getRoomNum();//projectaddress,buildnum,unitnum,roomnum
+            String sitnumGather = projectAddress + buildNum + house.getUnitNum() + "单元" + house.getRoomNum();//projectaddress,buildnum,unitnum,roomnum
             house.setSitnumGather(sitnumGather);
             buildMapper.createHouse(house);
         }
